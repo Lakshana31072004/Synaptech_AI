@@ -1,0 +1,2 @@
+-- Insert sample data into the ProjectHealth table
+INSERT INTO PROJECT_HEALTH (risk_score, bug_trend, sprint_velocity, technical_debt, code_quality_index, team_productivity, project_progress) VALUES (78, 'decreasing', 35, 'medium', 85, 'high', 60);
