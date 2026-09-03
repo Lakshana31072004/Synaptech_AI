@@ -1,46 +1,71 @@
 .profile-container {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 20px;
-    margin-top: 30px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    margin: 30px auto;
+    max-width: 680px;
+    background-color: var(--bg-surface);
+    box-shadow: var(--shadow-lg);
     text-align: left;
+    font-family: var(--font-body);
+}
+
+.profile-container h2 {
+    margin-top: 0;
+    margin-bottom: 24px;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    font-family: var(--font-heading);
 }
 
 .profile-details p {
-    font-size: 1.1em;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    margin: 12px 0;
 }
 
 .profile-details strong {
-    margin-right: 10px;
+    margin-right: 12px;
+    color: var(--text-secondary);
+    font-weight: 600;
 }
 
 .profile-picture-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #eee;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .profile-picture {
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #ddd;
+    border: 3px solid #3b82f6;
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
 }
 
 .inline-edit-button {
     margin-left: 10px;
-    background: none;
-    border: none;
-    color: #007bff;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: var(--brand-primary);
     cursor: pointer;
-    font-size: 0.8em;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s ease;
+}
+
+.inline-edit-button:hover {
+    background: var(--brand-primary);
+    color: #ffffff;
 }
 
 .username-edit-form {
@@ -50,34 +75,81 @@
 }
 
 .username-edit-form input {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
 }
 
 .password-change-form {
-    margin-top: 30px;
-    border-top: 1px solid #eee;
-    padding-top: 20px;
+    margin-top: 32px;
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 24px;
+}
+
+.password-change-form h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-family: var(--font-heading);
 }
 
 .password-change-form form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    max-width: 400px;
+    gap: 14px;
+    max-width: 440px;
 }
 
 .password-change-form input {
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-medium);
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.password-change-form input:focus {
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 3px var(--brand-glow);
+}
+
+.password-change-form button[type="submit"] {
+    background: var(--brand-gradient);
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    align-self: flex-start;
+}
+
+.password-change-form button[type="submit"]:hover {
+    background: var(--brand-gradient-hover);
+    transform: translateY(-1px);
 }
 
 .success-message {
-    color: green;
+    color: #15803d;
+    background: #dcfce7;
+    border: 1px solid #86efac;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.9rem;
 }
 
 .error-message {
-    color: red;
+    color: #b91c1c;
+    background: #fee2e2;
+    border: 1px solid #fca5a5;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.9rem;
 }

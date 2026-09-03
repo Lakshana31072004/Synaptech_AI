@@ -76,7 +76,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
                     <label style={{ display: 'block', fontSize: '0.9em', fontWeight: 600, color: '#475569', marginBottom: '6px' }}>Password</label>
                     <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter password" required style={{ width: '100%', padding: '10px 12px', border: '1px solid #cbd5e1', borderRadius: '6px', boxSizing: 'border-box' }} />
                 </div>
-                <button type="submit" disabled={loading} style={{ width: '100%', padding: '12px', fontSize: '1em', fontWeight: 600, color: '#fff', backgroundColor: '#10b981', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>{loading ? 'Creating Account...' : 'Register'}</button>
+                <button type="submit" disabled={loading} style={{ width: '100%', padding: '12px', fontSize: '1em', fontWeight: 600, color: '#fff', background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', border: 'none', borderRadius: '8px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)', transition: 'all 0.2s ease' }}>{loading ? 'Creating Account...' : 'Register'}</button>
             </form>
             <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '0.9em' }}>
                 <p style={{ margin: 0, color: '#64748b' }}>
