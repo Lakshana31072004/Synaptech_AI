@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -61,6 +62,17 @@ public class AdminController {
     public ResponseEntity<UserDto> updateUserRoles(@PathVariable Long id, @RequestBody UserRolesUpdateRequest request) {
         UserDto updatedUser = adminService.updateUserRoles(id, request.getRoles());
         return ResponseEntity.ok(updatedUser);
+    }
+
+    @PutMapping("/users/{id}/password")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> resetUserPasswordDirect(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        String newPassword = body.get("newPassword");
+        if (newPassword == null || newPassword.trim().length() < 4) {
+            return ResponseEntity.badRequest().body("Password must be at least 4 characters long.");
+        }
+        adminService.resetPasswordDirect(id, newPassword);
+        return ResponseEntity.ok(Map.of("message", "Password updated successfully."));
     }
 
     @GetMapping("/roles")

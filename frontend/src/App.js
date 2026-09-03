@@ -36,7 +36,7 @@ function App() {
               <Link to="/analyzer" className="header-link">Requirement Analyzer</Link>
               <Link to="/planner" className="header-link">Sprint Planner</Link>
               <Link to="/architecture" className="header-link">Architecture Advisor</Link>
-              {user?.roles?.includes('ROLE_ADMIN') || user?.roles?.includes('Admin') ? (
+              {userProfile?.roles?.includes('ROLE_ADMIN') || user?.roles?.includes('ROLE_ADMIN') || user?.roles?.includes('Admin') ? (
                 <Link to="/admin" className="header-link">Admin</Link>
               ) : null}
               <Link to="/profile" className="header-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>

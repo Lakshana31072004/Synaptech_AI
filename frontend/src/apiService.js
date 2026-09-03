@@ -73,6 +73,7 @@ export const apiService = {
     },
     deleteUser: (userId) => request(`/admin/users/${userId}`, { method: 'DELETE' }),
     updateUserRoles: (userId, roles) => request(`/admin/users/${userId}/roles`, { method: 'PUT', body: { roles } }),
+    updateUserPassword: (userId, newPassword) => request(`/admin/users/${userId}/password`, { method: 'PUT', body: { newPassword } }),
     getAllRoles: () => request('/admin/roles'),
     getCurrentUser: () => request('/users/me'),
     changePassword: (passwords) => request('/users/me/change-password', { body: passwords }),

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +34,17 @@ public class AdminService {
     private ActivityLogRepository activityLogRepository;
 
     @Autowired
-    private UserService userService; // Inject UserService
+    private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public void resetPasswordDirect(Long userId, String newPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userId));
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
 
     public Page<UserDto> getAllUsers(String username, Pageable pageable) {
         if (username != null && !username.trim().isEmpty()) {
