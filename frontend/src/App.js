@@ -102,7 +102,7 @@ function App() {
       <main className="App-main">
         <Routes>
           <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <div style={{ maxWidth: '400px', margin: '40px auto' }}><LoginForm /></div>} />
-          <Route path="/register" element={isAuthenticated ? <Navigate to="/" /> : <div style={{ maxWidth: '400px', margin: '40px auto' }}><RegisterForm /></div>} />
+          <Route path="/register" element={<div style={{ maxWidth: '400px', margin: '40px auto' }}><RegisterForm /></div>} />
           <Route path="/forgot-password" element={isAuthenticated ? <Navigate to="/" /> : <ForgotPasswordPage />} />
           <Route path="/reset-password" element={isAuthenticated ? <Navigate to="/" /> : <ResetPasswordPage />} />
           <Route path="/profile" element={isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />} />

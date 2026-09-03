@@ -71,6 +71,7 @@ export const apiService = {
         }
         return request(endpoint);
     },
+    createUserByAdmin: (userData) => request('/admin/users', { method: 'POST', body: userData }),
     deleteUser: (userId) => request(`/admin/users/${userId}`, { method: 'DELETE' }),
     updateUserRoles: (userId, roles) => request(`/admin/users/${userId}/roles`, { method: 'PUT', body: { roles } }),
     updateUserPassword: (userId, newPassword) => request(`/admin/users/${userId}/password`, { method: 'PUT', body: { newPassword } }),

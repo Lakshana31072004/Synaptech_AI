@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Service
@@ -38,6 +39,31 @@ public class AdminService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public UserDto createUserByAdmin(String username, String password, List<String> roleNames) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException("Username '" + username + "' is already taken.");
+        }
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+
+        Set<Role> roles = new HashSet<>();
+        if (roleNames != null && !roleNames.isEmpty()) {
+            for (String roleName : roleNames) {
+                Role r = roleRepository.findByName(RoleName.valueOf(roleName))
+                        .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
+                roles.add(r);
+            }
+        } else {
+            Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                    .orElseThrow(() -> new RuntimeException("Default ROLE_USER not found."));
+            roles.add(userRole);
+        }
+        user.setRoles(roles);
+        User saved = userRepository.save(user);
+        return new UserDto(saved);
+    }
 
     public void resetPasswordDirect(Long userId, String newPassword) {
         User user = userRepository.findById(userId)

@@ -50,6 +50,27 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getAllUsers(username, pageable));
     }
 
+    @PostMapping("/users")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> createUser(@RequestBody Map<String, Object> body) {
+        String username = (String) body.get("username");
+        String password = (String) body.get("password");
+        if (username == null || username.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("Username cannot be empty.");
+        }
+        if (password == null || password.trim().length() < 4) {
+            return ResponseEntity.badRequest().body("Password must be at least 4 characters long.");
+        }
+        @SuppressWarnings("unchecked")
+        List<String> roles = (List<String>) body.get("roles");
+        try {
+            UserDto newUser = adminService.createUserByAdmin(username, password, roles);
+            return ResponseEntity.ok(newUser);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @DeleteMapping("/users/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable Long id, Authentication authentication) {

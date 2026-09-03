@@ -27,6 +27,13 @@ const AdminDashboard = () => {
     const [userActivities, setUserActivities] = useState([]);
     const [loadingActivity, setLoadingActivity] = useState(false);
 
+    // Create User modal state
+    const [isCreateUserOpen, setIsCreateUserOpen] = useState(false);
+    const [createUsername, setCreateUsername] = useState('');
+    const [createPassword, setCreatePassword] = useState('');
+    const [createRoles, setCreateRoles] = useState(['ROLE_USER']);
+    const [isCreatingUser, setIsCreatingUser] = useState(false);
+
     const { user: adminUser, userProfile, login } = useAuth();
     const { showSuccess, showError } = useNotification();
 
@@ -155,6 +162,53 @@ const AdminDashboard = () => {
             showError(err.message || 'Failed to load user activity.');
         } finally {
             setLoadingActivity(false);
+        }
+    };
+
+    // --- Create User Handlers ---
+    const openCreateUserModal = () => {
+        setCreateUsername('');
+        setCreatePassword('');
+        setCreateRoles(['ROLE_USER']);
+        setIsCreateUserOpen(true);
+    };
+
+    const toggleCreateRole = (role) => {
+        if (createRoles.includes(role)) {
+            setCreateRoles(createRoles.filter(r => r !== role));
+        } else {
+            setCreateRoles([...createRoles, role]);
+        }
+    };
+
+    const handleCreateUser = async (e) => {
+        e.preventDefault();
+        if (!createUsername.trim()) {
+            showError('Please enter a username.');
+            return;
+        }
+        if (!createPassword || createPassword.length < 4) {
+            showError('Password must be at least 4 characters long.');
+            return;
+        }
+        if (createRoles.length === 0) {
+            showError('Please select at least one role for the user.');
+            return;
+        }
+        setIsCreatingUser(true);
+        try {
+            const newUser = await apiService.createUserByAdmin({
+                username: createUsername.trim(),
+                password: createPassword,
+                roles: createRoles
+            });
+            setUsers(prev => [newUser, ...prev]);
+            showSuccess(`User "${createUsername}" created successfully!`);
+            setIsCreateUserOpen(false);
+        } catch (err) {
+            showError(err.message || 'Failed to create user.');
+        } finally {
+            setIsCreatingUser(false);
         }
     };
 
@@ -300,22 +354,24 @@ const AdminDashboard = () => {
                     >
                         🔄 Refresh
                     </button>
-                    <Link
-                        to="/register"
+                    <button
+                        type="button"
+                        onClick={openCreateUserModal}
                         style={{
                             padding: '10px 16px',
                             background: '#059669',
                             color: '#fff',
-                            textDecoration: 'none',
+                            border: 'none',
                             borderRadius: '8px',
                             fontWeight: '600',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '6px'
+                            gap: '6px',
+                            cursor: 'pointer'
                         }}
                     >
                         ➕ Add New User
-                    </Link>
+                    </button>
                 </div>
             </div>
 
@@ -783,6 +839,135 @@ const AdminDashboard = () => {
                                 Close
                             </button>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* --- MODAL 4: Create User Modal --- */}
+            {isCreateUserOpen && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0, left: 0, right: 0, bottom: 0,
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000
+                }}>
+                    <div style={{
+                        background: '#fff',
+                        borderRadius: '12px',
+                        padding: '26px 30px',
+                        width: '90%',
+                        maxWidth: '460px',
+                        boxShadow: '0 20px 25px -5px rgba(0,0,0,0.2)'
+                    }}>
+                        <h3 style={{ margin: '0 0 6px 0', fontSize: '1.3rem', color: '#0f172a' }}>
+                            Add New User
+                        </h3>
+                        <p style={{ margin: '0 0 20px 0', color: '#64748b', fontSize: '0.9rem' }}>
+                            Create a new user account with customized roles directly in the admin panel.
+                        </p>
+
+                        <form onSubmit={handleCreateUser}>
+                            <div style={{ marginBottom: '14px' }}>
+                                <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', color: '#334155', marginBottom: '6px' }}>
+                                    Username
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter username"
+                                    value={createUsername}
+                                    onChange={(e) => setCreateUsername(e.target.value)}
+                                    required
+                                    style={{
+                                        width: '100%',
+                                        padding: '10px 12px',
+                                        borderRadius: '6px',
+                                        border: '1px solid #cbd5e1',
+                                        fontSize: '0.95rem',
+                                        boxSizing: 'border-box'
+                                    }}
+                                />
+                            </div>
+
+                            <div style={{ marginBottom: '16px' }}>
+                                <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', color: '#334155', marginBottom: '6px' }}>
+                                    Initial Password
+                                </label>
+                                <input
+                                    type="password"
+                                    placeholder="Min 4 characters"
+                                    value={createPassword}
+                                    onChange={(e) => setCreatePassword(e.target.value)}
+                                    required
+                                    style={{
+                                        width: '100%',
+                                        padding: '10px 12px',
+                                        borderRadius: '6px',
+                                        border: '1px solid #cbd5e1',
+                                        fontSize: '0.95rem',
+                                        boxSizing: 'border-box'
+                                    }}
+                                />
+                            </div>
+
+                            <div style={{ marginBottom: '22px' }}>
+                                <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', color: '#334155', marginBottom: '8px' }}>
+                                    Assign Roles
+                                </label>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    {availableRoles.map(role => (
+                                        <label
+                                            key={role}
+                                            style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '8px',
+                                                padding: '8px 12px',
+                                                borderRadius: '6px',
+                                                border: '1px solid #e2e8f0',
+                                                background: createRoles.includes(role) ? '#f0fdf4' : '#fff',
+                                                cursor: 'pointer'
+                                            }}
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                checked={createRoles.includes(role)}
+                                                onChange={() => toggleCreateRole(role)}
+                                                style={{ width: '16px', height: '16px', accentColor: '#10b981' }}
+                                            />
+                                            <span style={{ fontWeight: '600', fontSize: '0.9rem', color: '#0f172a' }}>{role}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsCreateUserOpen(false)}
+                                    style={{ padding: '8px 16px', background: '#f1f5f9', border: '1px solid #cbd5e1', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={isCreatingUser}
+                                    style={{
+                                        padding: '8px 18px',
+                                        background: '#059669',
+                                        color: '#fff',
+                                        border: 'none',
+                                        borderRadius: '6px',
+                                        cursor: isCreatingUser ? 'not-allowed' : 'pointer',
+                                        fontWeight: '600'
+                                    }}
+                                >
+                                    {isCreatingUser ? 'Creating...' : 'Create User'}
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             )}
