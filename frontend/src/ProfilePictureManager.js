@@ -14,12 +14,19 @@ const ProfilePictureManager = ({ currentPictureUrl, onPictureUpdate }) => {
 
     const handleFileSelect = (event) => {
         const file = event.target.files[0] || null;
-        setSelectedFile(file);
         setUploadError('');
         setUploadSuccess('');
         if (file) {
+            if (file.size > 50 * 1024 * 1024) {
+                setUploadError('Image size is too large (exceeds 50MB limit). Please choose a smaller photo.');
+                setSelectedFile(null);
+                setPreviewUrl(null);
+                return;
+            }
+            setSelectedFile(file);
             setPreviewUrl(URL.createObjectURL(file));
         } else {
+            setSelectedFile(null);
             setPreviewUrl(null);
         }
     };

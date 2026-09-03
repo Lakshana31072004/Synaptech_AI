@@ -84,13 +84,30 @@ export const apiService = {
         const formData = new FormData();
         formData.append('file', file);
 
-        const response = await fetch(`${API_BASE_URL}/users/me/profile-picture`, {
-            method: 'POST',
-            headers: getAuthHeaders(), // No 'Content-Type', browser sets it for FormData
-            body: formData,
-        });
-        if (!response.ok) throw new Error('File upload failed');
-        return response.json();
+        try {
+            const response = await fetch(`${API_BASE_URL}/users/me/profile-picture`, {
+                method: 'POST',
+                headers: getAuthHeaders(),
+                body: formData,
+            });
+            if (!response.ok) {
+                let errorMsg = 'File upload failed';
+                try {
+                    const errData = await response.json();
+                    errorMsg = errData.message || errData.error || errorMsg;
+                } catch (e) {
+                    const text = await response.text();
+                    if (text) errorMsg = text;
+                }
+                throw new Error(errorMsg);
+            }
+            return response.json();
+        } catch (err) {
+            if (err.message === 'Failed to fetch') {
+                throw new Error('Upload failed. The image may exceed the file size limit or server connection was reset.');
+            }
+            throw err;
+        }
     },
     triggerPasswordReset: (userId) => request(`/admin/users/${userId}/trigger-password-reset`, { method: 'POST' }),
     getUserActivity: (userId, page = 0, size = 10) => request(`/admin/users/${userId}/activity?page=${page}&size=${size}`),
