@@ -26,22 +26,28 @@ const ProfilePage = () => {
     }, [token]);
 
     const handlePictureUpdate = (newUrl) => {
-        setUser(currentUser => ({ ...currentUser, profile_picture_url: newUrl }));
+        setUser(currentUser => ({
+            ...currentUser,
+            profilePictureUrl: newUrl,
+            profile_picture_url: newUrl
+        }));
     };
 
-    if (loading) return <div>Loading profile...</div>;
+    if (loading) return <div style={{ textAlign: 'center', padding: '40px' }}>Loading profile...</div>;
     if (error) return <div className="error-message">Error: {error}</div>;
+
+    const currentPic = user?.profilePictureUrl || user?.profile_picture_url;
 
     return (
         <div className="profile-container">
             <h2>My Profile</h2>
             {user && (
                 <>
-                    <ProfilePictureManager currentPictureUrl={user.profile_picture_url} onPictureUpdate={handlePictureUpdate} />
+                    <ProfilePictureManager currentPictureUrl={currentPic} onPictureUpdate={handlePictureUpdate} />
                     <div className="profile-details">
                         <p><strong>ID:</strong> {user.id}</p>
                         <p><strong>Username:</strong> {user.username}</p>
-                        <p><strong>Roles:</strong> {user.roles.join(', ')}</p>
+                        <p><strong>Roles:</strong> {Array.isArray(user.roles) ? user.roles.join(', ') : ''}</p>
                     </div>
                     <PasswordChanger />
                 </>
