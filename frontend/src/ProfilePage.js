@@ -9,13 +9,16 @@ const ProfilePage = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { token } = useAuth();
+    const { token, updateProfilePicture } = useAuth();
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const data = await apiService.getCurrentUser();
                 setUser(data);
+                if (updateProfilePicture && data?.profilePictureUrl) {
+                    updateProfilePicture(data.profilePictureUrl);
+                }
             } catch (err) {
                 setError(err.message || 'Failed to fetch user data.');
             } finally {
@@ -23,7 +26,7 @@ const ProfilePage = () => {
             }
         };
         fetchUser();
-    }, [token]);
+    }, [token, updateProfilePicture]);
 
     const handlePictureUpdate = (newUrl) => {
         setUser(currentUser => ({
@@ -31,6 +34,9 @@ const ProfilePage = () => {
             profilePictureUrl: newUrl,
             profile_picture_url: newUrl
         }));
+        if (updateProfilePicture) {
+            updateProfilePicture(newUrl);
+        }
     };
 
     if (loading) return <div style={{ textAlign: 'center', padding: '40px' }}>Loading profile...</div>;

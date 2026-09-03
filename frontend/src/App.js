@@ -16,7 +16,7 @@ import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 
 function App() {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, userProfile, logout } = useAuth();
   const notifications = useNotification();
 
   useEffect(() => {
@@ -39,7 +39,16 @@ function App() {
               {user?.roles?.includes('ROLE_ADMIN') || user?.roles?.includes('Admin') ? (
                 <Link to="/admin" className="header-link">Admin</Link>
               ) : null}
-              <Link to="/profile" className="header-link">My Profile</Link>
+              <Link to="/profile" className="header-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                {userProfile?.profilePictureUrl ? (
+                  <img
+                    src={userProfile.profilePictureUrl.startsWith('http') ? userProfile.profilePictureUrl : `http://localhost:8081${userProfile.profilePictureUrl}`}
+                    alt="Avatar"
+                    style={{ width: '26px', height: '26px', borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #60a5fa' }}
+                  />
+                ) : null}
+                <span>My Profile</span>
+              </Link>
               <button onClick={logout} className="logout-button">
                 Logout
               </button>

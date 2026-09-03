@@ -43,3 +43,6 @@ Thumbs.db
 # Uploads and temporary assets
 uploads/
 backend/uploads/
+data/
+*.mv.db
+*.trace.db
