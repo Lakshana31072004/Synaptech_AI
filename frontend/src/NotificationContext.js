@@ -1,7 +1,13 @@
 import React, { createContext, useState, useContext, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-const NotificationContext = createContext();
+const defaultNotificationContext = {
+    showSuccess: (message) => console.log('Notification [Success]:', message),
+    showError: (message) => console.error('Notification [Error]:', message),
+    showInfo: (message) => console.info('Notification [Info]:', message),
+};
+
+const NotificationContext = createContext(defaultNotificationContext);
 
 export const NotificationProvider = ({ children }) => {
     const [notifications, setNotifications] = useState([]);
@@ -38,5 +44,6 @@ export const NotificationProvider = ({ children }) => {
 };
 
 export const useNotification = () => {
-    return useContext(NotificationContext);
+    const context = useContext(NotificationContext);
+    return context || defaultNotificationContext;
 };

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { useAuth } from './AuthContext';
+import { useNotification } from './NotificationContext';
+import { setNotificationService } from './apiService';
 import { Routes, Route, Navigate, Link } from 'react-router-dom';
 import DashboardPage from './DashboardPage';
 import ForgotPasswordPage from './ForgotPasswordPage';
@@ -14,6 +16,13 @@ import LoginForm from './components/LoginForm';
 
 function App() {
   const { isAuthenticated, user, logout } = useAuth();
+  const notifications = useNotification();
+
+  useEffect(() => {
+    if (notifications) {
+      setNotificationService(notifications);
+    }
+  }, [notifications]);
 
   return (
     <div className="App">
