@@ -15,6 +15,6 @@ test('renders Synaptech header and login navigation', () => {
       </NotificationProvider>
     </BrowserRouter>
   );
-  const headingElement = screen.getByText(/Synaptech/i);
+  const headingElement = screen.getByRole('heading', { name: /Synaptech/i, level: 1 });
   expect(headingElement).not.toBeNull();
 });

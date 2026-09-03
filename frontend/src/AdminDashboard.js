@@ -577,7 +577,7 @@ const AdminDashboard = () => {
                                     <div>
                                         <div style={{ fontWeight: '600', color: '#0f172a' }}>{role}</div>
                                         <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
-                                            {role === 'ROLE_ADMIN' ? 'Full administrative access and user management' : 'Standard user privileges for ASEOS tools'}
+                                            {role === 'ROLE_ADMIN' ? 'Full administrative access and user management' : 'Standard user privileges for Synaptech tools'}
                                         </div>
                                     </div>
                                 </label>
