@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { apiService } from '../apiService';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Assuming you will use React Router
 
 const ForgotPasswordPage = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -14,8 +13,14 @@ const ForgotPasswordPage = () => {
         setMessage('');
         setLoading(true);
         try {
-            const response = await apiService.forgotPassword(email);
-            setMessage(response);
+            const response = await fetch('http://localhost:3000/api/auth/forgot-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username }),
+            });
+            const responseText = await response.text();
+            if (!response.ok) throw new Error(responseText);
+            setMessage(responseText);
         } catch (err) {
             setError(err.message || 'An error occurred.');
         } finally {
@@ -24,22 +29,18 @@ const ForgotPasswordPage = () => {
     };
 
     return (
-        <div className="auth-container">
-            <form onSubmit={handleSubmit} className="auth-form">
-                <h2>Forgot Password</h2>
-                <p>Enter your email address and we'll send you a link to reset your password (link will appear in the backend console).</p>
-                <input
-                    type="email"
-                    placeholder="Your Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <button type="submit" disabled={loading}>{loading ? 'Sending...' : 'Send Reset Link'}</button>
-                {message && <p className="success-message">{message}</p>}
-                {error && <p className="error-message">{error}</p>}
-                <Link to="/" className="toggle-auth">Back to Login</Link>
+        <div style={{ maxWidth: '400px', margin: 'auto', padding: '20px' }}>
+            <h2>Forgot Password</h2>
+            <p>Enter your username. If an account exists, a reset link will be generated in the backend console.</p>
+            <form onSubmit={handleSubmit}>
+                <input type="text" placeholder="Your Username" value={username} onChange={(e) => setUsername(e.target.value)} required style={{ width: '100%', padding: '8px', marginBottom: '10px' }} />
+                <button type="submit" disabled={loading} style={{ width: '100%', padding: '10px' }}>{loading ? 'Sending...' : 'Send Reset Link'}</button>
             </form>
+            {message && <p style={{ color: 'green', marginTop: '10px' }}>{message}</p>}
+            {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
+            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <Link to="/login">Back to Login</Link>
+            </div>
         </div>
     );
 };

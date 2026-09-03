@@ -1,0 +1,47 @@
+.recent-activity-widget {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    background-color: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    margin-bottom: 20px;
+}
+
+.recent-activity-widget h3 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.recent-activity-widget ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.recent-activity-widget li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9em;
+}
+
+.recent-activity-widget li:last-child {
+    border-bottom: none;
+}
+
+.log-user {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.widget-footer {
+    text-align: right;
+    margin-top: 15px;
+}
+
+.recent-activity-widget li.highlighted-log {
+    background-color: var(--primary-color); /* A yellow background for highlighting */
+    transition: background-color 0.5s ease-in-out;
+}

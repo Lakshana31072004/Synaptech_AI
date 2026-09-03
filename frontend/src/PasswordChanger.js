@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { apiService } from '../../apiService';
-import Modal from '../Modal';
+import { apiService } from './apiService';
+import Modal from './Modal';
 
 const PasswordChanger = () => {
     const [oldPassword, setOldPassword] = useState('');

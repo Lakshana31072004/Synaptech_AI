@@ -6,11 +6,11 @@
 
 .activity-log-table th,
 .activity-log-table td {
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     padding: 8px;
     text-align: left;
 }
 
 .activity-log-table th {
-    background-color: #f2f2f2;
+    background-color: var(--table-header-bg);
 }

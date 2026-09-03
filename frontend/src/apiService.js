@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081/api';
 
 let notificationService = null; // Will be set by App.js
 
@@ -55,7 +55,13 @@ export const setNotificationService = (service) => {
 export const apiService = {
     login: (credentials) => request('/auth/login', { body: credentials }),
     register: (credentials) => request('/auth/register', { body: credentials }),
+    getProjects: () => request('/projects'),
+    createProject: (project) => request('/projects', { body: project }),
     getProjectHealth: (projectId) => request(`/projects/${projectId}/health`),
+    getProjectHealthHistory: (projectId) => request(`/projects/${projectId}/history`),
+    evaluateProjectRisk: (projectId, metrics) => request(`/projects/${projectId}/evaluate-risk`, { body: metrics }),
+    predictRisk: (metrics) => request('/projects/predict-risk', { body: metrics }),
+    recommendArchitecture: (criteria) => request('/recommend-architecture', { body: criteria }),
     analyzeRequirements: (text) => request('/analyze-requirements', { body: { text } }),
     planSprint: (sprintData) => request('/plan-sprint', { body: sprintData }),
     getAllUsers: (page = 0, size = 10, sort = 'id,asc', search = '') => {
@@ -88,4 +94,21 @@ export const apiService = {
     },
     triggerPasswordReset: (userId) => request(`/admin/users/${userId}/trigger-password-reset`, { method: 'POST' }),
     getUserActivity: (userId, page = 0, size = 10) => request(`/admin/users/${userId}/activity?page=${page}&size=${size}`),
+    getAllUserActivity: (page = 0, size = 15, username = '', actionType = '', startDate = '', endDate = '', sort = 'timestamp,desc') => {
+        const params = new URLSearchParams({ page, size, sort });
+        if (username) params.append('username', username);
+        if (actionType) params.append('actionType', actionType);
+        if (startDate) params.append('startDate', startDate);
+        if (endDate) params.append('endDate', endDate);
+        return request(`/admin/activity?${params.toString()}`);
+    },
+    getArchivedUserActivity: (page = 0, size = 15, username = '', actionType = '', startDate = '', endDate = '', sort = 'timestamp,desc') => {
+        const params = new URLSearchParams({ page, size, sort });
+        if (username) params.append('username', username);
+        if (actionType) params.append('actionType', actionType);
+        if (startDate) params.append('startDate', startDate);
+        if (endDate) params.append('endDate', endDate);
+        return request(`/admin/activity/archive?${params.toString()}`);
+    },
+    globalSearch: (query) => request(`/admin/search?query=${query}`),
 };

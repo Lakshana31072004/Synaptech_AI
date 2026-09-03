@@ -1,41 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { apiService } from '../apiService';
-import './AdminDashboard.css';
-import EditUserRolesModal from './EditUserRolesModal';
+import { useAuth } from './AuthContext';
 
-import ActivityLogModal from './components/ActivityLogModal';
-import { useNotification } from './NotificationContext';
 const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [editingUser, setEditingUser] = useState(null);
-    const [page, setPage] = useState(0);
-    const [viewingUserLog, setViewingUserLog] = useState(null);
-    const [totalPages, setTotalPages] = useState(0);
-    const { showSuccess, showError } = useNotification();
-    const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'asc' });
-    const [searchTerm, setSearchTerm] = useState('');
-    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-
-    useEffect(() => {
-        const timerId = setTimeout(() => {
-            setDebouncedSearchTerm(searchTerm);
-            setPage(0); // Reset to first page on new search
-        }, 500); // 500ms delay
-
-        return () => {
-            clearTimeout(timerId);
-        };
-    }, [searchTerm]);
+    const { token, user: adminUser } = useAuth();
 
     useEffect(() => {
         const fetchUsers = async () => {
-            setLoading(true);
             try {
-                const data = await apiService.getAllUsers(page, 10, `${sortConfig.key},${sortConfig.direction}`, debouncedSearchTerm);
-                setUsers(data.content);
-                setTotalPages(data.totalPages);
+                const response = await fetch('http://localhost:3000/api/admin/users', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch users. You may not have permission.');
+                }
+                const data = await response.json();
+                setUsers(data);
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -44,124 +26,58 @@ const AdminDashboard = () => {
         };
 
         fetchUsers();
-    }, [page, sortConfig, debouncedSearchTerm]);
+    }, [token]);
 
-    const handleDelete = async (userId) => {
-        if (window.confirm('Are you sure you want to delete this user?')) {
+    const handleDeleteUser = async (userId) => {
+        if (window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
             try {
-                await apiService.deleteUser(userId);
-                setUsers(users.filter(user => user.id !== userId));
+                const response = await fetch(`http://localhost:3000/api/admin/users/${userId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Failed to delete user.');
+                }
+
+                // Remove the user from the local state to update the UI
+                setUsers(currentUsers => currentUsers.filter(u => u.id !== userId));
+
             } catch (err) {
-                showError(err.message || 'Failed to delete user.');
-            }
-        }
-    };
-
-    const handleSaveRoles = (updatedUser) => {
-        setUsers(users.map(user => user.id === updatedUser.id ? updatedUser : user));
-        setEditingUser(null);
-    };
-
-    const requestSort = (key) => {
-        let direction = 'asc';
-        if (sortConfig.key === key && sortConfig.direction === 'asc') {
-            direction = 'desc';
-        }
-        setSortConfig({ key, direction });
-    };
-
-    const getSortIndicator = (key) => {
-        if (sortConfig.key !== key) return null;
-        return sortConfig.direction === 'asc' ? ' ▲' : ' ▼';
-    };
-
-    const handleImpersonate = async (userId) => {
-        if (window.confirm('Are you sure you want to impersonate this user? Your current session will be stored.')) {
-            try {
-                const response = await apiService.impersonateUser(userId);
-                sessionStorage.setItem('admin_token', localStorage.getItem('token')); // Store admin token
-                localStorage.setItem('token', response.token); // Set user token
-                window.location.href = '/'; // Redirect to home to reload app state
-            } catch (err) {
-                showError(err.message || 'Failed to impersonate user.');
-            }
-        }
-    };
-
-    const handleTriggerPasswordReset = async (userId) => {
-        if (window.confirm('Are you sure you want to trigger a password reset for this user? The reset link will be displayed to you.')) {
-            try {
-                const response = await apiService.triggerPasswordReset(userId);
-                showSuccess(response); // Display the token/message from the backend
-            } catch (err) {
-                showError(err.message || 'Failed to trigger password reset.');
+                setError(err.message);
             }
         }
     };
 
     if (loading) return <div>Loading users...</div>;
-    if (error) return <div className="error-message">Error: {error}</div>;
+    if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
 
     return (
-        <div className="admin-dashboard-container">
-            {editingUser && (
-                <EditUserRolesModal
-                    user={editingUser}
-                    onClose={() => setEditingUser(null)}
-                    onSave={handleSaveRoles}
-                />
-            )}
-            {viewingUserLog && (
-                <ActivityLogModal
-                    user={viewingUserLog}
-                    onClose={() => setViewingUserLog(null)}
-                />
-            )}
-            <h2>Module 10: User Management</h2>
-            <div className="admin-controls">
-                <input
-                    type="text"
-                    placeholder="Search by username..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="search-input"
-                />
-            </div>
-            <table className="users-table">
+        <div className="admin-dashboard-container" style={{ padding: '20px' }}>
+            <h2>Admin Dashboard: User Management</h2>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
-                    <tr>
-                        <th onClick={() => requestSort('id')}>ID{getSortIndicator('id')}</th>
-                        <th onClick={() => requestSort('username')}>Username{getSortIndicator('username')}</th>
-                        <th>Roles</th>
-                        <th>Actions</th>
+                    <tr style={{ borderBottom: '2px solid #333' }}>
+                        <th style={{ padding: '10px', textAlign: 'left' }}>ID</th>
+                        <th style={{ padding: '10px', textAlign: 'left' }}>Username</th>
+                        <th style={{ padding: '10px', textAlign: 'left' }}>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {users.map(user => (
-                        <tr key={user.id}>
-                            <td>{user.id}</td>
-                            <td>{user.username}</td>
-                            <td>{user.roles.join(', ')}</td>
-                            <td>
-                                <button onClick={() => setEditingUser(user)} className="edit-button">Edit Roles</button>
-                                <button onClick={() => setViewingUserLog(user)} className="view-activity-button">View Activity</button>
-                                <button onClick={() => handleTriggerPasswordReset(user.id)} className="reset-password-button">Reset Password</button>
-                                <button onClick={() => handleImpersonate(user.id)} className="impersonate-button">Impersonate</button>
-                                <button onClick={() => handleDelete(user.id)} className="delete-button">Delete</button>
+                        <tr key={user.id} style={{ borderBottom: '1px solid #ccc' }}>
+                            <td style={{ padding: '10px' }}>{user.id}</td>
+                            <td style={{ padding: '10px' }}>{user.username}</td>
+                            <td style={{ padding: '10px' }}>
+                                <button disabled={user.id === adminUser.id} onClick={() => handleDeleteUser(user.id)} style={{ marginLeft: '5px' }}>
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <div className="pagination-controls">
-                <button onClick={() => setPage(p => p - 1)} disabled={page === 0}>
-                    Previous
-                </button>
-                <span>Page {page + 1} of {totalPages}</span>
-                <button onClick={() => setPage(p => p + 1)} disabled={page >= totalPages - 1}>
-                    Next
-                </button>
-            </div>
         </div>
     );
 };

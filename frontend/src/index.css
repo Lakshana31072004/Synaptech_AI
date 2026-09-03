@@ -1,8 +1,50 @@
+/* Define variables for the light theme (default) */
+:root {
+  --background-color: #ffffff;
+  --text-color: #212529;
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --border-color: #ccc;
+  --table-header-bg: #f2f2f2;
+  --card-bg: #fff;
+  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --highlight-bg: #e8f4ff;
+}
+
+/* Define variables for the dark theme */
+[data-theme='dark'] {
+  --background-color: #121212;
+  --text-color: #e0e0e0;
+  --primary-color: #4dabf7;
+  --secondary-color: #868e96;
+  --border-color: #444;
+  --table-header-bg: #2c2c2c;
+  --card-bg: #1e1e1e;
+  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  --highlight-bg: #003366;
+}
+
+/* Define variables for the high-contrast theme */
+[data-theme='high-contrast'] {
+  --background-color: #000000;
+  --text-color: #ffffff;
+  --primary-color: #ffff00; /* Bright yellow for high visibility */
+  --secondary-color: #bebebe;
+  --border-color: #ffffff;
+  --table-header-bg: #000000;
+  --card-bg: #000000;
+  --card-shadow: 0 0 0 1px #fff;
+  --highlight-bg: #0000ff; /* Bright blue for highlighting */
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
