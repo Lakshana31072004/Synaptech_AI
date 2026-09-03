@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useAuth } from './AuthContext';
+import { apiService } from './apiService';
 
 const ProfilePictureManager = ({ currentPictureUrl, onPictureUpdate }) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
     const [uploadError, setUploadError] = useState('');
-    const { token } = useAuth();
 
     const handleFileSelect = (event) => {
         setSelectedFile(event.target.files[0] || null);
@@ -20,20 +20,7 @@ const ProfilePictureManager = ({ currentPictureUrl, onPictureUpdate }) => {
         setUploadError('');
         setIsUploading(true);
         try {
-            const formData = new FormData();
-            formData.append('file', selectedFile);
-
-            const response = await fetch('http://localhost:3000/api/users/me/profile-picture', {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${token}` },
-                body: formData,
-            });
-
-            if (!response.ok) {
-                const message = await response.text();
-                throw new Error(message || 'File upload failed.');
-            }
-            const data = await response.json();
+            const data = await apiService.uploadProfilePicture(selectedFile);
             onPictureUpdate(data.profilePictureUrl);
             setSelectedFile(null);
         } catch (err) {
@@ -43,10 +30,14 @@ const ProfilePictureManager = ({ currentPictureUrl, onPictureUpdate }) => {
         }
     };
 
+    const imageUrl = currentPictureUrl
+        ? (currentPictureUrl.startsWith('http') ? currentPictureUrl : `http://localhost:8081${currentPictureUrl}`)
+        : 'https://via.placeholder.com/150';
+
     return (
         <div className="profile-picture-section">
             <img
-                src={currentPictureUrl ? `http://localhost:3000${currentPictureUrl}` : 'https://via.placeholder.com/150'}
+                src={imageUrl}
                 alt="Profile"
                 className="profile-picture"
             />

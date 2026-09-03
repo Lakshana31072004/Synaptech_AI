@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Assuming you will use React Router
+import { Link } from 'react-router-dom';
+import { apiService } from './apiService';
 
 const ForgotPasswordPage = () => {
     const [username, setUsername] = useState('');
@@ -13,14 +14,8 @@ const ForgotPasswordPage = () => {
         setMessage('');
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:3000/api/auth/forgot-password', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username }),
-            });
-            const responseText = await response.text();
-            if (!response.ok) throw new Error(responseText);
-            setMessage(responseText);
+            const res = await apiService.forgotPassword(username);
+            setMessage(typeof res === 'string' ? res : 'Reset instructions processed.');
         } catch (err) {
             setError(err.message || 'An error occurred.');
         } finally {

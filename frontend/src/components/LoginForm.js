@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 
+import { apiService } from '../apiService';
+
 const LoginForm = ({ onSwitchToRegister }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -14,19 +16,14 @@ const LoginForm = ({ onSwitchToRegister }) => {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetch('http://localhost:3000/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
-            });
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(errorText || 'Login failed');
+            const data = await apiService.login({ username, password });
+            const jwtToken = data?.token || data?.accessToken;
+            if (!jwtToken) {
+                throw new Error('Authentication succeeded but no token was returned');
             }
-            const { accessToken } = await response.json();
-            login(accessToken);
+            login(jwtToken);
         } catch (err) {
-            setError(err.message);
+            setError(err.message || 'Login failed. Please check your credentials.');
         } finally {
             setLoading(false);
         }

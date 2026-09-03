@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { apiService } from '../apiService';
 
 const RegisterForm = ({ onSwitchToLogin }) => {
     const [username, setUsername] = useState('');
@@ -13,19 +14,11 @@ const RegisterForm = ({ onSwitchToLogin }) => {
         setError(null);
         setNotification('');
         try {
-            const response = await fetch('http://localhost:3000/api/auth/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
-            });
-            const responseText = await response.text();
-            if (!response.ok) {
-                throw new Error(responseText || 'Registration failed');
-            }
+            await apiService.register({ username, password });
             setNotification('Registration successful! Please log in.');
-            setTimeout(() => onSwitchToLogin(), 2000);
+            setTimeout(() => onSwitchToLogin(), 1500);
         } catch (err) {
-            setError(err.message);
+            setError(err.message || 'Registration failed');
         } finally {
             setLoading(false);
         }

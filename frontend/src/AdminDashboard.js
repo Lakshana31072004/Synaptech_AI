@@ -1,47 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
+import { apiService } from './apiService';
 
 const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { token, user: adminUser } = useAuth();
+    const { user: adminUser } = useAuth();
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/admin/users', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to fetch users. You may not have permission.');
-                }
-                const data = await response.json();
-                setUsers(data);
+                const data = await apiService.getAllUsers(0, 50);
+                // Spring Data Page object returns content in .content or array directly
+                setUsers(data?.content || (Array.isArray(data) ? data : []));
             } catch (err) {
-                setError(err.message);
+                setError(err.message || 'Failed to fetch users.');
             } finally {
                 setLoading(false);
             }
         };
 
         fetchUsers();
-    }, [token]);
+    }, []);
 
     const handleDeleteUser = async (userId) => {
         if (window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
             try {
-                const response = await fetch(`http://localhost:3000/api/admin/users/${userId}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(errorText || 'Failed to delete user.');
-                }
-
-                // Remove the user from the local state to update the UI
+                await apiService.deleteUser(userId);
                 setUsers(currentUsers => currentUsers.filter(u => u.id !== userId));
 
             } catch (err) {

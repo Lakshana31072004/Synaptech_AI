@@ -3,7 +3,7 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081/api
 let notificationService = null; // Will be set by App.js
 
 const getAuthHeaders = () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken') || localStorage.getItem('token');
     return token ? { 'Authorization': `Bearer ${token}` } : {};
 };
 

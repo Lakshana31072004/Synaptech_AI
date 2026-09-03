@@ -3,6 +3,7 @@ import './ProfilePage.css';
 import PasswordChanger from './PasswordChanger';
 import ProfilePictureManager from './ProfilePictureManager';
 import { useAuth } from './AuthContext';
+import { apiService } from './apiService';
 
 const ProfilePage = () => {
     const [user, setUser] = useState(null);
@@ -13,16 +14,10 @@ const ProfilePage = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/users/me', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to fetch user data.');
-                }
-                const data = await response.json();
+                const data = await apiService.getCurrentUser();
                 setUser(data);
             } catch (err) {
-                setError(err.message);
+                setError(err.message || 'Failed to fetch user data.');
             } finally {
                 setLoading(false);
             }
