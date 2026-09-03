@@ -28,7 +28,48 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Autonomous Software Engineering OS (ASEOS)</h1>
+        <div className="brand-container" style={{ display: 'flex', alignItems: 'center', gap: '12px', textAlign: 'left' }}>
+          <div style={{
+            width: '42px',
+            height: '42px',
+            borderRadius: '10px',
+            background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)',
+            flexShrink: 0
+          }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="6" cy="6" r="2.5" fill="#ffffff" />
+              <circle cx="18" cy="6" r="2.5" fill="#ffffff" />
+              <circle cx="12" cy="18" r="2.5" fill="#ffffff" />
+              <path d="M6 6L12 18M18 6L12 18M6 6H18" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" strokeOpacity="0.85" />
+            </svg>
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h1 style={{ margin: 0, fontSize: '1.45rem', fontWeight: '800', letterSpacing: '-0.02em', color: '#ffffff' }}>
+                Synaptech
+              </h1>
+              <span style={{
+                background: 'rgba(59, 130, 246, 0.25)',
+                color: '#60a5fa',
+                border: '1px solid rgba(96, 165, 250, 0.4)',
+                borderRadius: '6px',
+                padding: '1px 7px',
+                fontSize: '0.72rem',
+                fontWeight: '700',
+                letterSpacing: '0.05em'
+              }}>
+                AI
+              </span>
+            </div>
+            <div style={{ fontSize: '0.75rem', color: '#94a3b8', letterSpacing: '0.01em', marginTop: '2px' }}>
+              AI-Driven Architecture &amp; Agile Intelligence Platform
+            </div>
+          </div>
+        </div>
         <nav>
           {isAuthenticated ? (
             <>

@@ -5,7 +5,7 @@ import { AuthProvider } from './AuthContext';
 import { NotificationProvider } from './NotificationContext';
 import App from './App';
 
-test('renders ASEOS header and login navigation', () => {
+test('renders Synaptech header and login navigation', () => {
   render(
     <BrowserRouter>
       <NotificationProvider>
@@ -15,6 +15,6 @@ test('renders ASEOS header and login navigation', () => {
       </NotificationProvider>
     </BrowserRouter>
   );
-  const headingElement = screen.getByText(/Autonomous Software Engineering OS/i);
+  const headingElement = screen.getByText(/Synaptech/i);
   expect(headingElement).not.toBeNull();
 });
