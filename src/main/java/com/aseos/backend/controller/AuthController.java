@@ -56,18 +56,25 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody AuthRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-        );
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+            );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.generateToken(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = tokenProvider.generateToken(authentication);
 
-        // Log successful login
-        userRepository.findByUsername(loginRequest.getUsername()).ifPresent(user ->
-            activityLogService.logActivity(user, "USER_LOGIN")
-        );
-        return ResponseEntity.ok(new AuthResponse(jwt));
+            // Log successful login
+            userRepository.findByUsername(loginRequest.getUsername()).ifPresent(user ->
+                activityLogService.logActivity(user, "USER_LOGIN")
+            );
+            return ResponseEntity.ok(new AuthResponse(jwt));
+        } catch (org.springframework.security.core.AuthenticationException e) {
+            return ResponseEntity.status(401).body(java.util.Map.of(
+                "error", "Unauthorized",
+                "message", "Invalid username or password. Please check your credentials or register a new account."
+            ));
+        }
     }
 
     @PostMapping("/register")

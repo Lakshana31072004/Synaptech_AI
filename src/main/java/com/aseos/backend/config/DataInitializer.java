@@ -57,6 +57,14 @@ public class DataInitializer implements CommandLineRunner {
             userRepository.save(dev);
         }
 
+        if (userRepository.findByUsername("lucky").isEmpty()) {
+            User lucky = new User();
+            lucky.setUsername("lucky");
+            lucky.setPassword(passwordEncoder.encode("lucky123"));
+            lucky.setRoles(Collections.singleton(userRole));
+            userRepository.save(lucky);
+        }
+
         if (projectRepository.count() == 0) {
             Project alpha = projectRepository.save(new Project("Project Alpha"));
             Project beta = projectRepository.save(new Project("Project Beta"));

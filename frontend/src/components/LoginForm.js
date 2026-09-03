@@ -24,7 +24,13 @@ const LoginForm = ({ onSwitchToRegister }) => {
             login(jwtToken);
             navigate('/');
         } catch (err) {
-            setError(err.message || 'Login failed. Please check your credentials.');
+            let msg = err.message || 'Login failed. Please check your credentials.';
+            try {
+                const parsed = JSON.parse(msg);
+                if (parsed.message) msg = parsed.message;
+                else if (parsed.error) msg = parsed.error;
+            } catch (e) {}
+            setError(msg);
         } finally {
             setLoading(false);
         }
