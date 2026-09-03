@@ -10,6 +10,15 @@ public class ArchitectureRecommendationRequest {
 
     public ArchitectureRecommendationRequest() {}
 
+    public ArchitectureRecommendationRequest(String projectType, String scalabilityRequirement, String latencyRequirement, int teamSize, String deploymentTarget, String budgetConstraint) {
+        this.projectType = projectType;
+        this.scalabilityRequirement = scalabilityRequirement;
+        this.latencyRequirement = latencyRequirement;
+        this.teamSize = teamSize;
+        this.deploymentTarget = deploymentTarget;
+        this.budgetConstraint = budgetConstraint;
+    }
+
     public String getProjectType() {
         return projectType;
     }
