@@ -62,6 +62,7 @@ export const apiService = {
     evaluateProjectRisk: (projectId, metrics) => request(`/projects/${projectId}/evaluate-risk`, { body: metrics }),
     predictRisk: (metrics) => request('/projects/predict-risk', { body: metrics }),
     recommendArchitecture: (criteria) => request('/recommend-architecture', { body: criteria }),
+    generateCustomArchitectureDiagram: (prompt, style = 'topology') => request('/generate-architecture-diagram', { body: { prompt, style } }),
     analyzeRequirements: (text) => request('/analyze-requirements', { body: { text } }),
     planSprint: (sprintData) => request('/plan-sprint', { body: sprintData }),
     getAllUsers: (page = 0, size = 10, sort = 'id,asc', search = '') => {

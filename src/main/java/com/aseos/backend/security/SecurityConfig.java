@@ -59,7 +59,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/", "/favicon.ico", "/api/auth/**", "/h2-console/**", "/uploads/**", "/error").permitAll()
-                        .requestMatchers("/api/projects/**", "/api/recommend-architecture").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/projects/**", "/api/recommend-architecture", "/api/generate-architecture-diagram").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/analyze-requirements", "/api/plan-sprint").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 );

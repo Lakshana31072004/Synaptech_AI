@@ -13,12 +13,18 @@ public class ArchitectureRecommendationReport {
     private String alternativeArchitecture;
     private List<String> implementationGuidelines;
 
+    // Mermaid.js architectural visualizations
+    private String diagramMermaid;
+    private String c4DiagramMermaid;
+    private String sequenceDiagramMermaid;
+
     public ArchitectureRecommendationReport() {}
 
     public ArchitectureRecommendationReport(String recommendedArchitecture, int confidenceScore, String summary,
                                           List<String> keyBenefits, List<String> architecturalTradeOffs,
                                           Map<String, String> suggestedTechStack, String alternativeArchitecture,
-                                          List<String> implementationGuidelines) {
+                                          List<String> implementationGuidelines, String diagramMermaid,
+                                          String c4DiagramMermaid, String sequenceDiagramMermaid) {
         this.recommendedArchitecture = recommendedArchitecture;
         this.confidenceScore = confidenceScore;
         this.summary = summary;
@@ -27,6 +33,9 @@ public class ArchitectureRecommendationReport {
         this.suggestedTechStack = suggestedTechStack;
         this.alternativeArchitecture = alternativeArchitecture;
         this.implementationGuidelines = implementationGuidelines;
+        this.diagramMermaid = diagramMermaid;
+        this.c4DiagramMermaid = c4DiagramMermaid;
+        this.sequenceDiagramMermaid = sequenceDiagramMermaid;
     }
 
     public String getRecommendedArchitecture() {
@@ -91,5 +100,29 @@ public class ArchitectureRecommendationReport {
 
     public void setImplementationGuidelines(List<String> implementationGuidelines) {
         this.implementationGuidelines = implementationGuidelines;
+    }
+
+    public String getDiagramMermaid() {
+        return diagramMermaid;
+    }
+
+    public void setDiagramMermaid(String diagramMermaid) {
+        this.diagramMermaid = diagramMermaid;
+    }
+
+    public String getC4DiagramMermaid() {
+        return c4DiagramMermaid;
+    }
+
+    public void setC4DiagramMermaid(String c4DiagramMermaid) {
+        this.c4DiagramMermaid = c4DiagramMermaid;
+    }
+
+    public String getSequenceDiagramMermaid() {
+        return sequenceDiagramMermaid;
+    }
+
+    public void setSequenceDiagramMermaid(String sequenceDiagramMermaid) {
+        this.sequenceDiagramMermaid = sequenceDiagramMermaid;
     }
 }

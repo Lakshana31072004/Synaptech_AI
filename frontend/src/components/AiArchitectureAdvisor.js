@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './AiArchitectureAdvisor.css';
 import { apiService } from '../apiService';
 import { useNotification } from '../NotificationContext';
+import ArchitectureDiagramCanvas from './ArchitectureDiagramCanvas';
 
 const AiArchitectureAdvisor = () => {
   const [projectType, setProjectType] = useState('Web Application');
@@ -13,6 +14,12 @@ const AiArchitectureAdvisor = () => {
 
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // Custom standalone prompt state
+  const [customPrompt, setCustomPrompt] = useState('');
+  const [customLoading, setCustomLoading] = useState(false);
+  const [customDiagram, setCustomDiagram] = useState(null);
+
   const { showSuccess, showError } = useNotification();
 
   const handleRecommend = async (e) => {
@@ -28,7 +35,7 @@ const AiArchitectureAdvisor = () => {
         budgetConstraint,
       });
       setReport(data);
-      showSuccess('Architecture recommendation generated!');
+      showSuccess('Architecture recommendation and interactive diagram synthesized!');
     } catch (err) {
       showError(err.message || 'Failed to generate architecture recommendation');
     } finally {
@@ -36,11 +43,26 @@ const AiArchitectureAdvisor = () => {
     }
   };
 
+  const handleCustomDiagramGenerate = async (e) => {
+    e.preventDefault();
+    if (!customPrompt.trim()) return;
+    setCustomLoading(true);
+    try {
+      const res = await apiService.generateCustomArchitectureDiagram(customPrompt);
+      setCustomDiagram(res);
+      showSuccess(`Synthesized custom diagram: ${res.title}`);
+    } catch (err) {
+      showError('Failed to synthesize custom architecture diagram');
+    } finally {
+      setCustomLoading(false);
+    }
+  };
+
   return (
     <div className="arch-advisor-container">
       <div className="arch-header">
-        <h2>Module 3: Software Architecture Recommendation Engine</h2>
-        <p>AI-driven architectural pattern synthesis, trade-off matrix evaluation, and tailored technology stack design.</p>
+        <h2>Module 3: Software Architecture Recommendation Engine &amp; Live Canvas</h2>
+        <p>AI-driven architectural pattern synthesis, interactive diagram topologies, trade-off evaluation, and tailored technology blueprints.</p>
       </div>
 
       <form onSubmit={handleRecommend} className="arch-form">
@@ -52,7 +74,7 @@ const AiArchitectureAdvisor = () => {
               <option value="Mobile App Backend">Mobile Application Backend</option>
               <option value="IoT / High-Throughput Streaming">IoT / Real-time Event Streaming</option>
               <option value="Enterprise System">Complex ERP / Enterprise System</option>
-              <option value="Data Analytics Platform">Analytics & Reporting Platform</option>
+              <option value="Data Analytics Platform">Analytics &amp; Reporting Platform</option>
             </select>
           </div>
 
@@ -106,10 +128,52 @@ const AiArchitectureAdvisor = () => {
         </div>
 
         <button type="submit" disabled={loading} className="primary-btn">
-          {loading ? 'Synthesizing Architecture...' : 'Generate AI Architecture Recommendation'}
+          {loading ? 'Synthesizing Architecture & Diagram...' : 'Generate AI Architecture Recommendation & Visual Diagram'}
         </button>
       </form>
 
+      {/* --- Custom Architecture Diagram Prompt Bar --- */}
+      <div className="custom-prompt-container">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ fontSize: '1.2rem' }}>✨</span>
+          <span style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--text-primary)' }}>Prompt-to-Architecture:</span>
+        </div>
+        <form onSubmit={handleCustomDiagramGenerate} style={{ display: 'flex', gap: '10px', flex: 1, flexWrap: 'wrap' }}>
+          <input
+            type="text"
+            className="custom-prompt-input"
+            placeholder="e.g. 'Event-driven payment processing with Kafka', 'RAG LLM vector search agent', 'IoT stream pipeline'..."
+            value={customPrompt}
+            onChange={(e) => setCustomPrompt(e.target.value)}
+          />
+          <button
+            type="submit"
+            disabled={customLoading || !customPrompt.trim()}
+            className="secondary-btn"
+            style={{ background: 'var(--brand-primary)', color: '#fff', border: 'none' }}
+          >
+            {customLoading ? 'Rendering...' : 'Generate Canvas'}
+          </button>
+        </form>
+      </div>
+
+      {/* Custom Diagram Canvas Display */}
+      {customDiagram && (
+        <div style={{ marginTop: '20px' }}>
+          <div style={{ padding: '12px 18px', background: 'rgba(59, 130, 246, 0.08)', borderRadius: '10px', border: '1px solid rgba(59, 130, 246, 0.2)', marginBottom: '14px' }}>
+            <h4 style={{ margin: '0 0 4px 0', color: 'var(--brand-primary)' }}>{customDiagram.title}</h4>
+            <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-secondary)' }}>{customDiagram.description}</p>
+          </div>
+          <ArchitectureDiagramCanvas
+            topology={customDiagram.diagramMermaid}
+            c4={customDiagram.diagramMermaid}
+            sequence={customDiagram.diagramMermaid}
+            title={customDiagram.title}
+          />
+        </div>
+      )}
+
+      {/* --- Report Output with Visual Diagram Canvas --- */}
       {report && (
         <div className="arch-results">
           {/* Main Recommended Architecture Card */}
@@ -128,10 +192,20 @@ const AiArchitectureAdvisor = () => {
             )}
           </div>
 
+          {/* --- Interactive Architecture Diagram Canvas --- */}
+          {report.diagramMermaid && (
+            <ArchitectureDiagramCanvas
+              topology={report.diagramMermaid}
+              c4={report.c4DiagramMermaid}
+              sequence={report.sequenceDiagramMermaid}
+              title={`${report.recommendedArchitecture} Canvas`}
+            />
+          )}
+
           {/* Benefits & Tradeoffs Grid */}
-          <div className="details-grid">
+          <div className="details-grid" style={{ marginTop: '28px' }}>
             <div className="detail-box">
-              <h4>Architectural Strengths & Benefits</h4>
+              <h4>Architectural Strengths &amp; Benefits</h4>
               <ul className="benefits-list">
                 {report.keyBenefits.map((b, i) => (
                   <li key={i}>{b}</li>
@@ -140,7 +214,7 @@ const AiArchitectureAdvisor = () => {
             </div>
 
             <div className="detail-box">
-              <h4>Engineering Trade-offs & Risks</h4>
+              <h4>Engineering Trade-offs &amp; Risks</h4>
               <ul className="tradeoffs-list">
                 {report.architecturalTradeOffs.map((t, i) => (
                   <li key={i}>{t}</li>
@@ -153,22 +227,24 @@ const AiArchitectureAdvisor = () => {
           {report.suggestedTechStack && Object.keys(report.suggestedTechStack).length > 0 && (
             <div className="detail-box" style={{ marginBottom: '24px' }}>
               <h4>Recommended Technology Stack Blueprint</h4>
-              <table className="tech-stack-table">
-                <thead>
-                  <tr>
-                    <th>Architecture Layer</th>
-                    <th>Recommended Technology / Tooling</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Object.entries(report.suggestedTechStack).map(([layer, tech]) => (
-                    <tr key={layer}>
-                      <td className="tech-component">{layer}</td>
-                      <td><strong>{tech}</strong></td>
+              <div className="tech-stack-table-container">
+                <table className="tech-stack-table">
+                  <thead>
+                    <tr>
+                      <th>Architecture Layer</th>
+                      <th>Recommended Technology / Tooling</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {Object.entries(report.suggestedTechStack).map(([layer, tech]) => (
+                      <tr key={layer}>
+                        <td className="tech-component">{layer}</td>
+                        <td><strong>{tech}</strong></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
