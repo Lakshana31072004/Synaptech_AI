@@ -412,7 +412,7 @@ const AdminDashboard = () => {
                             {users.map((user, idx) => {
                                 const isCurrent = user.username === currentUsername;
                                 const avatarSrc = user.profilePictureUrl
-                                    ? (user.profilePictureUrl.startsWith('http') ? user.profilePictureUrl : `http://localhost:8081${user.profilePictureUrl}`)
+                                    ? (user.profilePictureUrl.startsWith('http') || user.profilePictureUrl.startsWith('data:') ? user.profilePictureUrl : (user.profilePictureUrl.startsWith('/') ? user.profilePictureUrl : `/${user.profilePictureUrl}`))
                                     : DEFAULT_AVATAR;
 
                                 return (

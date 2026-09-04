@@ -41,8 +41,10 @@ yarn-error.log*
 Thumbs.db
 
 # Uploads and temporary assets
-uploads/
-backend/uploads/
+/uploads/
+/backend/uploads/
+!frontend/public/uploads/
+!frontend/public/uploads/**
 data/
 *.mv.db
 *.trace.db

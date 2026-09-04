@@ -57,7 +57,7 @@ const ProfilePictureManager = ({ currentPictureUrl, onPictureUpdate }) => {
     };
 
     const displayUrl = previewUrl || (currentPictureUrl
-        ? (currentPictureUrl.startsWith('http') ? currentPictureUrl : `http://localhost:8081${currentPictureUrl}`)
+        ? (currentPictureUrl.startsWith('http') || currentPictureUrl.startsWith('data:') ? currentPictureUrl : (currentPictureUrl.startsWith('/') ? currentPictureUrl : `/${currentPictureUrl}`))
         : DEFAULT_AVATAR);
 
     return (

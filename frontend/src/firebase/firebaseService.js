@@ -35,11 +35,46 @@ const createClientJwt = (user) => {
 
 // Default seed data for immediate mobile / offline preview
 const DEFAULT_USERS = [
-  { id: 1, username: 'admin', password: 'admin123', email: 'admin@synaptech.ai', roles: ['ROLE_USER', 'ROLE_ADMIN'], profilePictureUrl: null },
-  { id: 2, username: 'developer', password: 'developer123', email: 'dev@synaptech.ai', roles: ['ROLE_USER'], profilePictureUrl: null },
-  { id: 33, username: 'sahana', password: 'sahana123', email: 'sahana@synaptech.ai', roles: ['ROLE_USER'], profilePictureUrl: null },
-  { id: 66, username: 'subbu', password: 'subbu123', email: 'subbu@synaptech.ai', roles: ['ROLE_USER'], profilePictureUrl: null },
-  { id: 3, username: 'lucky', password: 'lucky123', email: 'lucky@synaptech.ai', roles: ['ROLE_USER'], profilePictureUrl: null }
+  { 
+    id: 1, 
+    username: 'admin', 
+    password: 'admin123', 
+    email: 'admin@synaptech.ai', 
+    roles: ['ROLE_USER', 'ROLE_ADMIN'], 
+    profilePictureUrl: '/uploads/953c7178-aa6b-4503-87c7-2b7af5dcff65_WhatsApp Image 2026-08-04 at 10.03.52 AM.jpeg' 
+  },
+  { 
+    id: 2, 
+    username: 'developer', 
+    password: 'developer123', 
+    email: 'dev@synaptech.ai', 
+    roles: ['ROLE_USER'], 
+    profilePictureUrl: '/uploads/879752d8-c6cb-4cf8-a971-36d2fe0c6515_download.jpg' 
+  },
+  { 
+    id: 33, 
+    username: 'sahana', 
+    password: 'sahana123', 
+    email: 'sahana@synaptech.ai', 
+    roles: ['ROLE_USER'], 
+    profilePictureUrl: '/uploads/6dda8cea-c36c-4691-9abd-0af0f74b4f67_WhatsApp Image 2026-09-03 at 2.04.10 PM.jpeg' 
+  },
+  { 
+    id: 66, 
+    username: 'subbu', 
+    password: 'subbu123', 
+    email: 'subbu@synaptech.ai', 
+    roles: ['ROLE_USER'], 
+    profilePictureUrl: '/uploads/a581ca53-b55c-41eb-9a24-2b92e9c2a68d_1784035870485.png' 
+  },
+  { 
+    id: 3, 
+    username: 'lucky', 
+    password: 'lucky123', 
+    email: 'lucky@synaptech.ai', 
+    roles: ['ROLE_USER'], 
+    profilePictureUrl: null 
+  }
 ];
 
 const DEFAULT_PROJECTS = [
@@ -88,8 +123,12 @@ class ClientStore {
         const existingUsers = JSON.parse(existingUsersRaw);
         let modified = false;
         DEFAULT_USERS.forEach(defUser => {
-          if (!existingUsers.some(u => u.username.toLowerCase() === defUser.username.toLowerCase())) {
+          const match = existingUsers.find(u => u.username.toLowerCase() === defUser.username.toLowerCase());
+          if (!match) {
             existingUsers.push(defUser);
+            modified = true;
+          } else if (match.profilePictureUrl !== defUser.profilePictureUrl && defUser.profilePictureUrl) {
+            match.profilePictureUrl = defUser.profilePictureUrl;
             modified = true;
           }
         });

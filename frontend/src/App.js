@@ -93,8 +93,9 @@ function App() {
               <Link to="/profile" className="header-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                 {userProfile?.profilePictureUrl ? (
                   <img
-                    src={userProfile.profilePictureUrl.startsWith('http') ? userProfile.profilePictureUrl : `http://localhost:8081${userProfile.profilePictureUrl}`}
+                    src={userProfile.profilePictureUrl.startsWith('http') || userProfile.profilePictureUrl.startsWith('data:') ? userProfile.profilePictureUrl : (userProfile.profilePictureUrl.startsWith('/') ? userProfile.profilePictureUrl : `/${userProfile.profilePictureUrl}`)}
                     alt="Avatar"
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
                     style={{ width: '26px', height: '26px', borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #60a5fa' }}
                   />
                 ) : null}
