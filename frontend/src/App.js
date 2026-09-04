@@ -12,6 +12,8 @@ import AdminDashboard from './AdminDashboard';
 import AiRequirementAnalyzer from './components/AiRequirementAnalyzer';
 import AiSprintPlanner from './components/AiSprintPlanner';
 import AiArchitectureAdvisor from './components/AiArchitectureAdvisor';
+import AiCodeReviewInspector from './components/AiCodeReviewInspector';
+import SynaptechCopilot from './components/SynaptechCopilot';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 
@@ -49,13 +51,20 @@ function App() {
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <h1 style={{ margin: 0, fontSize: '1.45rem', fontWeight: '800', letterSpacing: '-0.02em', color: '#ffffff' }}>
+              <h1 style={{
+                margin: 0,
+                fontSize: '1.28rem',
+                fontWeight: '800',
+                letterSpacing: '-0.02em',
+                color: '#ffffff',
+                fontFamily: "'Outfit', sans-serif"
+              }}>
                 Synaptech
               </h1>
               <span style={{
                 background: 'rgba(59, 130, 246, 0.25)',
-                color: '#60a5fa',
                 border: '1px solid rgba(96, 165, 250, 0.4)',
+                color: '#93c5fd',
                 borderRadius: '6px',
                 padding: '1px 7px',
                 fontSize: '0.72rem',
@@ -77,6 +86,7 @@ function App() {
               <Link to="/analyzer" className="header-link">Requirement Analyzer</Link>
               <Link to="/planner" className="header-link">Sprint Planner</Link>
               <Link to="/architecture" className="header-link">Architecture Advisor</Link>
+              <Link to="/code-review" className="header-link">Code Review</Link>
               {userProfile?.roles?.includes('ROLE_ADMIN') || user?.roles?.includes('ROLE_ADMIN') || user?.roles?.includes('Admin') ? (
                 <Link to="/admin" className="header-link">Admin</Link>
               ) : null}
@@ -110,10 +120,14 @@ function App() {
           <Route path="/analyzer" element={isAuthenticated ? <div style={{ maxWidth: '1200px', margin: '20px auto', padding: '0 20px' }}><AiRequirementAnalyzer /></div> : <Navigate to="/login" />} />
           <Route path="/planner" element={isAuthenticated ? <div style={{ maxWidth: '1200px', margin: '20px auto', padding: '0 20px' }}><AiSprintPlanner /></div> : <Navigate to="/login" />} />
           <Route path="/architecture" element={isAuthenticated ? <div style={{ maxWidth: '1200px', margin: '20px auto', padding: '0 20px' }}><AiArchitectureAdvisor /></div> : <Navigate to="/login" />} />
+          <Route path="/code-review" element={isAuthenticated ? <div style={{ maxWidth: '1200px', margin: '20px auto', padding: '0 20px' }}><AiCodeReviewInspector /></div> : <Navigate to="/login" />} />
           <Route path="/" element={isAuthenticated ? <DashboardPage /> : <Navigate to="/login" />} />
           <Route path="*" element={<Navigate to={isAuthenticated ? "/" : "/login"} />} />
         </Routes>
       </main>
+
+      {/* Global Real-Time AI Copilot */}
+      {isAuthenticated && <SynaptechCopilot />}
     </div>
   );
 }

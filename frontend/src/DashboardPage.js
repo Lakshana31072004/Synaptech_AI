@@ -3,10 +3,14 @@ import ProjectHealthDashboard from './ProjectHealthDashboard';
 import AiSprintPlanner from './components/AiSprintPlanner';
 import AiRequirementAnalyzer from './components/AiRequirementAnalyzer';
 import AiArchitectureAdvisor from './components/AiArchitectureAdvisor';
+import AiCodeReviewInspector from './components/AiCodeReviewInspector';
+import ExecutiveReportModal from './components/ExecutiveReportModal';
 import { useAuth } from './AuthContext';
 
 const DashboardPage = () => {
     const [activeTab, setActiveTab] = useState('telemetry');
+    const [reportModalOpen, setReportModalOpen] = useState(false);
+    const [reportType, setReportType] = useState('adr');
     const { userProfile, user } = useAuth();
 
     const username = userProfile?.username || user?.sub || 'Engineer';
@@ -22,9 +26,20 @@ const DashboardPage = () => {
         { id: 'telemetry', label: 'Telemetry & Health', icon: '📊', desc: 'Real-time project vitals & simulation' },
         { id: 'analyzer', label: 'Requirement Analyzer', icon: '🔍', desc: 'NLP ambiguity & risk detection' },
         { id: 'planner', label: 'Sprint Planner', icon: '⚡', desc: 'Velocity forecasting & capacity' },
-        { id: 'advisor', label: 'Architecture Advisor', icon: '🏛️', desc: 'System design trade-offs & scaling' },
+        { id: 'advisor', label: 'Architecture Advisor', icon: '🏛️', desc: 'System design & live diagram canvas' },
+        { id: 'review', label: 'Code Review & Security', icon: '🛡️', desc: 'OWASP vulnerability scan & refactoring' },
         { id: 'all', label: 'Unified View', icon: '📑', desc: 'Continuous stream of all modules' },
     ];
+
+    const openAdrReport = () => {
+        setReportType('adr');
+        setReportModalOpen(true);
+    };
+
+    const openSprintReport = () => {
+        setReportType('sprint');
+        setReportModalOpen(true);
+    };
 
     return (
         <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '24px 20px', fontFamily: 'var(--font-body)' }}>
@@ -54,9 +69,53 @@ const DashboardPage = () => {
                 }} />
 
                 <div style={{ position: 'relative', zIndex: 2 }}>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(59, 130, 246, 0.18)', border: '1px solid rgba(96, 165, 250, 0.3)', borderRadius: '20px', padding: '4px 14px', marginBottom: '14px', fontSize: '0.8rem', color: '#93c5fd', fontWeight: 600 }}>
-                        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }}></span>
-                        Autonomous Engineering Core Active
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '14px' }}>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(59, 130, 246, 0.18)', border: '1px solid rgba(96, 165, 250, 0.3)', borderRadius: '20px', padding: '4px 14px', fontSize: '0.8rem', color: '#93c5fd', fontWeight: 600 }}>
+                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }}></span>
+                            Autonomous Engineering Core Active
+                        </div>
+
+                        {/* Executive Report Export Actions */}
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                            <button
+                                type="button"
+                                onClick={openAdrReport}
+                                style={{
+                                    background: 'rgba(255, 255, 255, 0.1)',
+                                    color: '#ffffff',
+                                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                                    padding: '6px 14px',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontWeight: 600,
+                                    fontSize: '0.82rem',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '6px'
+                                }}
+                            >
+                                📄 Export ADR
+                            </button>
+                            <button
+                                type="button"
+                                onClick={openSprintReport}
+                                style={{
+                                    background: 'rgba(255, 255, 255, 0.1)',
+                                    color: '#ffffff',
+                                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                                    padding: '6px 14px',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontWeight: 600,
+                                    fontSize: '0.82rem',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '6px'
+                                }}
+                            >
+                                📊 Export Sprint PDF
+                            </button>
+                        </div>
                     </div>
 
                     <h1 style={{ margin: '0 0 10px 0', fontSize: '2.1rem', fontWeight: 800, letterSpacing: '-0.03em', fontFamily: 'var(--font-heading)' }}>
@@ -64,7 +123,7 @@ const DashboardPage = () => {
                     </h1>
 
                     <p style={{ margin: '0 0 22px 0', color: '#cbd5e1', fontSize: '1.02rem', maxWidth: '680px', lineHeight: 1.5 }}>
-                        Welcome to your autonomous software engineering control room. Monitor telemetry, evaluate architectural trade-offs, and accelerate agile delivery with AI.
+                        Welcome to your autonomous software engineering control room. Monitor telemetry, evaluate architectural trade-offs, inspect security vulnerabilities, and accelerate agile delivery with AI.
                     </p>
 
                     {/* Quick Telemetry Indicators */}
@@ -81,15 +140,15 @@ const DashboardPage = () => {
                             <span style={{ fontSize: '1.2rem' }}>🏛️</span>
                             <div>
                                 <div style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Architecture Mode</div>
-                                <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#f8fafc' }}>Intelligent Advisory</div>
+                                <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#f8fafc' }}>Live Visual Canvas</div>
                             </div>
                         </div>
 
                         <div style={{ background: 'rgba(255, 255, 255, 0.06)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '10px', padding: '10px 18px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <span style={{ fontSize: '1.2rem' }}>🛡️</span>
                             <div>
-                                <div style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Risk Detection</div>
-                                <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#f8fafc' }}>Real-Time Automated</div>
+                                <div style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Security Inspector</div>
+                                <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#f8fafc' }}>OWASP Automated</div>
                             </div>
                         </div>
                     </div>
@@ -193,12 +252,62 @@ const DashboardPage = () => {
                         padding: '28px',
                         border: '1px solid var(--border-subtle)',
                         boxShadow: 'var(--shadow-md)',
-                        marginBottom: '0'
+                        marginBottom: activeTab === 'all' ? '30px' : '0'
                     }}>
                         <AiArchitectureAdvisor />
                     </div>
                 )}
+
+                {(activeTab === 'review' || activeTab === 'all') && (
+                    <div style={{
+                        background: 'var(--bg-surface)',
+                        borderRadius: '16px',
+                        padding: '28px',
+                        border: '1px solid var(--border-subtle)',
+                        boxShadow: 'var(--shadow-md)',
+                        marginBottom: '0'
+                    }}>
+                        <AiCodeReviewInspector />
+                    </div>
+                )}
             </div>
+
+            {/* --- Executive ADR & Sprint Report Modal --- */}
+            <ExecutiveReportModal
+                isOpen={reportModalOpen}
+                onClose={() => setReportModalOpen(false)}
+                type={reportType}
+                data={{
+                    recommendedArchitecture: 'Event-Driven Microservices Architecture',
+                    confidenceScore: 94,
+                    summary: 'Engineered for asynchronous, high-throughput event processing and fault-tolerant service decoupling.',
+                    keyBenefits: [
+                        'Extremely low latency message brokering and asynchronous processing.',
+                        'Independent horizontal scaling of bottleneck services under burst load.',
+                        'Fault tolerance: failure in one consumer does not cascade to ingress traffic.'
+                    ],
+                    architecturalTradeOffs: [
+                        'Increased operational complexity managing message brokers and distributed tracing.',
+                        'Eventual consistency requires idempotent consumers and compensating transactions.'
+                    ],
+                    suggestedTechStack: {
+                        'Event Broker': 'Apache Kafka / RabbitMQ',
+                        'Backend Framework': 'Spring Boot 3.3 (WebFlux) / Java 21',
+                        'Persistence': 'PostgreSQL + Redis Cache',
+                        'Frontend': 'React 18 with WebSocket / SSE Streams',
+                        'Orchestration': 'Kubernetes (EKS / GKE)'
+                    },
+                    implementationGuidelines: [
+                        'Enforce schema registries (Avro/Protobuf) for event contracts.',
+                        'Implement Dead Letter Queues (DLQ) to isolate poisonous messages.',
+                        'Set up OpenTelemetry for end-to-end distributed tracing.'
+                    ],
+                    sprintVelocity: 35,
+                    bugTrend: 'stable',
+                    technicalDebt: 'medium',
+                    codeQualityIndex: 78
+                }}
+            />
         </div>
     );
 };

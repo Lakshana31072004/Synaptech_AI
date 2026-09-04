@@ -65,6 +65,8 @@ export const apiService = {
     generateCustomArchitectureDiagram: (prompt, style = 'topology') => request('/generate-architecture-diagram', { body: { prompt, style } }),
     analyzeRequirements: (text) => request('/analyze-requirements', { body: { text } }),
     planSprint: (sprintData) => request('/plan-sprint', { body: sprintData }),
+    reviewCode: (data) => request('/code-review', { body: data }),
+    chatWithCopilot: (data) => request('/copilot/chat', { body: data }),
     getAllUsers: (page = 0, size = 10, sort = 'id,asc', search = '') => {
         let endpoint = `/admin/users?page=${page}&size=${size}&sort=${sort}`;
         if (search) {

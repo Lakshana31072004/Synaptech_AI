@@ -60,7 +60,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/", "/favicon.ico", "/api/auth/**", "/h2-console/**", "/uploads/**", "/error").permitAll()
                         .requestMatchers("/api/projects/**", "/api/recommend-architecture", "/api/generate-architecture-diagram").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/api/analyze-requirements", "/api/plan-sprint").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/analyze-requirements", "/api/plan-sprint", "/api/code-review", "/api/copilot/chat").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 );
 
