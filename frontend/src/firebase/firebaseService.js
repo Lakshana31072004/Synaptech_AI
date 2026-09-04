@@ -37,6 +37,8 @@ const createClientJwt = (user) => {
 const DEFAULT_USERS = [
   { id: 1, username: 'admin', password: 'admin123', email: 'admin@synaptech.ai', roles: ['ROLE_USER', 'ROLE_ADMIN'], profilePictureUrl: null },
   { id: 2, username: 'developer', password: 'developer123', email: 'dev@synaptech.ai', roles: ['ROLE_USER'], profilePictureUrl: null },
+  { id: 33, username: 'sahana', password: 'sahana123', email: 'sahana@synaptech.ai', roles: ['ROLE_USER'], profilePictureUrl: null },
+  { id: 66, username: 'subbu', password: 'subbu123', email: 'subbu@synaptech.ai', roles: ['ROLE_USER'], profilePictureUrl: null },
   { id: 3, username: 'lucky', password: 'lucky123', email: 'lucky@synaptech.ai', roles: ['ROLE_USER'], profilePictureUrl: null }
 ];
 
@@ -78,9 +80,27 @@ class ClientStore {
   }
 
   initStore() {
-    if (!localStorage.getItem('synaptech_users')) {
+    try {
+      const existingUsersRaw = localStorage.getItem('synaptech_users');
+      if (!existingUsersRaw) {
+        localStorage.setItem('synaptech_users', JSON.stringify(DEFAULT_USERS));
+      } else {
+        const existingUsers = JSON.parse(existingUsersRaw);
+        let modified = false;
+        DEFAULT_USERS.forEach(defUser => {
+          if (!existingUsers.some(u => u.username.toLowerCase() === defUser.username.toLowerCase())) {
+            existingUsers.push(defUser);
+            modified = true;
+          }
+        });
+        if (modified) {
+          localStorage.setItem('synaptech_users', JSON.stringify(existingUsers));
+        }
+      }
+    } catch {
       localStorage.setItem('synaptech_users', JSON.stringify(DEFAULT_USERS));
     }
+
     if (!localStorage.getItem('synaptech_projects')) {
       localStorage.setItem('synaptech_projects', JSON.stringify(DEFAULT_PROJECTS));
     }
