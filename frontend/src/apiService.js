@@ -10,19 +10,10 @@ const getAuthHeaders = () => {
     return token ? { 'Authorization': `Bearer ${token}` } : {};
 };
 
-// Check if running on remote/Vercel/phone where localhost:8081 cannot be reached
+// Pure Firebase Architecture: default to true so no backend server is needed
 export const shouldPreferFirebase = () => {
     if (process.env.REACT_APP_FORCE_REST_BACKEND === 'true') return false;
-    if (isFirebaseConfigured) return true;
-    if (process.env.REACT_APP_USE_FIREBASE === 'true') return true;
-    if (typeof window !== 'undefined') {
-        const hostname = window.location.hostname || '';
-        const isRemoteHost = hostname !== 'localhost' && hostname !== '127.0.0.1' && hostname !== '';
-        if (isRemoteHost) {
-            return true;
-        }
-    }
-    return false;
+    return true;
 };
 
 const request = async (endpoint, options = {}) => {
