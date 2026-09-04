@@ -12,12 +12,13 @@ const getAuthHeaders = () => {
 
 // Check if running on remote/Vercel/phone where localhost:8081 cannot be reached
 export const shouldPreferFirebase = () => {
+    if (process.env.REACT_APP_FORCE_REST_BACKEND === 'true') return false;
     if (isFirebaseConfigured) return true;
     if (process.env.REACT_APP_USE_FIREBASE === 'true') return true;
     if (typeof window !== 'undefined') {
-        const isRemoteHost = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-        const isLocalApi = !process.env.REACT_APP_API_URL || process.env.REACT_APP_API_URL.includes('localhost') || process.env.REACT_APP_API_URL.includes('127.0.0.1');
-        if (isRemoteHost && isLocalApi) {
+        const hostname = window.location.hostname || '';
+        const isRemoteHost = hostname !== 'localhost' && hostname !== '127.0.0.1' && hostname !== '';
+        if (isRemoteHost) {
             return true;
         }
     }
@@ -72,10 +73,15 @@ const executeWithFallback = async (restCall, firebaseCall) => {
     try {
         return await restCall();
     } catch (err) {
-        const isNetworkFailure = err.message && (
-            err.message.includes('Failed to fetch') ||
-            err.message.includes('NetworkError') ||
-            err.message.includes('ERR_CONNECTION')
+        const isNetworkFailure = !err.response && (
+            !err.status ||
+            err.name === 'TypeError' ||
+            (err.message && (
+                err.message.includes('Failed to fetch') ||
+                err.message.includes('NetworkError') ||
+                err.message.includes('ERR_CONNECTION') ||
+                err.message.includes('Load failed')
+            ))
         );
         if (isNetworkFailure) {
             console.warn('[apiService] Backend unreachable at ' + API_BASE_URL + ', routing seamlessly to Firebase Cloud Service.');

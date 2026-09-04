@@ -82,6 +82,55 @@ const LoginForm = ({ onSwitchToRegister }) => {
                 </div>
                 <button type="submit" disabled={loading} style={{ width: '100%', padding: '12px', fontSize: '1em', fontWeight: 600, color: '#fff', background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)', border: 'none', borderRadius: '8px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)', transition: 'all 0.2s ease' }}>{loading ? 'Logging in...' : 'Login'}</button>
             </form>
+            <div style={{
+                marginTop: '16px',
+                padding: '10px 12px',
+                borderRadius: '8px',
+                backgroundColor: '#f8fafc',
+                border: '1px solid #e2e8f0',
+                fontSize: '0.82rem',
+                color: '#475569'
+            }}>
+                <div style={{ fontWeight: 600, marginBottom: '6px', color: '#334155', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span>Cloud / Demo Accounts:</span>
+                </div>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                        type="button"
+                        onClick={() => { setUsername('admin'); setPassword('admin123'); }}
+                        style={{
+                            flex: 1,
+                            padding: '6px 8px',
+                            borderRadius: '6px',
+                            border: '1px solid #cbd5e1',
+                            background: '#ffffff',
+                            cursor: 'pointer',
+                            fontSize: '0.78rem',
+                            fontWeight: 600,
+                            color: '#1e293b'
+                        }}
+                    >
+                        Admin (admin123)
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => { setUsername('developer'); setPassword('developer123'); }}
+                        style={{
+                            flex: 1,
+                            padding: '6px 8px',
+                            borderRadius: '6px',
+                            border: '1px solid #cbd5e1',
+                            background: '#ffffff',
+                            cursor: 'pointer',
+                            fontSize: '0.78rem',
+                            fontWeight: 600,
+                            color: '#1e293b'
+                        }}
+                    >
+                        Developer (developer123)
+                    </button>
+                </div>
+            </div>
             <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '0.9em' }}>
                 <Link to="/forgot-password" style={{ color: '#2563eb', textDecoration: 'none', display: 'block', marginBottom: '10px' }}>Forgot Password?</Link>
                 <p style={{ margin: 0, color: '#64748b' }}>
