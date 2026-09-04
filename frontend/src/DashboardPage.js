@@ -5,10 +5,11 @@ import AiRequirementAnalyzer from './components/AiRequirementAnalyzer';
 import AiArchitectureAdvisor from './components/AiArchitectureAdvisor';
 import AiCodeReviewInspector from './components/AiCodeReviewInspector';
 import ExecutiveReportModal from './components/ExecutiveReportModal';
+import CyberneticTelemetryDashboard from './components/CyberneticTelemetryDashboard';
 import { useAuth } from './AuthContext';
 
 const DashboardPage = () => {
-    const [activeTab, setActiveTab] = useState('telemetry');
+    const [activeTab, setActiveTab] = useState('stitch');
     const [reportModalOpen, setReportModalOpen] = useState(false);
     const [reportType, setReportType] = useState('adr');
     const { userProfile, user } = useAuth();
@@ -23,9 +24,10 @@ const DashboardPage = () => {
     };
 
     const tabs = [
+        { id: 'stitch', label: 'Cybernetic Telemetry', icon: '⚡', desc: 'Stitch AI mission-critical operations canvas' },
         { id: 'telemetry', label: 'Telemetry & Health', icon: '📊', desc: 'Real-time project vitals & simulation' },
         { id: 'analyzer', label: 'Requirement Analyzer', icon: '🔍', desc: 'NLP ambiguity & risk detection' },
-        { id: 'planner', label: 'Sprint Planner', icon: '⚡', desc: 'Velocity forecasting & capacity' },
+        { id: 'planner', label: 'Sprint Planner', icon: '🎯', desc: 'Velocity forecasting & capacity' },
         { id: 'advisor', label: 'Architecture Advisor', icon: '🏛️', desc: 'System design & live diagram canvas' },
         { id: 'review', label: 'Code Review & Security', icon: '🛡️', desc: 'OWASP vulnerability scan & refactoring' },
         { id: 'all', label: 'Unified View', icon: '📑', desc: 'Continuous stream of all modules' },
@@ -206,6 +208,18 @@ const DashboardPage = () => {
 
             {/* --- Active Module Content Area --- */}
             <div className="module-content-wrapper">
+                {activeTab === 'stitch' && (
+                    <CyberneticTelemetryDashboard
+                        onNavigate={(target) => {
+                            if (target === 'inspector') setActiveTab('review');
+                            else if (target === 'topology') setActiveTab('advisor');
+                            else if (target === 'analyzer') setActiveTab('analyzer');
+                            else if (target === 'dashboard') setActiveTab('stitch');
+                            else if (target === 'settings') setActiveTab('telemetry');
+                        }}
+                    />
+                )}
+
                 {(activeTab === 'telemetry' || activeTab === 'all') && (
                     <div style={{
                         background: 'var(--bg-surface)',

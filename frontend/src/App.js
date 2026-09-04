@@ -30,52 +30,64 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <div className="brand-container" style={{ display: 'flex', alignItems: 'center', gap: '12px', textAlign: 'left' }}>
-          <div style={{
-            width: '42px',
-            height: '42px',
-            borderRadius: '10px',
-            background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 4px 12px rgba(59, 130, 246, 0.4)',
-            flexShrink: 0
-          }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="6" cy="6" r="2.5" fill="#ffffff" />
-              <circle cx="18" cy="6" r="2.5" fill="#ffffff" />
-              <circle cx="12" cy="18" r="2.5" fill="#ffffff" />
-              <path d="M6 6L12 18M18 6L12 18M6 6H18" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" strokeOpacity="0.85" />
-            </svg>
-          </div>
+        <div className="brand-container" style={{ display: 'flex', alignItems: 'center', gap: '14px', textAlign: 'left' }}>
+          <img
+            src="/synaptech_logo.png"
+            alt="Synaptech AI"
+            style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '12px',
+              border: '1px solid rgba(0, 240, 255, 0.4)',
+              boxShadow: '0 0 16px rgba(0, 240, 255, 0.35)',
+              background: '#0b0e15',
+              flexShrink: 0
+            }}
+          />
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <h1 style={{
                 margin: 0,
-                fontSize: '1.28rem',
-                fontWeight: '800',
+                fontSize: '1.26rem',
+                fontWeight: '700',
                 letterSpacing: '-0.02em',
                 color: '#ffffff',
-                fontFamily: "'Outfit', sans-serif"
+                fontFamily: "'Space Grotesk', sans-serif"
               }}>
                 Synaptech
               </h1>
               <span style={{
-                background: 'rgba(59, 130, 246, 0.25)',
-                border: '1px solid rgba(96, 165, 250, 0.4)',
-                color: '#93c5fd',
+                background: 'rgba(0, 240, 255, 0.15)',
+                border: '1px solid rgba(0, 240, 255, 0.4)',
+                color: '#00f0ff',
                 borderRadius: '6px',
                 padding: '1px 7px',
                 fontSize: '0.72rem',
                 fontWeight: '700',
-                letterSpacing: '0.05em'
+                letterSpacing: '0.06em',
+                fontFamily: "'JetBrains Mono', monospace"
               }}>
                 AI
               </span>
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                fontSize: '0.72rem',
+                fontFamily: "'JetBrains Mono', monospace",
+                color: '#65f2b5',
+                background: 'rgba(16, 185, 129, 0.12)',
+                border: '1px solid rgba(16, 185, 129, 0.3)',
+                padding: '2px 8px',
+                borderRadius: '9999px',
+                marginLeft: '4px'
+              }}>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 6px #10b981' }}></span>
+                ONLINE 99.98%
+              </span>
             </div>
-            <div style={{ fontSize: '0.75rem', color: '#94a3b8', letterSpacing: '0.01em', marginTop: '2px' }}>
-              AI-Driven Architecture &amp; Agile Intelligence Platform
+            <div style={{ fontSize: '0.73rem', color: '#849495', letterSpacing: '0.01em', marginTop: '2px', fontFamily: "'JetBrains Mono', monospace" }}>
+              Cybernetic Telemetry &amp; Autonomous AI Core
             </div>
           </div>
         </div>
@@ -91,14 +103,12 @@ function App() {
                 <Link to="/admin" className="header-link">Admin</Link>
               ) : null}
               <Link to="/profile" className="header-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                {userProfile?.profilePictureUrl ? (
-                  <img
-                    src={userProfile.profilePictureUrl.startsWith('http') || userProfile.profilePictureUrl.startsWith('data:') ? userProfile.profilePictureUrl : (userProfile.profilePictureUrl.startsWith('/') ? userProfile.profilePictureUrl : `/${userProfile.profilePictureUrl}`)}
-                    alt="Avatar"
-                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                    style={{ width: '26px', height: '26px', borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #60a5fa' }}
-                  />
-                ) : null}
+                <img
+                  src={userProfile?.profilePictureUrl ? (userProfile.profilePictureUrl.startsWith('http') || userProfile.profilePictureUrl.startsWith('data:') ? userProfile.profilePictureUrl : (userProfile.profilePictureUrl.startsWith('/') ? userProfile.profilePictureUrl : `/${userProfile.profilePictureUrl}`)) : '/uploads/stitch_avatar.jpg'}
+                  alt="Avatar"
+                  onError={(e) => { e.currentTarget.src = '/uploads/stitch_avatar.jpg'; }}
+                  style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover', border: '1.5px solid #00f0ff', boxShadow: '0 0 8px rgba(0, 240, 255, 0.4)' }}
+                />
                 <span>My Profile</span>
               </Link>
               <button onClick={logout} className="logout-button">
