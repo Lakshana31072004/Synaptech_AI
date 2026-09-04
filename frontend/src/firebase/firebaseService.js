@@ -557,10 +557,10 @@ export const firebaseService = {
       ],
       topologyDiagram: `graph TD\n  Client[React Mobile/Web UI] --> API[API Gateway / Auth Layer]\n  API --> Service[Core Intelligence Engine]\n  Service --> DB[(Cloud Database / Firestore)]`,
       technologyStack: {
-        'Frontend': 'React.js (SPA on Vercel)',
-        'Database': 'Cloud Firestore / H2 Embedded',
+        'Frontend': 'React.js (SPA Web & Mobile)',
+        'Database': 'Cloud Firestore',
         'Authentication': 'Firebase Auth / JWT Bearer',
-        'AI/ML': 'Python scikit-learn & Client NLP Engines'
+        'AI/ML': 'Client NLP & Heuristic Engines'
       }
     };
   },
