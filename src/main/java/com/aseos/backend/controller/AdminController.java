@@ -74,8 +74,16 @@ public class AdminController {
     @DeleteMapping("/users/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable Long id, Authentication authentication) {
-        adminService.deleteUser(id, authentication.getName());
-        return ResponseEntity.ok("User deleted successfully.");
+        try {
+            adminService.deleteUser(id, authentication.getName());
+            return ResponseEntity.ok("User deleted successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (org.springframework.security.core.userdetails.UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete user: " + e.getMessage());
+        }
     }
 
     @PutMapping("/users/{id}/roles")

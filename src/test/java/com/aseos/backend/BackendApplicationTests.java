@@ -157,4 +157,33 @@ class BackendApplicationTests {
         assertNotNull(standaloneRisk.getBody());
         assertTrue(standaloneRisk.getBody().getRiskScore() > 0);
     }
+
+    @Autowired
+    private com.aseos.backend.service.AdminService adminService;
+
+    @Autowired
+    private com.aseos.backend.repository.UserRepository userRepository;
+
+    @Autowired
+    private com.aseos.backend.service.ActivityLogService activityLogService;
+
+    @Test
+    void testDeleteUserWithAssociatedRecords() {
+        // 1. Create a user to delete
+        com.aseos.backend.dto.UserDto created = adminService.createUserByAdmin("testdeleteuser", "Password@123", List.of("ROLE_USER"));
+        assertNotNull(created);
+        Long userId = created.getId();
+
+        com.aseos.backend.model.User userEntity = userRepository.findById(userId).orElseThrow();
+
+        // 2. Attach activity logs to simulate user activity
+        activityLogService.logActivity(userEntity, "LOGIN", "User logged in for testing.");
+        activityLogService.logActivity(userEntity, "PROFILE_VIEW", "User viewed profile.");
+
+        // 3. Admin deletes the user
+        assertDoesNotThrow(() -> adminService.deleteUser(userId, "admin"));
+
+        // 4. Verify user is gone
+        assertTrue(userRepository.findById(userId).isEmpty(), "Deleted user should no longer exist in repository");
+    }
 }

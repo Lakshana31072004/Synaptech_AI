@@ -9,8 +9,11 @@ import com.aseos.backend.model.User;
 import com.aseos.backend.service.UserService;
 import com.aseos.backend.model.Role;
 import com.aseos.backend.model.RoleName;
+import com.aseos.backend.repository.ActivityLogArchiveRepository;
+import com.aseos.backend.repository.PasswordResetTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,6 +36,12 @@ public class AdminService {
 
     @Autowired
     private ActivityLogRepository activityLogRepository;
+
+    @Autowired
+    private ActivityLogArchiveRepository activityLogArchiveRepository;
+
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Autowired
     private UserService userService;
@@ -80,6 +89,7 @@ public class AdminService {
         }
     }
 
+    @Transactional
     public void deleteUser(Long userId, String currentUsername) {
         User userToDelete = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userId));
@@ -87,7 +97,18 @@ public class AdminService {
         if (Objects.equals(userToDelete.getUsername(), currentUsername)) {
             throw new IllegalArgumentException("Admin cannot delete their own account.");
         }
-        userRepository.deleteById(userId);
+
+        // Delete all dependent/child records to prevent foreign key constraint violations
+        passwordResetTokenRepository.deleteByUser(userToDelete);
+        activityLogRepository.deleteByUser(userToDelete);
+        activityLogArchiveRepository.deleteByUser(userToDelete);
+
+        // Clear many-to-many roles mapping
+        userToDelete.getRoles().clear();
+        userRepository.save(userToDelete);
+
+        // Delete user entity
+        userRepository.delete(userToDelete);
     }
 
     public UserDto updateUserRoles(Long userId, Set<String> roleNames) {

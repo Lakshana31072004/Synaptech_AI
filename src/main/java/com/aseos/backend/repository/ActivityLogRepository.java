@@ -20,4 +20,9 @@ public interface ActivityLogRepository extends JpaRepository<ActivityLog, Long>,
 
     @Query(value = "SELECT al.* FROM activity_log al JOIN users u ON al.user_id = u.id WHERE similarity(al.action || ' ' || COALESCE(al.details, '') || ' ' || u.username, :query) > 0.15 ORDER BY similarity(al.action || ' ' || COALESCE(al.details, '') || ' ' || u.username, :query) DESC LIMIT :limit", nativeQuery = true)
     List<ActivityLog> findFuzzy(@Param("query") String query, @Param("limit") int limit);
+
+    @org.springframework.data.jpa.repository.Modifying
+    @org.springframework.transaction.annotation.Transactional
+    @Query("DELETE FROM ActivityLog a WHERE a.user = :user")
+    void deleteByUser(@Param("user") User user);
 }
