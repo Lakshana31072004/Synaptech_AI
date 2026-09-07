@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { useAuth } from './AuthContext';
 import { useNotification } from './NotificationContext';
@@ -20,6 +20,8 @@ import RegisterForm from './components/RegisterForm';
 function App() {
   const { isAuthenticated, user, userProfile, logout } = useAuth();
   const notifications = useNotification();
+  const [copilotOpen, setCopilotOpen] = useState(false);
+  const [copilotDockMode, setCopilotDockMode] = useState('docked');
 
   useEffect(() => {
     if (notifications) {
@@ -90,6 +92,16 @@ function App() {
               {userProfile?.roles?.includes('ROLE_ADMIN') || user?.roles?.includes('ROLE_ADMIN') || user?.roles?.includes('Admin') ? (
                 <Link to="/admin" className="header-link">Admin</Link>
               ) : null}
+              <button
+                type="button"
+                className={`copilot-nav-btn ${copilotOpen ? 'active' : ''}`}
+                onClick={() => setCopilotOpen(prev => !prev)}
+                title="Toggle Synaptech AI Copilot (Ctrl + /)"
+              >
+                <span>🧠</span>
+                <span>Copilot</span>
+                {copilotOpen && <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#34d399', marginLeft: '2px' }} />}
+              </button>
               <Link to="/profile" className="header-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                 {userProfile?.profilePictureUrl ? (
                   <img
@@ -110,7 +122,7 @@ function App() {
           )}
         </nav>
       </header>
-      <main className="App-main">
+      <main className={`App-main ${copilotOpen && copilotDockMode === 'docked' ? 'copilot-docked-active' : ''}`}>
         <Routes>
           <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <div style={{ maxWidth: '400px', margin: '40px auto' }}><LoginForm /></div>} />
           <Route path="/register" element={<div style={{ maxWidth: '400px', margin: '40px auto' }}><RegisterForm /></div>} />
@@ -128,7 +140,15 @@ function App() {
       </main>
 
       {/* Global Real-Time AI Copilot */}
-      {isAuthenticated && <SynaptechCopilot />}
+      {isAuthenticated && (
+        <SynaptechCopilot
+          isOpen={copilotOpen}
+          onToggle={() => setCopilotOpen(prev => !prev)}
+          onClose={() => setCopilotOpen(false)}
+          dockMode={copilotDockMode}
+          onToggleDock={() => setCopilotDockMode(prev => prev === 'docked' ? 'floating' : 'docked')}
+        />
+      )}
     </div>
   );
 }

@@ -10,8 +10,22 @@ const INITIAL_SUGGESTIONS = [
   'Explain Event-Driven architecture'
 ];
 
-const SynaptechCopilot = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const SynaptechCopilot = ({
+  isOpen: propIsOpen,
+  onToggle: propOnToggle,
+  onClose: propOnClose,
+  dockMode: propDockMode,
+  onToggleDock: propOnToggleDock
+}) => {
+  // Support both controlled mode (from App.js) and internal standalone mode
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const [internalDockMode, setInternalDockMode] = useState('docked');
+  const [isMinimized, setIsMinimized] = useState(false);
+
+  const isControlled = typeof propIsOpen === 'boolean';
+  const isOpen = isControlled ? propIsOpen : internalIsOpen;
+  const dockMode = propDockMode || internalDockMode;
+
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
@@ -23,17 +37,67 @@ const SynaptechCopilot = () => {
   const [suggestions, setSuggestions] = useState(INITIAL_SUGGESTIONS);
 
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
   const { showError } = useNotification();
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (typeof messagesEndRef.current?.scrollIntoView === 'function') {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !isMinimized) {
       scrollToBottom();
+      // Auto-focus input when opened
+      setTimeout(() => inputRef.current?.focus(), 150);
     }
-  }, [messages, isOpen]);
+  }, [messages, isOpen, isMinimized]);
+
+  // Global Keyboard shortcuts: Ctrl+/ or Cmd+/ to toggle, Esc to minimize or close
+  useEffect(() => {
+    const handleGlobalKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === '/') {
+        e.preventDefault();
+        handleToggleOpen();
+      } else if (e.key === 'Escape' && isOpen) {
+        if (!isMinimized) {
+          setIsMinimized(true);
+        } else {
+          handleClose();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [isOpen, isMinimized]);
+
+  const handleToggleOpen = () => {
+    if (isControlled && propOnToggle) {
+      propOnToggle();
+    } else {
+      setInternalIsOpen((prev) => !prev);
+    }
+    setIsMinimized(false);
+  };
+
+  const handleClose = () => {
+    if (isControlled && propOnClose) {
+      propOnClose();
+    } else {
+      setInternalIsOpen(false);
+    }
+    setIsMinimized(false);
+  };
+
+  const handleToggleDock = () => {
+    if (propOnToggleDock) {
+      propOnToggleDock();
+    } else {
+      setInternalDockMode((prev) => (prev === 'docked' ? 'floating' : 'docked'));
+    }
+  };
 
   const handleSendMessage = async (messageText) => {
     const textToSend = messageText || input;
@@ -73,112 +137,202 @@ const SynaptechCopilot = () => {
     }
   };
 
+  const handleClearHistory = () => {
+    setMessages([{ role: 'assistant', text: 'Chat history cleared. How can I help you next?' }]);
+    setSuggestions(INITIAL_SUGGESTIONS);
+  };
+
   return (
     <>
-      {/* Floating Trigger Launcher */}
+      {/* 1. Closed State: Floating Trigger Launcher */}
       {!isOpen && (
         <button
           type="button"
           className="copilot-launcher"
-          onClick={() => setIsOpen(true)}
-          title="Open Synaptech AI Copilot"
+          onClick={handleToggleOpen}
+          title="Open Synaptech AI Copilot (Ctrl + /)"
+          aria-label="Open AI Copilot"
         >
-          <span style={{ fontSize: '1.3rem' }}>🧠</span>
-          <span>Synaptech AI</span>
+          <span className="copilot-launcher-icon">🧠</span>
+          <span className="copilot-launcher-text">Synaptech Copilot</span>
+          <span className="copilot-launcher-pill">AI Active</span>
         </button>
       )}
 
-      {/* Floating Chat Modal */}
-      {isOpen && (
-        <div className="copilot-window">
-          {/* Header */}
-          <div className="copilot-header">
-            <div className="copilot-header-info">
-              <span style={{ fontSize: '1.3rem' }}>🧠</span>
-              <div>
-                <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>Synaptech Copilot</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.72rem', color: '#94a3b8' }}>
-                  <span className="copilot-status-dot" />
-                  <span>Online &bull; Context Aware</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="copilot-controls">
-              <button
-                type="button"
-                className="copilot-btn-icon"
-                onClick={() => setMessages([{ role: 'assistant', text: 'Chat history cleared. How can I help you next?' }])}
-                title="Clear Chat History"
-              >
-                🗑️
-              </button>
-              <button
-                type="button"
-                className="copilot-btn-icon"
-                onClick={() => setIsOpen(false)}
-                title="Close Copilot"
-              >
-                ✕
-              </button>
+      {/* 2. Minimized Glance Bar State: Never overlaps cards */}
+      {isOpen && isMinimized && (
+        <div 
+          className="copilot-minimized-bar" 
+          onClick={() => setIsMinimized(false)}
+          title="Click to expand Synaptech Copilot"
+        >
+          <div className="copilot-minimized-left">
+            <span style={{ fontSize: '1.25rem' }}>🧠</span>
+            <span className="copilot-status-dot" />
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span className="copilot-minimized-title">Synaptech Copilot</span>
+              <span className="copilot-minimized-sub">Click to expand</span>
             </div>
           </div>
-
-          {/* Messages Stream */}
-          <div className="copilot-messages">
-            {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`message-bubble ${msg.role === 'user' ? 'message-user' : 'message-ai'}`}
-              >
-                <div style={{ whiteSpace: 'pre-wrap' }}>{msg.text}</div>
-              </div>
-            ))}
-            {loading && (
-              <div className="message-bubble message-ai" style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.85rem', color: '#64748b' }}>Thinking...</span>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Quick Prompt Suggestion Chips */}
-          {suggestions.length > 0 && (
-            <div className="copilot-suggestions">
-              {suggestions.map((suggestion, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  className="suggestion-chip"
-                  onClick={() => handleSendMessage(suggestion)}
-                >
-                  {suggestion}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* Input Bar */}
-          <div className="copilot-input-bar">
-            <input
-              type="text"
-              className="copilot-input"
-              placeholder="Ask about architecture, velocity, security..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              disabled={loading}
-            />
+          <div className="copilot-minimized-actions" onClick={(e) => e.stopPropagation()}>
             <button
               type="button"
-              className="copilot-send-btn"
-              onClick={() => handleSendMessage()}
-              disabled={loading || !input.trim()}
+              className="copilot-btn-icon"
+              onClick={() => setIsMinimized(false)}
+              title="Expand Copilot"
+              aria-label="Expand Copilot"
             >
-              Send
+              ⤢
+            </button>
+            <button
+              type="button"
+              className="copilot-btn-icon"
+              onClick={handleClose}
+              title="Close Copilot"
+              aria-label="Close Copilot"
+            >
+              ✕
             </button>
           </div>
         </div>
+      )}
+
+      {/* 3. Open & Expanded State */}
+      {isOpen && !isMinimized && (
+        <>
+          {/* Mobile/Tablet Backdrop (only when drawer mode on smaller screens) */}
+          {dockMode === 'docked' && (
+            <div 
+              className="copilot-mobile-backdrop" 
+              onClick={handleClose}
+              aria-hidden="true"
+            />
+          )}
+
+          <div className={dockMode === 'docked' ? 'copilot-drawer-docked' : 'copilot-window-floating'}>
+            {/* Header */}
+            <div className="copilot-header">
+              <div className="copilot-header-info">
+                <div className="copilot-header-avatar">
+                  <span>🧠</span>
+                  <span className="copilot-status-dot-pulse" />
+                </div>
+                <div>
+                  <div className="copilot-title-row">
+                    <span className="copilot-title">Synaptech Copilot</span>
+                    <span className="copilot-badge">AI Assistant</span>
+                  </div>
+                  <div className="copilot-subtext">
+                    Online &bull; Context Aware &bull; <kbd>Ctrl+/</kbd>
+                  </div>
+                </div>
+              </div>
+
+              <div className="copilot-controls">
+                <button
+                  type="button"
+                  className="copilot-btn-icon"
+                  onClick={handleToggleDock}
+                  title={dockMode === 'docked' ? 'Switch to Floating Window' : 'Dock to Side Panel'}
+                  aria-label="Toggle Dock Mode"
+                >
+                  {dockMode === 'docked' ? '⤢' : '◧'}
+                </button>
+                <button
+                  type="button"
+                  className="copilot-btn-icon"
+                  onClick={() => setIsMinimized(true)}
+                  title="Minimize to Bottom Bar"
+                  aria-label="Minimize Copilot"
+                >
+                  —
+                </button>
+                <button
+                  type="button"
+                  className="copilot-btn-icon"
+                  onClick={handleClearHistory}
+                  title="Clear Chat History"
+                  aria-label="Clear History"
+                >
+                  🗑️
+                </button>
+                <button
+                  type="button"
+                  className="copilot-btn-icon copilot-btn-close"
+                  onClick={handleClose}
+                  title="Close Copilot (Esc)"
+                  aria-label="Close Copilot"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+
+            {/* Messages Stream */}
+            <div className="copilot-messages">
+              {messages.map((msg, index) => (
+                <div
+                  key={index}
+                  className={`message-bubble ${msg.role === 'user' ? 'message-user' : 'message-ai'}`}
+                >
+                  <div className="message-header-meta">
+                    {msg.role === 'user' ? '👤 You' : '🧠 Copilot'}
+                  </div>
+                  <div style={{ whiteSpace: 'pre-wrap' }}>{msg.text}</div>
+                </div>
+              ))}
+              {loading && (
+                <div className="message-bubble message-ai" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <span className="copilot-loading-spinner" />
+                  <span style={{ fontSize: '0.85rem', color: '#94a3b8' }}>Analyzing engineering context...</span>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Quick Prompt Suggestion Chips */}
+            {suggestions.length > 0 && (
+              <div className="copilot-suggestions">
+                <div className="suggestions-label">Suggested Inquiries:</div>
+                <div className="suggestions-scroll">
+                  {suggestions.map((suggestion, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      className="suggestion-chip"
+                      onClick={() => handleSendMessage(suggestion)}
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Input Bar */}
+            <div className="copilot-input-bar">
+              <input
+                ref={inputRef}
+                type="text"
+                className="copilot-input"
+                placeholder="Ask about architecture, velocity, security..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                disabled={loading}
+              />
+              <button
+                type="button"
+                className="copilot-send-btn"
+                onClick={() => handleSendMessage()}
+                disabled={loading || !input.trim()}
+                title="Send Message"
+              >
+                Send
+              </button>
+            </div>
+          </div>
+        </>
       )}
     </>
   );
