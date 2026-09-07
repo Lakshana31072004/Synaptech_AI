@@ -24,8 +24,10 @@ export const NotificationProvider = ({ children }) => {
     const showError = useCallback((message, onClick = null, data = null) => addNotification(message, 'error', onClick, data), [addNotification]);
     const showInfo = useCallback((message, onClick = null, data = null) => addNotification(message, 'info', onClick, data), [addNotification]);
 
+    const contextValue = React.useMemo(() => ({ showSuccess, showError, showInfo }), [showSuccess, showError, showInfo]);
+
     return (
-        <NotificationContext.Provider value={{ showSuccess, showError, showInfo }}>
+        <NotificationContext.Provider value={contextValue}>
             {children}
             <div className="notification-container">
                 {notifications.map((notif) => (

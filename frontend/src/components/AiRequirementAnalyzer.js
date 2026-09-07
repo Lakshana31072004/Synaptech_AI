@@ -43,9 +43,18 @@ const AiRequirementAnalyzer = () => {
     return `badge-tag badge-${category.toLowerCase()}`;
   };
 
+  const formatStoryText = (story) => {
+    if (typeof story === 'string') return story;
+    if (story && typeof story === 'object') {
+      return story.title || story.text || `${story.id || 'US'}: ${story.title || 'Story'}`;
+    }
+    return String(story);
+  };
+
   const copyStoriesToClipboard = () => {
     if (report && report.extractedUserStories) {
-      navigator.clipboard.writeText(report.extractedUserStories.join('\n'));
+      const textToCopy = report.extractedUserStories.map(formatStoryText).join('\n');
+      navigator.clipboard.writeText(textToCopy);
       showSuccess('User stories copied to clipboard!');
     }
   };
@@ -173,7 +182,7 @@ const AiRequirementAnalyzer = () => {
               </div>
               <ul className="stories-list">
                 {report.extractedUserStories.map((story, i) => (
-                  <li key={i}>{story}</li>
+                  <li key={i}>{formatStoryText(story)}</li>
                 ))}
               </ul>
             </div>

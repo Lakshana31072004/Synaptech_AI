@@ -16,7 +16,7 @@ const ProfilePage = () => {
             try {
                 const data = await apiService.getCurrentUser();
                 setUser(data);
-                if (updateProfilePicture && data?.profilePictureUrl) {
+                if (updateProfilePicture && data?.profilePictureUrl && data.profilePictureUrl !== user?.profilePictureUrl) {
                     updateProfilePicture(data.profilePictureUrl);
                 }
             } catch (err) {

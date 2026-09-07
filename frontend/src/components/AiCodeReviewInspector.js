@@ -177,32 +177,32 @@ const AiCodeReviewInspector = () => {
                 {report.summary}
               </h3>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <span className={`status-pill score-badge-${report.riskLevel.toLowerCase()}`}>
-                  Risk Level: {report.riskLevel}
+                <span className={`status-pill score-badge-${(report.riskLevel || 'low').toLowerCase()}`}>
+                  Risk Level: {report.riskLevel || 'Low'}
                 </span>
                 <span style={{ color: '#cbd5e1', fontSize: '0.88rem' }}>
-                  &bull; {report.vulnerabilities.length} Security Issue(s) &bull; {report.codeSmells.length} Smell(s)
+                  &bull; {(report.vulnerabilities || []).length} Security Issue(s) &bull; {(report.codeSmells || []).length} Smell(s)
                 </span>
               </div>
             </div>
 
             <div style={{ textAlign: 'right' }}>
               <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: '#94a3b8', fontWeight: 700 }}>Quality Index</div>
-              <div style={{ fontSize: '2.5rem', fontWeight: 800, color: report.overallQualityScore >= 80 ? '#4ade80' : report.overallQualityScore >= 60 ? '#facc15' : '#f87171', fontFamily: 'var(--font-heading)' }}>
-                {report.overallQualityScore}<span style={{ fontSize: '1.2rem' }}>/100</span>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, color: (report.overallQualityScore ?? report.codeQualityScore ?? 80) >= 80 ? '#4ade80' : (report.overallQualityScore ?? report.codeQualityScore ?? 80) >= 60 ? '#facc15' : '#f87171', fontFamily: 'var(--font-heading)' }}>
+                {report.overallQualityScore ?? report.codeQualityScore ?? 80}<span style={{ fontSize: '1.2rem' }}>/100</span>
               </div>
             </div>
           </div>
 
           {/* Vulnerabilities List */}
-          {report.vulnerabilities.length > 0 && (
+          {(report.vulnerabilities || []).length > 0 && (
             <div style={{ marginBottom: '28px' }}>
               <h4 style={{ margin: '0 0 16px 0', fontSize: '1.2rem', color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>
-                Detected Security Vulnerabilities ({report.vulnerabilities.length})
+                Detected Security Vulnerabilities ({(report.vulnerabilities || []).length})
               </h4>
               <div className="vulnerabilities-grid">
-                {report.vulnerabilities.map((v, idx) => (
-                  <div key={idx} className={`vulnerability-card sev-${v.severity.toLowerCase()}`}>
+                {(report.vulnerabilities || []).map((v, idx) => (
+                  <div key={idx} className={`vulnerability-card sev-${(v.severity || 'medium').toLowerCase()}`}>
                     <div className="vuln-header">
                       <div className="vuln-title">{v.title}</div>
                       <span className="vuln-category">{v.category}</span>
@@ -224,26 +224,26 @@ const AiCodeReviewInspector = () => {
 
           {/* Code Smells & Improvements */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px', marginBottom: '28px' }}>
-            {report.codeSmells.length > 0 && (
+            {(report.codeSmells || []).length > 0 && (
               <div style={{ background: 'var(--bg-muted)', padding: '20px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-medium)' }}>
                 <h4 style={{ margin: '0 0 12px 0', color: '#b45309', fontFamily: 'var(--font-heading)' }}>
                   Architectural Code Smells
                 </h4>
                 <ul style={{ margin: 0, paddingLeft: '20px', color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.6 }}>
-                  {report.codeSmells.map((s, i) => (
+                  {(report.codeSmells || []).map((s, i) => (
                     <li key={i}>{s}</li>
                   ))}
                 </ul>
               </div>
             )}
 
-            {report.keyImprovements.length > 0 && (
+            {(report.keyImprovements || []).length > 0 && (
               <div style={{ background: '#f0fdf4', padding: '20px', borderRadius: 'var(--radius-md)', border: '1px solid #bbf7d0' }}>
                 <h4 style={{ margin: '0 0 12px 0', color: '#15803d', fontFamily: 'var(--font-heading)' }}>
                   Applied Security Enhancements
                 </h4>
                 <ul style={{ margin: 0, paddingLeft: '20px', color: '#166534', fontSize: '0.9rem', lineHeight: 1.6 }}>
-                  {report.keyImprovements.map((imp, i) => (
+                  {(report.keyImprovements || []).map((imp, i) => (
                     <li key={i}>{imp}</li>
                   ))}
                 </ul>

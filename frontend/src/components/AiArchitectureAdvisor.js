@@ -207,7 +207,7 @@ const AiArchitectureAdvisor = () => {
             <div className="detail-box">
               <h4>Architectural Strengths &amp; Benefits</h4>
               <ul className="benefits-list">
-                {report.keyBenefits.map((b, i) => (
+                {(report.keyBenefits || report.pros || []).map((b, i) => (
                   <li key={i}>{b}</li>
                 ))}
               </ul>
@@ -216,7 +216,7 @@ const AiArchitectureAdvisor = () => {
             <div className="detail-box">
               <h4>Engineering Trade-offs &amp; Risks</h4>
               <ul className="tradeoffs-list">
-                {report.architecturalTradeOffs.map((t, i) => (
+                {(report.architecturalTradeOffs || report.cons || []).map((t, i) => (
                   <li key={i}>{t}</li>
                 ))}
               </ul>
@@ -224,7 +224,7 @@ const AiArchitectureAdvisor = () => {
           </div>
 
           {/* Suggested Tech Stack */}
-          {report.suggestedTechStack && Object.keys(report.suggestedTechStack).length > 0 && (
+          {(report.suggestedTechStack || report.technologyStack) && Object.keys(report.suggestedTechStack || report.technologyStack).length > 0 && (
             <div className="detail-box" style={{ marginBottom: '24px' }}>
               <h4>Recommended Technology Stack Blueprint</h4>
               <div className="tech-stack-table-container">
@@ -236,7 +236,7 @@ const AiArchitectureAdvisor = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {Object.entries(report.suggestedTechStack).map(([layer, tech]) => (
+                    {Object.entries(report.suggestedTechStack || report.technologyStack).map(([layer, tech]) => (
                       <tr key={layer}>
                         <td className="tech-component">{layer}</td>
                         <td><strong>{tech}</strong></td>
@@ -249,11 +249,11 @@ const AiArchitectureAdvisor = () => {
           )}
 
           {/* Implementation Guidelines */}
-          {report.implementationGuidelines && report.implementationGuidelines.length > 0 && (
+          {((report.implementationGuidelines || []).length > 0) && (
             <div className="guidelines-box">
               <h4>Key Architectural Implementation Guidelines</h4>
               <ul className="guidelines-list">
-                {report.implementationGuidelines.map((g, i) => (
+                {(report.implementationGuidelines || []).map((g, i) => (
                   <li key={i}>{g}</li>
                 ))}
               </ul>

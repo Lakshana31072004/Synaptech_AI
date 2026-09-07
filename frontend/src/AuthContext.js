@@ -52,27 +52,27 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token, refreshUserProfile]);
 
-  const login = (newToken) => {
+  const login = useCallback((newToken) => {
     setToken(newToken);
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setToken(null);
     setUser(null);
     setUserProfile(null);
     localStorage.removeItem('authToken');
     localStorage.removeItem('userProfile');
-  };
+  }, []);
 
-  const updateProfilePicture = (newUrl) => {
+  const updateProfilePicture = useCallback((newUrl) => {
     setUserProfile(prev => {
       const updated = { ...prev, profilePictureUrl: newUrl, profile_picture_url: newUrl };
       localStorage.setItem('userProfile', JSON.stringify(updated));
       return updated;
     });
-  };
+  }, []);
 
-  const value = {
+  const value = React.useMemo(() => ({
     token,
     user,
     userProfile,
@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     isAuthenticated: !!token,
-  };
+  }), [token, user, userProfile, refreshUserProfile, updateProfilePicture, login, logout]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

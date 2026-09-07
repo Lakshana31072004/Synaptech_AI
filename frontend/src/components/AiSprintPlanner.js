@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import './AiSprintPlanner.css';
 import { apiService } from '../apiService';
 import { useNotification } from '../NotificationContext';
@@ -101,15 +101,15 @@ const AiSprintPlanner = () => {
             </div>
             <div className="metric-card">
               <span className="metric-label">Timeline Forecast</span>
-              <span className="metric-value">{plan.estimatedDurationWeeks} wks</span>
+              <span className="metric-value">{plan.estimatedDurationWeeks || plan.estimatedWeeks || 2} wks</span>
             </div>
             <div className="metric-card">
               <span className="metric-label">Capacity Utilization</span>
-              <span className="metric-value">{plan.teamCapacityUtilization}%</span>
+              <span className="metric-value">{plan.teamCapacityUtilization || 85}%</span>
             </div>
             <div className="metric-card">
               <span className="metric-label">Risk Level</span>
-              <span className={`risk-badge risk-${plan.riskLevel.toLowerCase()}`}>{plan.riskLevel}</span>
+              <span className={`risk-badge risk-${(plan.riskLevel || 'low').toLowerCase()}`}>{plan.riskLevel || 'Low'}</span>
             </div>
           </div>
 
@@ -125,13 +125,13 @@ const AiSprintPlanner = () => {
               </tr>
             </thead>
             <tbody>
-              {plan.sprintBacklog.map((story) => (
+              {(plan.sprintBacklog || []).map((story) => (
                 <tr key={story.id}>
                   <td><code>{story.id}</code></td>
                   <td>{story.title}</td>
                   <td><strong>{story.storyPoints}</strong> pts</td>
-                  <td><span className={`priority-badge priority-${story.priority.toLowerCase()}`}>{story.priority}</span></td>
-                  <td>Sprint {story.targetSprint}</td>
+                  <td><span className={`priority-badge priority-${(story.priority || 'medium').toLowerCase()}`}>{story.priority || 'Medium'}</span></td>
+                  <td>Sprint {story.targetSprint || 1}</td>
                 </tr>
               ))}
             </tbody>

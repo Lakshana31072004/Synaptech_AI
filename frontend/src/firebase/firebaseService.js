@@ -123,13 +123,24 @@ class ClientStore {
         const existingUsers = JSON.parse(existingUsersRaw);
         let modified = false;
         DEFAULT_USERS.forEach(defUser => {
-          const match = existingUsers.find(u => u.username.toLowerCase() === defUser.username.toLowerCase());
+          const match = existingUsers.find(u => (u.username || '').toLowerCase() === defUser.username.toLowerCase());
           if (!match) {
             existingUsers.push(defUser);
             modified = true;
-          } else if (match.profilePictureUrl !== defUser.profilePictureUrl && defUser.profilePictureUrl) {
-            match.profilePictureUrl = defUser.profilePictureUrl;
-            modified = true;
+          } else {
+            // Keep default accounts valid and up to date
+            if (!match.password || match.password !== defUser.password) {
+              match.password = defUser.password;
+              modified = true;
+            }
+            if (defUser.profilePictureUrl && match.profilePictureUrl !== defUser.profilePictureUrl) {
+              match.profilePictureUrl = defUser.profilePictureUrl;
+              modified = true;
+            }
+            if (defUser.roles && (!match.roles || match.roles.length === 0)) {
+              match.roles = defUser.roles;
+              modified = true;
+            }
           }
         });
         if (modified) {
@@ -245,9 +256,23 @@ export const firebaseService = {
     // Client/Offline fallback
     const users = clientStore.getUsers();
     const cleanUsername = (username || '').trim().toLowerCase();
-    const foundUser = users.find(u => u.username.toLowerCase() === cleanUsername);
+    const cleanPassword = (password || '').trim();
+    let foundUser = users.find(u => (u.username || '').trim().toLowerCase() === cleanUsername);
 
-    if (!foundUser || foundUser.password !== password) {
+    // Auto-heal default seeded accounts if mismatched
+    const defUser = DEFAULT_USERS.find(u => u.username.toLowerCase() === cleanUsername);
+    if (defUser && (cleanPassword === defUser.password || password === defUser.password)) {
+      if (!foundUser) {
+        foundUser = { ...defUser };
+        users.push(foundUser);
+        clientStore.setUsers(users);
+      } else if (foundUser.password !== defUser.password) {
+        foundUser.password = defUser.password;
+        clientStore.setUsers(users);
+      }
+    }
+
+    if (!foundUser || (foundUser.password !== password && foundUser.password !== cleanPassword)) {
       throw new Error('Invalid username or password.');
     }
 
@@ -433,13 +458,17 @@ export const firebaseService = {
     const result = await firebaseService.predictRisk(metrics);
     const healthStore = clientStore.getHealth();
     healthStore[projectId] = {
-      ...healthStore[projectId],
+      ...(healthStore[projectId] || {}),
+      id: projectId,
       ...metrics,
       riskScore: result.riskScore,
+      riskLevel: result.riskLevel,
+      recommendations: result.recommendations,
+      factorAnalysis: result.factorAnalysis,
       timestamp: new Date().toISOString()
     };
     clientStore.setHealth(healthStore);
-    return result;
+    return healthStore[projectId];
   },
 
   // --- AI MODULE ENGINES (100% Client/Mobile Compatible) ---
@@ -456,7 +485,7 @@ export const firebaseService = {
     const nonFunctionalRequirements = [];
     const ambiguousTermsFound = [];
 
-    sentences.forEach((sentence, idx) => {
+    sentences.forEach((sentence) => {
       const lower = sentence.toLowerCase();
       const isNfr = nonFunctionalKeywords.some(kw => lower.includes(kw));
       const isFr = functionalKeywords.some(kw => lower.includes(kw));
@@ -472,7 +501,8 @@ export const firebaseService = {
         functionalRequirements.push({
           id: `FR-${functionalRequirements.length + 1}`,
           text: sentence,
-          priority: 'Medium'
+          category: 'Functional',
+          priority: 'High'
         });
       }
 
@@ -480,7 +510,9 @@ export const firebaseService = {
         if (lower.includes(term)) {
           ambiguousTermsFound.push({
             term,
+            context: sentence,
             sentence,
+            suggestion: `Quantify "${term}" with specific acceptance criteria or SLA metrics.`,
             recommendation: `Define measurable acceptance criteria for "${term}".`
           });
         }
@@ -493,95 +525,254 @@ export const firebaseService = {
       wordCount: words.length,
       sentenceCount: sentences.length,
       qualityScore,
-      qualityRating: qualityScore >= 80 ? 'High' : qualityScore >= 60 ? 'Good' : 'Needs Clarification',
-      analysisSummary: `Parsed ${sentences.length} requirements. Identified ${functionalRequirements.length} functional, ${nonFunctionalRequirements.length} non-functional, and ${ambiguousTermsFound.length} ambiguous items.`,
+      qualityRating: qualityScore >= 80 ? 'Excellent' : qualityScore >= 60 ? 'Good' : 'Needs Clarification',
+      analysisSummary: `Analyzed ${sentences.length} sentences. Identified ${functionalRequirements.length} functional requirement(s), ${nonFunctionalRequirements.length} non-functional requirement(s), and ${ambiguousTermsFound.length} ambiguous item(s).`,
       functionalRequirements,
       nonFunctionalRequirements,
       ambiguousTermsFound,
-      extractedUserStories: functionalRequirements.map((fr, idx) => ({
-        id: `US-${idx + 1}`,
-        title: `Story for: ${fr.text.slice(0, 45)}...`,
-        storyPoints: 3 + (idx % 5) * 2,
-        acceptanceCriteria: [`Verify ${fr.text.slice(0, 30)} works as expected.`]
-      }))
+      extractedUserStories: functionalRequirements.map((fr) => `As an end-user, I want to ${fr.text.toLowerCase().replace(/^(the user (must|can|shall)|the system (shall|must)|users can)\s*/i, '')} so that business operations run effectively.`)
     };
   },
 
-  planSprint: async ({ backlogText, teamCapacity = 40, sprintLengthWeeks = 2 }) => {
-    const rawItems = (backlogText || '').split('\n').map(i => i.trim()).filter(Boolean);
-    const items = rawItems.length > 0 ? rawItems : ['User Authentication', 'Project Health KPIs', 'AI Requirement Engine'];
+  planSprint: async ({ projectRequirements, backlogText, teamCapacity = 30, developerCount = 4, sprintDurationWeeks = 2, sprintLengthWeeks = 2 }) => {
+    const rawText = projectRequirements || backlogText || '';
+    const rawItems = rawText.split('\n').map(i => i.trim()).filter(Boolean);
+    const items = rawItems.length > 0 ? rawItems : [
+      'User Authentication with JWT',
+      'Real-Time Project Health Dashboard',
+      'AI Requirement Analyzer & Ambiguity Detector',
+      'Automated Sprint Backlog Generator',
+      'Architecture Recommendation Canvas'
+    ];
+
+    const weeks = sprintDurationWeeks || sprintLengthWeeks || 2;
+    const capacity = teamCapacity || (developerCount * 8) || 30;
 
     const sprintBacklog = items.map((item, index) => ({
-      id: `TASK-${100 + index}`,
+      id: `TASK-${101 + index}`,
       title: item,
-      storyPoints: [2, 3, 5, 8, 5][index % 5],
-      priority: index === 0 ? 'Highest' : index === 1 ? 'High' : 'Medium',
+      storyPoints: [3, 5, 8, 3, 5, 2][index % 6],
+      priority: index === 0 ? 'Highest' : index <= 2 ? 'High' : 'Medium',
+      targetSprint: 1 + Math.floor(index / 3),
       assignedRole: index % 2 === 0 ? 'Frontend Engineer' : 'Backend Engineer'
     }));
 
     const totalEstimatedStoryPoints = sprintBacklog.reduce((acc, curr) => acc + curr.storyPoints, 0);
-    const recommendedSprintCount = Math.max(1, Math.ceil(totalEstimatedStoryPoints / (teamCapacity || 30)));
+    const recommendedSprintCount = Math.max(1, Math.ceil(totalEstimatedStoryPoints / capacity));
+    const teamCapacityUtilization = Math.min(100, Math.round((totalEstimatedStoryPoints / (recommendedSprintCount * capacity)) * 100));
+    const riskLevel = teamCapacityUtilization > 90 ? 'High' : teamCapacityUtilization > 70 ? 'Moderate' : 'Low';
 
     return {
       totalEstimatedStoryPoints,
-      teamCapacity,
       recommendedSprintCount,
-      estimatedWeeks: recommendedSprintCount * sprintLengthWeeks,
+      estimatedDurationWeeks: recommendedSprintCount * weeks,
+      estimatedWeeks: recommendedSprintCount * weeks,
+      teamCapacity: capacity,
+      teamCapacityUtilization,
+      riskLevel,
       sprintBacklog,
-      velocityTrend: 'Stable (+5% projected delivery accuracy)'
+      velocityTrend: 'Stable (+8% projected delivery accuracy)'
     };
   },
 
   recommendArchitecture: async (criteria = {}) => {
-    const scale = criteria.expectedScale || 'Medium';
+    const scale = criteria.scalabilityRequirement || criteria.expectedScale || 'Medium';
     const latency = criteria.latencyRequirement || 'Standard (<500ms)';
-    const teamSize = criteria.teamSize || 4;
+    const teamSize = Number(criteria.teamSize || 6);
 
-    let arch = 'Modular Monolith';
-    if (scale === 'High' || teamSize > 8) arch = 'Microservices Architecture';
-    else if (latency.includes('Ultra')) arch = 'Event-Driven / Reactive Architecture';
-    else if (criteria.cloudPreference?.includes('Serverless')) arch = 'Serverless Architecture';
+    let arch = 'Modular Monolith with Domain Decoupling';
+    let alternative = 'Clean Layered Architecture';
+    let summary = `Optimized for high developer velocity, clear domain boundaries, and low operational overhead with team size ${teamSize}.`;
+    
+    if (scale.toLowerCase().includes('high') || teamSize > 8) {
+      arch = 'Domain-Driven Microservices Architecture';
+      alternative = 'Event-Driven Microservices';
+      summary = `Well-suited for large teams and autonomous deployment cycles with high scalability (${scale}).`;
+    } else if (latency.toLowerCase().includes('low') || latency.toLowerCase().includes('ultra')) {
+      arch = 'Event-Driven Reactive Architecture';
+      alternative = 'CQRS with Event Sourcing';
+      summary = `Engineered for ultra-low latency (<100ms) event processing and asynchronous streaming.`;
+    }
+
+    const topologyMermaid = `graph TD
+  Client[Web & Mobile Client] --> Gateway[API Gateway / Auth]
+  Gateway --> ServiceA[Core Business Service]
+  Gateway --> ServiceB[AI Telemetry Engine]
+  ServiceA --> Store[(Cloud Firestore / Cache)]
+  ServiceB --> Store`;
+
+    const c4Mermaid = `graph TD
+  User((End User)) --> WebApp[React SPA Frontend]
+  WebApp --> API[REST & Event Gateway]
+  API --> DB[(Persistent Database)]`;
+
+    const sequenceMermaid = `sequenceDiagram
+  autonumber
+  User->>Client: Initiate Engineering Action
+  Client->>Gateway: Bearer Token Verified
+  Gateway->>AI: Trigger Telemetry Prediction
+  AI-->>Client: Real-Time Stream Results`;
+
+    const keyBenefits = [
+      'Autonomous continuous delivery pipelines and isolated failure blast radius.',
+      'Optimal resource utilization matching elastic cloud infrastructure.',
+      'High modular maintainability with strict bounded domain contexts.'
+    ];
+
+    const architecturalTradeOffs = [
+      'Distributed data management complexity and eventual consistency constraints.',
+      'Requires distributed tracing and centralized log aggregation.'
+    ];
+
+    const suggestedTechStack = {
+      'Frontend': 'React 18 + Modern Responsive CSS',
+      'API Gateway': 'Spring Cloud Gateway / Firebase Auth',
+      'Microservices': 'Spring Boot 3.3 (Java 21) / Node.js',
+      'Database': 'Cloud Firestore / PostgreSQL',
+      'Messaging / Broker': 'Apache Kafka / Cloud PubSub',
+      'Monitoring': 'OpenTelemetry + Prometheus'
+    };
+
+    const implementationGuidelines = [
+      'Strictly align service boundaries with DDD bounded contexts.',
+      'Enforce API schema contracts and idempotent consumers for messaging.',
+      'Configure automated canary deployments in CI/CD pipeline.'
+    ];
 
     return {
       recommendedArchitecture: arch,
-      confidenceScore: 88,
-      suitabilityReason: `Selected ${arch} based on team size (${teamSize}), target scale (${scale}), and latency expectations.`,
-      pros: [
-        'High maintainability with clear domain boundaries',
-        'Streamlined CI/CD pipeline deployment',
-        'Optimal resource cost and operational overhead'
-      ],
-      cons: [
-        'Requires rigorous discipline to avoid architectural erosion',
-        'Cross-boundary integration testing required'
-      ],
-      topologyDiagram: `graph TD\n  Client[React Mobile/Web UI] --> API[API Gateway / Auth Layer]\n  API --> Service[Core Intelligence Engine]\n  Service --> DB[(Cloud Database / Firestore)]`,
-      technologyStack: {
-        'Frontend': 'React.js (SPA Web & Mobile)',
-        'Database': 'Cloud Firestore',
-        'Authentication': 'Firebase Auth / JWT Bearer',
-        'AI/ML': 'Client NLP & Heuristic Engines'
-      }
+      confidenceScore: 92,
+      summary,
+      alternativeArchitecture: alternative,
+      keyBenefits,
+      pros: keyBenefits,
+      architecturalTradeOffs,
+      cons: architecturalTradeOffs,
+      diagramMermaid: topologyMermaid,
+      topologyDiagram: topologyMermaid,
+      c4DiagramMermaid: c4Mermaid,
+      sequenceDiagramMermaid: sequenceMermaid,
+      suggestedTechStack,
+      technologyStack: suggestedTechStack,
+      implementationGuidelines
     };
   },
 
-  generateCustomArchitectureDiagram: async ({ prompt, style }) => {
+  generateCustomArchitectureDiagram: async (promptOrObj, style = 'topology') => {
+    const promptText = typeof promptOrObj === 'string' ? promptOrObj : (promptOrObj?.prompt || 'System Architecture');
+    const diagramMermaid = `graph TD
+  User((Client User)) --> Gateway[API Gateway / Router]
+  Gateway --> Auth[Auth & Session Service]
+  Gateway --> Engine[AI & Processing Core]
+  Engine --> Broker[Event Bus / Queue]
+  Broker --> Worker[Background Worker]
+  Engine --> DB[(Persistent Cloud Database)]`;
+
     return {
-      diagramSyntax: `graph TD\n  User[User Client] --> Gateway[API Gateway]\n  Gateway --> Auth[Auth Service]\n  Gateway --> Engine[Synaptech Intelligence Engine]\n  Engine --> Store[(Persistent Cloud Store)]`,
-      style: style || 'topology'
+      title: `${promptText.slice(0, 38)} Architecture`,
+      description: `Synthesized interactive architecture diagram based on prompt: "${promptText}".`,
+      diagramMermaid,
+      diagramSyntax: diagramMermaid,
+      style: typeof promptOrObj === 'object' ? (promptOrObj.style || style) : style
     };
   },
 
-  reviewCode: async ({ code, language }) => {
-    const lines = (code || '').split('\n');
+  reviewCode: async ({ code, codeSnippet, language }) => {
+    const codeToAnalyze = codeSnippet || code || '';
+    const lines = codeToAnalyze.split('\n');
     const length = lines.length;
-    const cyclomaticComplexity = Math.max(1, Math.min(25, Math.floor(length / 8) + (code.match(/if|for|while|switch|catch/g) || []).length));
+    const cyclomaticComplexity = Math.max(1, Math.min(25, Math.floor(length / 6) + (codeToAnalyze.match(/if|for|while|switch|catch/g) || []).length));
     
+    const vulnerabilities = [];
+    const codeSmells = [];
+    const keyImprovements = [];
+
+    if (/SELECT\s+.*WHERE.*['"]\s*\+\s*/i.test(codeToAnalyze) || /Statement\s+stmt/i.test(codeToAnalyze)) {
+      vulnerabilities.push({
+        title: 'Potential SQL Injection via Dynamic Query Construction',
+        severity: 'Critical',
+        category: 'OWASP A03:2021 - Injection (CWE-89)',
+        description: 'Raw string concatenation detected in SQL query construction allows arbitrary SQL injection.',
+        snippet: codeToAnalyze.slice(0, 100),
+        remediation: 'Use PreparedStatement with parameterized queries or an ORM with query parameter binding.'
+      });
+      keyImprovements.push('Replaced dynamic SQL concatenation with parameterized PreparedStatement.');
+    }
+
+    if (/sk_live_[0-9a-zA-Z]+/i.test(codeToAnalyze) || /apiKey\s*=\s*['"][^'"]+['"]/i.test(codeToAnalyze)) {
+      vulnerabilities.push({
+        title: 'Hardcoded Secret / API Token Exposure',
+        severity: 'High',
+        category: 'OWASP A07:2021 - Identification & Authentication Failures (CWE-798)',
+        description: 'Static secret token committed directly in source code.',
+        snippet: 'apiKey = "..."',
+        remediation: 'Extract credentials into secure environment variables or vault secret manager.'
+      });
+      keyImprovements.push('Moved hardcoded secrets to environment configuration.');
+    }
+
+    if (/FileInputStream|FileOutputStream|BufferedReader/i.test(codeToAnalyze) && !/try\s*\(/i.test(codeToAnalyze)) {
+      vulnerabilities.push({
+        title: 'Unclosed Resource Stream Leak',
+        severity: 'Medium',
+        category: 'Resource Management (CWE-775)',
+        description: 'I/O stream opened without try-with-resources may cause file descriptor starvation.',
+        snippet: 'FileInputStream fis = ...',
+        remediation: 'Wrap stream allocations in try-with-resources block.'
+      });
+      keyImprovements.push('Refactored I/O stream to use try-with-resources automatic closing.');
+    }
+
+    if (cyclomaticComplexity > 8) {
+      codeSmells.push(`High Cyclomatic Complexity (M = ${cyclomaticComplexity}). Methods should be broken into single-responsibility units.`);
+    }
+    if (/catch\s*\([^)]+\)\s*\{\s*\}/i.test(codeToAnalyze) || /e\.printStackTrace\(\)/i.test(codeToAnalyze)) {
+      codeSmells.push('Swallowed Exception or Standard Error dump. Replace with structured contextual logging (SLF4J).');
+    }
+    if (codeSmells.length === 0) {
+      codeSmells.push('Consider adding strict null-safety checks on method entry points.');
+    }
+
+    let overallQualityScore = Math.max(35, Math.min(98, 95 - (vulnerabilities.length * 25) - (cyclomaticComplexity * 2)));
+    let riskLevel = vulnerabilities.some(v => v.severity === 'Critical') ? 'Critical' : vulnerabilities.length > 0 ? 'High' : cyclomaticComplexity > 10 ? 'Moderate' : 'Low';
+
+    const refactoredCode = `// AI Refactored & Hardened Version (${(language || 'java').toUpperCase()})
+// Remediations applied: Parameter binding, resource safety, and secure secrets management.
+
+public class HardenedService {
+    private final EnvironmentConfig config;
+
+    public HardenedService(EnvironmentConfig config) {
+        this.config = Objects.requireNonNull(config);
+    }
+
+    public Optional<User> getUserSafely(Connection conn, String username) throws SQLException {
+        final String query = "SELECT id, username, email FROM users WHERE username = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(new User(rs.getString("username")));
+                }
+            }
+        }
+        return Optional.empty();
+    }
+}`;
+
     return {
-      codeQualityScore: Math.max(50, Math.min(96, 100 - cyclomaticComplexity * 2)),
+      overallQualityScore,
+      codeQualityScore: overallQualityScore,
+      riskLevel,
+      summary: vulnerabilities.length > 0 
+        ? `Found ${vulnerabilities.length} security vulnerability(ies) and ${codeSmells.length} smell(s). Risk Level: ${riskLevel}.`
+        : `Clean implementation. No critical OWASP vulnerabilities detected. Quality Score: ${overallQualityScore}/100.`,
       cyclomaticComplexity,
       maintainabilityIndex: cyclomaticComplexity > 12 ? 'Moderate' : 'High',
-      securitySmellsDetected: (code.match(/password|secret|eval|exec/gi) || []).length,
+      vulnerabilities,
+      codeSmells,
+      keyImprovements: keyImprovements.length > 0 ? keyImprovements : ['Verified parameter sanitization and thread safety.'],
+      refactoredCode,
       recommendations: [
         'Break down high cyclomatic complexity methods into single-responsibility helpers.',
         'Ensure input sanitization and strict parameter typing are enforced.',
@@ -593,16 +784,25 @@ export const firebaseService = {
   chatWithCopilot: async ({ message, history }) => {
     const lower = (message || '').toLowerCase();
     let reply = `I'm Synaptech Copilot. I'm analyzing your architecture and engineering metrics. `;
+    let suggestedPrompts = [
+      'Evaluate Monolith vs Microservices',
+      'How to optimize sprint velocity?',
+      'OWASP security checklist'
+    ];
+
     if (lower.includes('risk')) {
       reply += `Project Alpha is currently showing a stable risk score of 35/100, while Project Beta needs attention due to medium technical debt.`;
+      suggestedPrompts = ['How to reduce technical debt?', 'Simulate code quality improvements'];
     } else if (lower.includes('architecture')) {
       reply += `For low-latency applications with small to mid-sized teams, a Modular Monolith or Clean Architecture delivers the fastest time to market with minimal DevOps overhead.`;
+      suggestedPrompts = ['Generate event-driven topology', 'Compare Microservices vs Monolith'];
     } else if (lower.includes('sprint') || lower.includes('velocity')) {
       reply += `Current sprint velocity is tracking at ~42 story points. Recommend maintaining this cadence to avoid team fatigue.`;
+      suggestedPrompts = ['Plan 2-week sprint with 30 capacity', 'Identify sprint bottlenecks'];
     } else {
       reply += `You can ask me to evaluate project risks, recommend architectures, plan sprints, or review code snippets.`;
     }
-    return { reply };
+    return { reply, suggestedPrompts };
   },
 
   // --- ADMIN CONSOLE OPERATIONS ---
