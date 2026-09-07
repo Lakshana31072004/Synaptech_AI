@@ -789,26 +789,278 @@ public class HardenedService {
   },
 
   chatWithCopilot: async ({ message, history }) => {
-    const lower = (message || '').toLowerCase();
-    let reply = `I'm Synaptech Copilot. I'm analyzing your architecture and engineering metrics. `;
-    let suggestedPrompts = [
-      'Evaluate Monolith vs Microservices',
-      'How to optimize sprint velocity?',
-      'OWASP security checklist'
-    ];
+    const raw = (message || '').trim();
+    const lower = raw.toLowerCase();
 
-    if (lower.includes('risk')) {
-      reply += `Project Alpha is currently showing a stable risk score of 35/100, while Project Beta needs attention due to medium technical debt.`;
-      suggestedPrompts = ['How to reduce technical debt?', 'Simulate code quality improvements'];
-    } else if (lower.includes('architecture')) {
-      reply += `For low-latency applications with small to mid-sized teams, a Modular Monolith or Clean Architecture delivers the fastest time to market with minimal DevOps overhead.`;
-      suggestedPrompts = ['Generate event-driven topology', 'Compare Microservices vs Monolith'];
-    } else if (lower.includes('sprint') || lower.includes('velocity')) {
-      reply += `Current sprint velocity is tracking at ~42 story points. Recommend maintaining this cadence to avoid team fatigue.`;
-      suggestedPrompts = ['Plan 2-week sprint with 30 capacity', 'Identify sprint bottlenecks'];
+    // Fetch active live data from local store to make answers dynamically context-aware
+    const healthData = clientStore.getHealth();
+    const projects = clientStore.getProjects();
+    const users = clientStore.getUsers();
+
+    const pAlphaHealth = healthData[1] || { riskScore: 35, sprintVelocity: 42, bugTrend: 'decreasing', technicalDebt: 'low', codeQualityIndex: 88 };
+    const pBetaHealth = healthData[2] || { riskScore: 60, sprintVelocity: 30, bugTrend: 'stable', technicalDebt: 'medium', codeQualityIndex: 72 };
+
+    let reply = '';
+    let suggestedPrompts = [];
+
+    // --- 1. ARCHITECTURE: MONOLITH VS MICROSERVICES ---
+    if (lower.includes('monolith') || lower.includes('microservice') || lower.includes('modular') || lower.includes('decouple') || lower.includes('soa')) {
+      reply = `### Architecture Evaluation: Modular Monolith vs Microservices
+
+When evaluating system topology for your organization, consider team size, organizational maturity, and scaling requirements:
+
+#### 1. Modular Monolith (Recommended for teams < 15 engineers)
+- **Strengths:** High developer velocity, single CI/CD pipeline, zero inter-service network latency, unified ACID database transactions, and simple local debugging.
+- **Trade-offs:** Single point of deployment; requires strict module boundaries (e.g. package encapsulation or Hexagonal/Clean Architecture) to prevent accidental code coupling.
+- **Best Suited For:** Early-to-growth stage platforms, small-to-mid engineering squads, and domain models that are still evolving.
+
+#### 2. Microservices Architecture
+- **Strengths:** Independent deployment and autoscaling per bounded context (e.g., scaling an AI inference or payment worker independently from authentication), autonomous team ownership, and heterogeneous tech stacks.
+- **Trade-offs:** High operational and DevOps complexity, distributed transaction overhead (requires Saga pattern or Eventual Consistency), network latency, and observability challenges (requires OpenTelemetry / distributed tracing).
+
+#### Recommendation & Synaptech Guidance:
+Start with a **Modular Monolith** using strict domain boundaries. As specific bounded contexts experience 10x higher load or require isolated deployment cadences, peel them off into dedicated microservices.
+
+*Tip: Navigate to the **🏛️ Architecture Advisor** tab to interactively generate a C4 system container diagram tailored to your team!*`;
+
+      suggestedPrompts = [
+        'Explain the Saga pattern for distributed transactions',
+        'How to set up an API Gateway with Spring Cloud?',
+        'Explain Event-Driven architecture with Kafka'
+      ];
+
+    // --- 2. PROJECT RISKS & HEALTH TELEMETRY ---
+    } else if (lower.includes('risk') || lower.includes('health') || lower.includes('project alpha') || lower.includes('project beta') || lower.includes('telemetry') || lower.includes('kpi') || lower.includes('defect')) {
+      reply = `### AI Project Health & Risk Evaluation Report
+
+Here is the real-time engineering telemetry synthesized across your active projects:
+
+#### 🟢 Project Alpha: Healthy (Risk Score: ${pAlphaHealth.riskScore}/100)
+- **Sprint Velocity:** ${pAlphaHealth.sprintVelocity} pts / sprint (High Throughput)
+- **Code Quality Index:** ${pAlphaHealth.codeQualityIndex}/100
+- **Technical Debt:** ${pAlphaHealth.technicalDebt.toUpperCase()}
+- **Bug Trend:** ${pAlphaHealth.bugTrend.toUpperCase()}
+- **Assessment:** Project Alpha is operating on schedule with clean architectural boundaries and decreasing defect influx. Maintain the current 42-point velocity.
+
+#### 🟡 Project Beta: Moderate Risk (Risk Score: ${pBetaHealth.riskScore}/100)
+- **Sprint Velocity:** ${pBetaHealth.sprintVelocity} pts / sprint
+- **Code Quality Index:** ${pBetaHealth.codeQualityIndex}/100
+- **Technical Debt:** ${pBetaHealth.technicalDebt.toUpperCase()}
+- **Assessment:** Elevated risk due to accumulating technical debt and slower defect resolution.
+
+#### Actionable Mitigation Strategies:
+1. **Debt Allocation:** Dedicate 20% of Project Beta's next sprint capacity to refactoring high-cyclomatic complexity methods.
+2. **Defect Triage:** Implement automated static analysis checks in CI to arrest defect accumulation.
+3. **Capacity Cap:** Prevent story point inflation by limiting active work-in-progress (WIP) to 2 items per engineer.
+
+*Tip: Use the **AI Risk Simulator** on your Dashboard to test the impact of code reviews and velocity on the risk score.*`;
+
+      suggestedPrompts = [
+        'How to reduce technical debt in Project Beta?',
+        'Simulate code quality improvements',
+        'How to optimize sprint velocity?'
+      ];
+
+    // --- 3. SPRINT PLANNING & VELOCITY ---
+    } else if (lower.includes('sprint') || lower.includes('velocity') || lower.includes('capacity') || lower.includes('backlog') || lower.includes('scrum') || lower.includes('story point') || lower.includes('dor') || lower.includes('dod') || lower.includes('agile')) {
+      reply = `### Agile Velocity & Sprint Capacity Optimization Framework
+
+To achieve predictable delivery cadence and eliminate sprint carryover:
+
+#### 1. The 80/20 Capacity Principle
+- Never commit 100% of nominal team capacity to new feature delivery.
+- Reserve **80%** for planned product backlog items and **20%** as an unallocated buffer for code reviews, production defects, and technical debt.
+
+#### 2. Enforce a Strict Definition of Ready (DoR)
+A user story must NOT enter an active sprint unless it meets:
+- **Quantified Acceptance Criteria:** Written in verifiable Gherkin format (*Given-When-Then*).
+- **UX & Technical Spec:** UI assets attached and backend API contracts agreed upon.
+- **Zero Unresolved Blockers:** External dependencies must be resolved ahead of time.
+
+#### 3. Vertical Story Slicing
+- Break down any user story larger than 8 story points into smaller vertical slices (2 to 5 points each).
+- Vertical slicing ensures each increment touches UI, business logic, and database, enabling continuous deployment.
+
+#### 4. Team Metrics
+- Active Developers: ${users.filter(u => !u.roles?.includes('ROLE_ADMIN')).length || 3} engineers
+- Target Sprint Length: 2 Weeks
+- Recommended Commitment: ${Math.round((pAlphaHealth.sprintVelocity || 42) * 0.85)} story points
+
+*Tip: Check the **⚡ Sprint Planner** module to automatically synthesize sprint backlogs from raw requirements!*`;
+
+      suggestedPrompts = [
+        'Generate a sample Definition of Done (DoD)',
+        'How to handle carryover sprint points?',
+        'Evaluate Monolith vs Microservices'
+      ];
+
+    // --- 4. OWASP & CODE SECURITY ---
+    } else if (lower.includes('owasp') || lower.includes('security') || lower.includes('vulnerability') || lower.includes('sql injection') || lower.includes('xss') || lower.includes('csrf') || lower.includes('jwt') || lower.includes('auth') || lower.includes('token') || lower.includes('hash')) {
+      reply = `### OWASP Top 10 Security Hardening Checklist
+
+Key engineering safeguards to verify across your application services:
+
+#### 1. Injection Prevention (A03:2021)
+- Always utilize parameterized queries (e.g. JPA / Hibernate bind parameters or \`PreparedStatement\`).
+- Never build SQL queries by concatenating raw user inputs:
+\`\`\`sql
+-- SECURE: Parameterized query
+SELECT * FROM users WHERE username = :username;
+\`\`\`
+
+#### 2. Broken Access Control (A01:2021)
+- Enforce role verification on every API endpoint on the server side:
+\`\`\`java
+@PreAuthorize("hasRole('ADMIN')")
+@DeleteMapping("/users/{id}")
+\`\`\`
+- Never rely solely on hiding frontend buttons or client-side routing.
+
+#### 3. Cryptographic Failures & Credential Storage (A02:2021)
+- Store passwords using adaptive key-derivation functions (**BCrypt**, Argon2id, or PBKDF2) with work factor >= 12.
+- Enforce **HttpOnly, Secure, SameSite=Strict** cookies for JWT tokens to neutralize XSS token exfiltration.
+
+#### 4. Cross-Site Scripting (XSS) & Input Sanitization
+- Escape user-supplied data in React JSX and encode HTML output.
+- Configure Content Security Policy (CSP) headers in your reverse proxy/gateway.
+
+*Tip: Paste suspect code into the **🛡️ Code Review** tab for automated OWASP vulnerability inspection!*`;
+
+      suggestedPrompts = [
+        'How to prevent JWT replay attacks?',
+        'Explain CORS vs CSRF protections',
+        'Review code for security vulnerabilities'
+      ];
+
+    // --- 5. EVENT-DRIVEN & MESSAGING ---
+    } else if (lower.includes('event') || lower.includes('kafka') || lower.includes('rabbitmq') || lower.includes('pubsub') || lower.includes('cqrs') || lower.includes('saga') || lower.includes('messaging')) {
+      reply = `### Event-Driven Architecture & Distributed Systems Guide
+
+Event-Driven Architecture (EDA) decouples producers from consumers using asynchronous event streams:
+
+#### 1. Core Architectural Patterns
+- **CQRS (Command Query Responsibility Segregation):** Separate command models (writes, state modifications) from query models (read-optimized read replicas or Elasticsearch/Redis projections).
+- **The Saga Pattern:** Coordinates multi-service transactions without two-phase commit (2PC). Use **Choreography** (events trigger next steps) or **Orchestration** (central orchestrator coordinates steps and compensations).
+- **Transactional Outbox:** Write events into a local database table within the business transaction, then asynchronously tail or publish to Kafka to guarantee *at-least-once* delivery.
+
+#### 2. Message Broker Selection: Kafka vs RabbitMQ
+- **Apache Kafka:** High-throughput, distributed append-only log. Ideal for event sourcing, telemetry streams, and event replay.
+- **RabbitMQ:** Advanced AMQP routing, granular queues, and push-based delivery. Ideal for discrete background task distribution and RPC-style processing.
+
+*Tip: Use our **🏛️ Architecture Advisor** to generate an Event-Driven topology diagram with Kafka and Redis!*`;
+
+      suggestedPrompts = [
+        'Kafka vs RabbitMQ: Which should I choose?',
+        'Explain the Transactional Outbox pattern',
+        'How to handle schema evolution in event streams?'
+      ];
+
+    // --- 6. TECHNICAL DEBT & CLEAN CODE ---
+    } else if (lower.includes('debt') || lower.includes('clean code') || lower.includes('refactor') || lower.includes('smell') || lower.includes('solid') || lower.includes('complexity')) {
+      reply = `### Technical Debt Remediation & Clean Code Architecture
+
+Technical debt compounds over time if left unmanaged. Here is the recommended remediation roadmap:
+
+#### 1. The 3-Tier Debt Reduction Strategy
+1. **The Boy Scout Rule:** Leave every touched file slightly cleaner than you found it during regular feature development.
+2. **Dedicated Refactoring Tickets:** Allocate 15-20% of every sprint to high-churn, low-maintainability classes.
+3. **Automated CI Gates:** Fail builds if cyclomatic complexity exceeds 15 or if test coverage drops below established thresholds.
+
+#### 2. SOLID Design Principles Summary
+- **S - Single Responsibility:** A class should have one, and only one, reason to change.
+- **O - Open/Closed:** Open for extension, closed for modification (use polymorphism/strategy patterns).
+- **L - Liskov Substitution:** Derived types must be completely substitutable for their base types.
+- **I - Interface Segregation:** Clients should not be forced to depend on interfaces they do not use.
+- **D - Dependency Inversion:** Depend upon abstractions, not concrete implementations.
+
+*Tip: Use the **🛡️ Code Review** tab to automatically calculate cyclomatic complexity and receive AI refactoring snippets!*`;
+
+      suggestedPrompts = [
+        'How to calculate Technical Debt Index?',
+        'Explain SOLID principles with code examples',
+        'Review code for code smells'
+      ];
+
+    // --- 7. REQUIREMENTS & NLP ---
+    } else if (lower.includes('requirement') || lower.includes('user story') || lower.includes('ambigu') || lower.includes('spec') || lower.includes('nlp')) {
+      reply = `### Writing High-Quality, Unambiguous Requirements
+
+Ambiguous requirements account for over 45% of software defects. Follow this standard:
+
+#### 1. Avoid Subjective Adjectives
+- ❌ *"The system must be ultra-fast and easy to use."*
+- ✅ *"The search API must respond within 200ms at the 95th percentile under 2,000 concurrent requests."*
+
+#### 2. Standard Agile User Story Format
+- *"As a [Specific Persona], I want to [Perform an Action], so that [Business Benefit Achieved]."*
+
+#### 3. Acceptance Criteria in Gherkin
+\`\`\`gherkin
+Given an authenticated user with ROLE_ADMIN
+When they delete a user account
+Then the user is removed from active sessions and audit logged
+\`\`\`
+
+*Tip: Paste your requirement document into the **🔍 Requirement Analyzer** module to detect ambiguous terms and synthesize stories!*`;
+
+      suggestedPrompts = [
+        'How does NLP ambiguity detection work?',
+        'Convert legacy requirements to Agile stories',
+        'Evaluate Monolith vs Microservices'
+      ];
+
+    // --- 8. SYNAPTECH PLATFORM OVERVIEW & CAPABILITIES ---
+    } else if (lower.includes('synaptech') || lower.includes('help') || lower.includes('what can you do') || lower.includes('features') || lower.includes('overview') || lower.includes('how to use')) {
+      reply = `### Welcome to Synaptech AI - Autonomous Software Engineering Platform 🧠
+
+I am your intelligent assistant integrated across all 6 core platform capabilities:
+
+1. **📊 Telemetry & Health Dashboard:** Real-time engineering vitals, defect influx tracking, and interactive risk simulation.
+2. **🔍 Requirement Analyzer:** Natural Language Processing (NLP) to detect ambiguous specifications and synthesize Agile user stories.
+3. **⚡ Sprint Planner:** Automated story point capacity modeling, velocity forecasting, and balanced sprint backlog synthesis.
+4. **🏛️ Architecture Advisor:** Live visual diagram canvas (Mermaid.js), C4 model generation, and architectural trade-off evaluations.
+5. **🛡️ Code Review & Security:** Automated OWASP Top 10 vulnerability scanner, cyclomatic complexity profiling, and safe refactoring.
+6. **👤 Admin Console:** User governance, role management (ROLE_USER, ROLE_ADMIN), password resets, and immutable audit logging.
+
+What engineering challenge would you like to tackle today?`;
+
+      suggestedPrompts = [
+        'Evaluate Monolith vs Microservices',
+        'Evaluate project risks',
+        'How to optimize sprint velocity?'
+      ];
+
+    // --- 9. INTELLIGENT DYNAMIC TECHNICAL INQUIRY ENGINE ---
     } else {
-      reply += `You can ask me to evaluate project risks, recommend architectures, plan sprints, or review code snippets.`;
+      reply = `### Synaptech Copilot: Architectural Analysis
+
+Regarding your inquiry on **"${raw}"**:
+
+#### 1. Architectural Context & Overview
+In modern enterprise software engineering, addressing **${raw}** requires balancing scalability, maintainability, and operational simplicity. Key considerations include:
+- **Separation of Concerns:** Keep business domain logic isolated from external infrastructure and transport layers.
+- **Resilience & Fault Tolerance:** Ensure graceful degradation using timeouts, circuit breakers, and retry policies with exponential backoff.
+- **Observability:** Emit structured logs, metrics (RED/USE metrics), and distributed tracing IDs across transactions.
+
+#### 2. Recommended Best Practices
+1. **Declarative Contracts:** Define explicit API specifications (OpenAPI / Protocol Buffers) before implementation.
+2. **Automated Testing:** Guard critical paths with unit tests, integration tests against containerized databases (Testcontainers), and regression suites.
+3. **Continuous Verification:** Implement automated security and code quality gates within CI/CD pipelines.
+
+#### 3. How Synaptech Accelerates This:
+- Use the **🏛️ Architecture Advisor** to visualize system components and data flows.
+- Use the **🛡️ Code Review** module to audit code snippets for vulnerabilities and complexity.
+- Use the **⚡ Sprint Planner** to organize deliverables into predictable 2-week iterations.
+
+Feel free to ask for specific code implementations, architectural patterns, or deep-dive trade-offs!`;
+
+      suggestedPrompts = [
+        'Evaluate Monolith vs Microservices',
+        'Evaluate project risks',
+        'OWASP security checklist'
+      ];
     }
+
     return { reply, suggestedPrompts };
   },
 

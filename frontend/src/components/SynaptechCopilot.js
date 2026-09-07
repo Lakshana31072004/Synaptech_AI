@@ -142,6 +142,93 @@ const SynaptechCopilot = ({
     setSuggestions(INITIAL_SUGGESTIONS);
   };
 
+  const renderFormattedMessage = (content) => {
+    if (!content) return null;
+    const lines = content.split('\n');
+    const elements = [];
+    let currentList = [];
+
+    const flushList = () => {
+      if (currentList.length > 0) {
+        elements.push(
+          <ul key={`ul-${elements.length}`} style={{ margin: '6px 0 10px 0', paddingLeft: '20px' }}>
+            {currentList.map((item, idx) => (
+              <li key={idx} style={{ marginBottom: '4px' }}>
+                {formatInlineTokens(item)}
+              </li>
+            ))}
+          </ul>
+        );
+        currentList = [];
+      }
+    };
+
+    const formatInlineTokens = (str) => {
+      const parts = [];
+      const regex = /(\*\*.*?\*\*|`.*?`|\*.*?\*)/g;
+      let lastIndex = 0;
+      let match;
+
+      while ((match = regex.exec(str)) !== null) {
+        if (match.index > lastIndex) {
+          parts.push(str.substring(lastIndex, match.index));
+        }
+        const token = match[0];
+        if (token.startsWith('**') && token.endsWith('**')) {
+          parts.push(<strong key={match.index} style={{ color: '#93c5fd' }}>{token.slice(2, -2)}</strong>);
+        } else if (token.startsWith('`') && token.endsWith('`')) {
+          parts.push(<code key={match.index} style={{ background: 'rgba(255,255,255,0.1)', padding: '2px 5px', borderRadius: '4px', fontSize: '0.85em', color: '#f43f5e' }}>{token.slice(1, -1)}</code>);
+        } else if (token.startsWith('*') && token.endsWith('*')) {
+          parts.push(<em key={match.index} style={{ color: '#cbd5e1' }}>{token.slice(1, -1)}</em>);
+        }
+        lastIndex = regex.lastIndex;
+      }
+      if (lastIndex < str.length) {
+        parts.push(str.substring(lastIndex));
+      }
+      return parts.length > 0 ? parts : str;
+    };
+
+    lines.forEach((line, i) => {
+      const trimmed = line.trim();
+      if (!trimmed) {
+        flushList();
+        elements.push(<div key={`sp-${i}`} style={{ height: '6px' }} />);
+        return;
+      }
+
+      if (trimmed.startsWith('### ')) {
+        flushList();
+        elements.push(
+          <h4 key={`h4-${i}`} style={{ margin: '10px 0 6px 0', color: '#60a5fa', fontSize: '0.98rem', fontWeight: 700 }}>
+            {formatInlineTokens(trimmed.substring(4))}
+          </h4>
+        );
+      } else if (trimmed.startsWith('#### ')) {
+        flushList();
+        elements.push(
+          <h5 key={`h5-${i}`} style={{ margin: '8px 0 4px 0', color: '#93c5fd', fontSize: '0.90rem', fontWeight: 600 }}>
+            {formatInlineTokens(trimmed.substring(5))}
+          </h5>
+        );
+      } else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+        currentList.push(trimmed.substring(2));
+      } else if (/^\d+\.\s/.test(trimmed)) {
+        currentList.push(trimmed.replace(/^\d+\.\s/, ''));
+      } else {
+        flushList();
+        elements.push(
+          <p key={`p-${i}`} style={{ margin: '0 0 6px 0', lineHeight: 1.55 }}>
+            {formatInlineTokens(line)}
+          </p>
+        );
+      }
+    });
+
+    flushList();
+    return elements;
+  };
+
   return (
     <>
       {/* 1. Closed State: Floating Trigger Launcher */}
@@ -278,7 +365,11 @@ const SynaptechCopilot = ({
                   <div className="message-header-meta">
                     {msg.role === 'user' ? '👤 You' : '🧠 Copilot'}
                   </div>
-                  <div style={{ whiteSpace: 'pre-wrap' }}>{msg.text}</div>
+                  {msg.role === 'user' ? (
+                    <div style={{ whiteSpace: 'pre-wrap' }}>{msg.text}</div>
+                  ) : (
+                    <div className="message-formatted-content">{renderFormattedMessage(msg.text)}</div>
+                  )}
                 </div>
               ))}
               {loading && (
