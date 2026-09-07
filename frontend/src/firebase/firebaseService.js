@@ -66,14 +66,6 @@ const DEFAULT_USERS = [
     email: 'subbu@synaptech.ai', 
     roles: ['ROLE_USER'], 
     profilePictureUrl: '/uploads/a581ca53-b55c-41eb-9a24-2b92e9c2a68d_1784035870485.png' 
-  },
-  { 
-    id: 3, 
-    username: 'lucky', 
-    password: 'lucky123', 
-    email: 'lucky@synaptech.ai', 
-    roles: ['ROLE_USER'], 
-    profilePictureUrl: null 
   }
 ];
 
@@ -120,9 +112,24 @@ class ClientStore {
       if (!existingUsersRaw) {
         localStorage.setItem('synaptech_users', JSON.stringify(DEFAULT_USERS));
       } else {
-        const existingUsers = JSON.parse(existingUsersRaw);
-        let modified = false;
+        let existingUsers = JSON.parse(existingUsersRaw);
+        // Explicitly purge lucky or any deleted accounts from past sessions
+        const hadLucky = existingUsers.some(u => (u.username || '').toLowerCase() === 'lucky' || u.id === 3);
+        if (hadLucky) {
+          existingUsers = existingUsers.filter(u => (u.username || '').toLowerCase() !== 'lucky' && u.id !== 3);
+        }
+
+        const deletedUsers = JSON.parse(localStorage.getItem('synaptech_deleted_users') || '["lucky"]');
+        if (!deletedUsers.includes('lucky')) {
+          deletedUsers.push('lucky');
+          localStorage.setItem('synaptech_deleted_users', JSON.stringify(deletedUsers));
+        }
+
+        let modified = hadLucky;
         DEFAULT_USERS.forEach(defUser => {
+          if (deletedUsers.includes(defUser.username.toLowerCase())) {
+            return; // Do not re-seed explicitly deleted users
+          }
           const match = existingUsers.find(u => (u.username || '').toLowerCase() === defUser.username.toLowerCase());
           if (!match) {
             existingUsers.push(defUser);
@@ -826,17 +833,30 @@ public class HardenedService {
 
   deleteUser: async (userId) => {
     const current = await firebaseService.getCurrentUser();
-    if (current && (current.id === userId || current.username === 'admin' && userId === 1)) {
+    if (current && (current.id === userId || (current.username === 'admin' && (userId === 1 || userId === '1')))) {
       throw new Error('Admin cannot delete their own account.');
     }
 
     const users = clientStore.getUsers();
-    const filtered = users.filter(u => u.id !== userId && u.id !== Number(userId));
-    if (filtered.length === users.length) {
+    const targetUser = users.find(u => u.id === userId || u.id === Number(userId));
+    if (!targetUser) {
       throw new Error('User not found.');
     }
 
+    const filtered = users.filter(u => u.id !== userId && u.id !== Number(userId));
     clientStore.setUsers(filtered);
+
+    // Persist deleted usernames so re-seed never restores them
+    try {
+      const deleted = JSON.parse(localStorage.getItem('synaptech_deleted_users') || '[]');
+      const usernameLower = (targetUser.username || '').toLowerCase();
+      if (usernameLower && !deleted.includes(usernameLower)) {
+        deleted.push(usernameLower);
+        localStorage.setItem('synaptech_deleted_users', JSON.stringify(deleted));
+      }
+    } catch {}
+
+    clientStore.logActivity(current?.id || 1, current?.username || 'admin', 'USER_DELETED', `Deleted user ${targetUser.username}`);
     return { message: 'User deleted successfully.' };
   },
 
