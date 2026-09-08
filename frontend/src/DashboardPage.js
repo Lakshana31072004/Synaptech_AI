@@ -174,9 +174,9 @@ const DashboardPage = () => {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             style={{
-                                flex: '1',
-                                minWidth: '170px',
-                                padding: '12px 16px',
+                                flex: '1 0 auto',
+                                minWidth: 'max-content',
+                                padding: '10px 18px',
                                 borderRadius: '10px',
                                 border: 'none',
                                 background: isActive ? 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)' : 'transparent',
@@ -190,12 +190,12 @@ const DashboardPage = () => {
                                 gap: '10px'
                             }}
                         >
-                            <span style={{ fontSize: '1.3rem' }}>{tab.icon}</span>
+                            <span style={{ fontSize: '1.25rem' }}>{tab.icon}</span>
                             <div>
-                                <div style={{ fontWeight: 700, fontSize: '0.92rem', color: isActive ? '#ffffff' : 'var(--text-primary)' }}>
+                                <div style={{ fontWeight: 700, fontSize: '0.90rem', color: isActive ? '#ffffff' : 'var(--text-primary)', whiteSpace: 'nowrap' }}>
                                     {tab.label}
                                 </div>
-                                <div style={{ fontSize: '0.73rem', opacity: isActive ? 0.9 : 0.7, whiteSpace: 'nowrap' }}>
+                                <div style={{ fontSize: '0.72rem', color: isActive ? '#e0e7ff' : 'var(--text-muted)', whiteSpace: 'nowrap' }}>
                                     {tab.desc}
                                 </div>
                             </div>
