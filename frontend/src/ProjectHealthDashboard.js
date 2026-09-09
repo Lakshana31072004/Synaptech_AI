@@ -360,24 +360,40 @@ function ProjectHealthDashboard() {
                     </span>
                   </h4>
                   <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
-                    Failure Probability: <strong>{simResult.failureProbabilityPercent}%</strong>
+                    Failure Probability: <strong>{simResult.failureProbabilityPercent ?? ((simResult.riskScore || 0) * 0.92).toFixed(1)}%</strong>
                   </span>
                 </div>
 
                 <div style={{ fontSize: '0.9rem', marginBottom: '8px' }}>
                   <strong>Factor Impact Analysis:</strong>
                   <ul style={{ margin: '4px 0 10px 0', paddingLeft: '20px', color: '#475569' }}>
-                    {Object.entries(simResult.factorAnalysis).map(([k, v]) => (
-                      <li key={k}>
-                        <strong>{k}:</strong> {v}
-                      </li>
-                    ))}
+                    {Array.isArray(simResult.factorAnalysis) ? (
+                      simResult.factorAnalysis.map((item, idx) => (
+                        <li key={idx}>
+                          <strong>{item.factor || `Factor ${idx + 1}`}:</strong>{' '}
+                          {item.impact
+                            ? `${item.impact}${item.score !== undefined ? ` (Impact Score: ${item.score})` : ''}`
+                            : typeof item === 'object' ? JSON.stringify(item) : String(item)}
+                        </li>
+                      ))
+                    ) : (
+                      Object.entries(simResult.factorAnalysis || {}).map(([k, v]) => (
+                        <li key={k}>
+                          <strong>{k}:</strong>{' '}
+                          {typeof v === 'object' && v !== null
+                            ? (v.impact
+                                ? `${v.impact}${v.score !== undefined ? ` (Score: ${v.score})` : ''}${v.factor ? ` - ${v.factor}` : ''}`
+                                : JSON.stringify(v))
+                            : String(v)}
+                        </li>
+                      ))
+                    )}
                   </ul>
                 </div>
 
                 <strong>AI Mitigation Recommendations:</strong>
                 <ul className="recommendations-list">
-                  {simResult.recommendations.map((rec, i) => (
+                  {simResult.recommendations && simResult.recommendations.map((rec, i) => (
                     <li key={i}>{rec}</li>
                   ))}
                 </ul>

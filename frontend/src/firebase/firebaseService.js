@@ -444,20 +444,23 @@ export const firebaseService = {
 
     score = Math.max(5, Math.min(95, score));
     const riskLevel = score >= 70 ? 'High' : score >= 45 ? 'Medium' : 'Low';
+    const failureProbabilityPercent = parseFloat((score * 0.92).toFixed(1));
 
     return {
       riskScore: score,
       riskLevel,
+      failureProbabilityPercent,
       recommendations: [
         score > 50 ? 'Increase unit test coverage to contain defect propagation.' : 'Codebase quality is healthy.',
         'Prioritize technical debt reduction during sprint retrospectives.',
         'Review sprint backlog sizing to normalize team velocity.'
       ],
-      factorAnalysis: [
-        { factor: 'Bug Trend', impact: metrics.bugTrend === 'increasing' ? 'Negative' : 'Positive', score: metrics.bugTrend === 'increasing' ? 80 : 30 },
-        { factor: 'Code Quality', impact: metrics.codeQualityIndex < 75 ? 'Negative' : 'Positive', score: 100 - metrics.codeQualityIndex },
-        { factor: 'Technical Debt', impact: metrics.technicalDebt === 'high' ? 'High Concern' : 'Normal', score: metrics.technicalDebt === 'high' ? 85 : 40 }
-      ]
+      factorAnalysis: {
+        'Bug Influx Rate': metrics.bugTrend === 'increasing' ? 'High (+25% risk) - Defects accumulating faster than resolution.' : metrics.bugTrend === 'decreasing' ? 'Favorable (-15% risk) - Active bugs steadily declining.' : 'Neutral (+10% risk) - Defect rate steady.',
+        'Velocity Throughput': metrics.sprintVelocity < 25 ? 'Critical Delay (+15% risk) - Velocity is below sustainable pace.' : metrics.sprintVelocity > 45 ? 'High Performance (-12% risk) - Story delivery is rapid.' : 'Stable (0% risk) - Velocity matches target baseline.',
+        'Technical Debt': metrics.technicalDebt === 'high' ? 'Critical (+30% risk) - High architectural coupling and debt.' : metrics.technicalDebt === 'medium' ? 'Moderate (+15% risk) - Manageable debt requiring scheduled maintenance.' : 'Low (-12% risk) - Clean modular architecture.',
+        'Code Quality Index': metrics.codeQualityIndex < 70 ? `Warning (${metrics.codeQualityIndex}/100) - Code smell density exceeds thresholds.` : `Healthy (${metrics.codeQualityIndex}/100) - Clean code with solid test coverage.`
+      }
     };
   },
 
