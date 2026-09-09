@@ -1,6 +1,6 @@
-# Synaptech AI Platform: Benchmark Dataset Suite
+# Snaptech AI Platform: Benchmark Dataset Suite
 
-This directory contains the foundational, structured datasets utilized across all 5 intelligent modules of the **Synaptech AI (ASEOS)** platform.
+This directory contains the foundational, structured datasets utilized across all 5 intelligent modules of the **Snaptech AI** platform.
 
 ---
 

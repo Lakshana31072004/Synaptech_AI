@@ -1,11 +1,11 @@
-Autonomous Software Engineering Operating System (ASEOS)
+Snaptech: AI-Driven Architecture & Agile Intelligence Platform
 An AI-Driven Platform for Intelligent Software Development Lifecycle Management
 1. Project Description
-The Autonomous Software Engineering Operating System (ASEOS) is an intelligent, AI-powered software platform designed to automate, optimize, and enhance the entire Software Development Life Cycle (SDLC). It acts as a centralized operating system for software engineering teams by integrating project management, requirement engineering, software architecture recommendation, sprint planning, bug prediction, project risk analysis, code quality evaluation, developer workload optimization, and project analytics into a single platform.
+Snaptech (Snaptech AI) is an intelligent, AI-powered software platform designed to automate, optimize, and enhance the entire Software Development Life Cycle (SDLC). It acts as a centralized operating system for software engineering teams by integrating project management, requirement engineering, software architecture recommendation, sprint planning, bug prediction, project risk analysis, code quality evaluation, developer workload optimization, and project analytics into a single platform.
 
 Traditional software development relies on multiple independent tools such as Jira, GitHub, SonarQube, Azure DevOps, Jenkins, and Confluence. While each tool solves a specific problem, they operate in isolation, making it difficult for project managers and developers to gain a complete understanding of project health. Teams must manually analyze data from different systems to identify risks, estimate project timelines, allocate resources, and maintain software quality. This fragmented approach often results in delayed releases, poor planning, increased software defects, inefficient developer utilization, and higher project costs.
 
-ASEOS addresses these challenges by combining Artificial Intelligence (AI), Machine Learning (ML), Natural Language Processing (NLP), and predictive analytics into a unified decision-support platform. Instead of merely displaying project information, ASEOS continuously analyzes project data and provides intelligent recommendations throughout the software development process.
+Snaptech addresses these challenges by combining Artificial Intelligence (AI), Machine Learning (ML), Natural Language Processing (NLP), and predictive analytics into a unified decision-support platform. Instead of merely displaying project information, Snaptech continuously analyzes project data and provides intelligent recommendations throughout the software development process.
 
 2. Vision
 To build an intelligent software engineering platform capable of assisting software teams in making data-driven decisions throughout the entire software development lifecycle, ultimately improving software quality, reducing project risks, and increasing development productivity.
@@ -35,7 +35,7 @@ Team performance metrics
 
 Despite the abundance of data, software teams rarely utilize it for predictive decision-making. Existing project management tools primarily visualize historical information but provide limited support for forecasting future risks or recommending corrective actions.
 
-ASEOS transforms this project data into actionable insights using AI models that support software engineering decisions.
+Snaptech transforms this project data into actionable insights using AI models that support software engineering decisions.
 
 4. Problem Statement
 Current software development organizations use multiple disconnected tools for project planning, development, testing, and monitoring. These tools provide historical information but do not intelligently predict project risks, software defects, architecture suitability, sprint outcomes, or developer workload. Project managers must manually interpret reports, resulting in delayed decisions and reduced project efficiency.
@@ -43,7 +43,7 @@ Current software development organizations use multiple disconnected tools for p
 There is currently no unified AI-powered software engineering platform capable of analyzing the complete Software Development Life Cycle and providing intelligent recommendations for software development decisions.
 
 5. Proposed Solution
-ASEOS integrates every major phase of software development into one intelligent platform.
+Snaptech integrates every major phase of software development into one intelligent platform.
 
 The system accepts project-related information such as requirements, source code, sprint history, developer information, issue reports, and repository metrics.
 
@@ -70,7 +70,7 @@ Executive reports
 The platform continuously updates project predictions as new project data becomes available.
 
 6. Project Objectives
-The primary objectives of ASEOS are:
+The primary objectives of Snaptech are:
 
 Build a unified SDLC management platform.
 
@@ -401,7 +401,7 @@ Supports data-driven decision-making for project managers.
 Provides real-time visibility into project health.
 
 13. Novelty
-ASEOS is unique because it combines multiple AI-powered software engineering capabilities into a single platform. Instead of focusing on one aspect of software development (such as bug tracking or project management), it provides end-to-end intelligent support across the SDLC. Its integration of requirement analysis, sprint planning, architecture recommendation, bug prediction, risk prediction, code quality assessment, and workload optimization enables proactive decision-making rather than reactive project monitoring.
+Snaptech is unique because it combines multiple AI-powered software engineering capabilities into a single platform. Instead of focusing on one aspect of software development (such as bug tracking or project management), it provides end-to-end intelligent support across the SDLC. Its integration of requirement analysis, sprint planning, architecture recommendation, bug prediction, risk prediction, code quality assessment, and workload optimization enables proactive decision-making rather than reactive project monitoring.
 
 14. Future Enhancements
 AI-generated test case creation.

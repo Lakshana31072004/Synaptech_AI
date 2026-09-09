@@ -1,6 +1,6 @@
-# ASEOS Project Documentation
+# Snaptech Project Documentation
 
-Welcome to the documentation for the ASEOS Project Health Monitoring Tool.
+Welcome to the documentation for the Snaptech AI Platform.
 
 ## Project Structure
 

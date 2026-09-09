@@ -8,11 +8,11 @@
 		<version>3.3.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.aseos</groupId>
-	<artifactId>backend</artifactId>
+	<groupId>com.snaptech</groupId>
+	<artifactId>snaptech-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>backend</name>
-	<description/>
+	<name>snaptech-backend</name>
+	<description>Snaptech AI Platform</description>
 	<url/>
 	<licenses>
 		<license/>

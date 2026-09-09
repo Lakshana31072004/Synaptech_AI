@@ -1,7 +1,7 @@
 {
-  "name": "aseos-backend",
+  "name": "snaptech-backend",
   "version": "1.0.0",
-  "description": "Backend for ASEOS Project",
+  "description": "Backend for Snaptech AI Platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
