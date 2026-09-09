@@ -8,7 +8,7 @@ import ExecutiveReportModal from './components/ExecutiveReportModal';
 import { useAuth } from './AuthContext';
 
 const DashboardPage = () => {
-    const [activeTab, setActiveTab] = useState('telemetry');
+    const [activeTab, setActiveTab] = useState('analyzer');
     const [reportModalOpen, setReportModalOpen] = useState(false);
     const [reportType, setReportType] = useState('adr');
     const { userProfile, user } = useAuth();
@@ -23,11 +23,11 @@ const DashboardPage = () => {
     };
 
     const tabs = [
-        { id: 'telemetry', label: 'Telemetry & Health', icon: '📊', desc: 'Real-time project vitals & simulation' },
-        { id: 'analyzer', label: 'Requirement Analyzer', icon: '🔍', desc: 'NLP ambiguity & risk detection' },
-        { id: 'planner', label: 'Sprint Planner', icon: '⚡', desc: 'Velocity forecasting & capacity' },
-        { id: 'advisor', label: 'Architecture Advisor', icon: '🏛️', desc: 'System design & live diagram canvas' },
-        { id: 'review', label: 'Code Review & Security', icon: '🛡️', desc: 'OWASP vulnerability scan & refactoring' },
+        { id: 'analyzer', label: 'Module 1: Requirement Analyzer', icon: '🔍', desc: 'NLP ambiguity & risk detection' },
+        { id: 'planner', label: 'Module 2: Sprint Planner', icon: '⚡', desc: 'Velocity forecasting & capacity' },
+        { id: 'advisor', label: 'Module 3: Architecture Advisor', icon: '🏛️', desc: 'System design & live diagram canvas' },
+        { id: 'review', label: 'Module 4: Code Review & Security', icon: '🛡️', desc: 'OWASP vulnerability scan & refactoring' },
+        { id: 'telemetry', label: 'Module 5: Telemetry & Health', icon: '📊', desc: 'Real-time project vitals & simulation' },
         { id: 'all', label: 'Unified View', icon: '📑', desc: 'Continuous stream of all modules' },
     ];
 
@@ -206,19 +206,6 @@ const DashboardPage = () => {
 
             {/* --- Active Module Content Area --- */}
             <div className="module-content-wrapper">
-                {(activeTab === 'telemetry' || activeTab === 'all') && (
-                    <div style={{
-                        background: 'var(--bg-surface)',
-                        borderRadius: '16px',
-                        padding: '28px',
-                        border: '1px solid var(--border-subtle)',
-                        boxShadow: 'var(--shadow-md)',
-                        marginBottom: activeTab === 'all' ? '30px' : '0'
-                    }}>
-                        <ProjectHealthDashboard />
-                    </div>
-                )}
-
                 {(activeTab === 'analyzer' || activeTab === 'all') && (
                     <div style={{
                         background: 'var(--bg-surface)',
@@ -265,9 +252,22 @@ const DashboardPage = () => {
                         padding: '28px',
                         border: '1px solid var(--border-subtle)',
                         boxShadow: 'var(--shadow-md)',
-                        marginBottom: '0'
+                        marginBottom: activeTab === 'all' ? '30px' : '0'
                     }}>
                         <AiCodeReviewInspector />
+                    </div>
+                )}
+
+                {(activeTab === 'telemetry' || activeTab === 'all') && (
+                    <div style={{
+                        background: 'var(--bg-surface)',
+                        borderRadius: '16px',
+                        padding: '28px',
+                        border: '1px solid var(--border-subtle)',
+                        boxShadow: 'var(--shadow-md)',
+                        marginBottom: '0'
+                    }}>
+                        <ProjectHealthDashboard />
                     </div>
                 )}
             </div>

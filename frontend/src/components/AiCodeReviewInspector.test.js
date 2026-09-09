@@ -36,7 +36,7 @@ describe('AiCodeReviewInspector', () => {
       </NotificationProvider>
     );
 
-    expect(screen.getByText(/Module 5: AI Code Review & Security Vulnerability Inspector/i)).toBeInTheDocument();
+    expect(screen.getByText(/Module 4: AI Code Review & Security Vulnerability Inspector/i)).toBeInTheDocument();
 
     const submitBtn = screen.getByRole('button', { name: /Run AI Vulnerability & Code Review/i });
     fireEvent.click(submitBtn);

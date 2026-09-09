@@ -135,7 +135,7 @@ function ProjectHealthDashboard() {
       {/* Header & Controls */}
       <div className="phd-header">
         <div className="phd-title">
-          <h2>Module 8: Project Health Dashboard</h2>
+          <h2>Module 5: Project Health &amp; Telemetry Dashboard</h2>
           <p>Real-time engineering KPIs, automated defect trends, and predictive risk telemetry</p>
         </div>
 
@@ -272,7 +272,7 @@ function ProjectHealthDashboard() {
           {/* Module 5: Interactive AI Risk Prediction & Simulator Panel */}
           <div className="simulator-panel">
             <div className="simulator-header">
-              <h3>⚡ Module 5: AI Risk Simulator & Optimization Engine</h3>
+              <h3>⚡ AI Risk Simulator & Optimization Engine</h3>
               <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
                 Adjust project parameters to simulate real-time AI risk evaluation
               </span>

@@ -111,7 +111,7 @@ const AiCodeReviewInspector = () => {
   return (
     <div className="code-review-container">
       <div className="code-review-header">
-        <h2>Module 5: AI Code Review &amp; Security Vulnerability Inspector</h2>
+        <h2>Module 4: AI Code Review &amp; Security Vulnerability Inspector</h2>
         <p>Automated static analysis for OWASP Top 10 vulnerabilities, resource management leaks, architectural anti-patterns, and secure refactoring.</p>
       </div>
 

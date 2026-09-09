@@ -39,7 +39,7 @@ describe('ProjectHealthDashboard', () => {
       </NotificationProvider>
     );
 
-    expect(screen.getByText(/Module 8: Project Health Dashboard/i)).toBeInTheDocument();
+    expect(screen.getByText(/Module 5: Project Health/i)).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText('35')).toBeInTheDocument();
@@ -56,7 +56,7 @@ describe('ProjectHealthDashboard', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/Module 5: AI Risk Simulator/i)).toBeInTheDocument();
+      expect(screen.getByText(/AI Risk Simulator/i)).toBeInTheDocument();
     });
 
     const simulateBtn = screen.getByRole('button', { name: /Run AI Risk Simulation/i });
