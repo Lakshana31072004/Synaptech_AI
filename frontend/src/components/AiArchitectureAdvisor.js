@@ -166,8 +166,8 @@ const AiArchitectureAdvisor = () => {
           </div>
           <ArchitectureDiagramCanvas
             topology={customDiagram.diagramMermaid}
-            c4={customDiagram.diagramMermaid}
-            sequence={customDiagram.diagramMermaid}
+            c4={customDiagram.c4DiagramMermaid || customDiagram.c4}
+            sequence={customDiagram.sequenceDiagramMermaid || customDiagram.sequence}
             title={customDiagram.title}
           />
         </div>

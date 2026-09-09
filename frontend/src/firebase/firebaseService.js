@@ -672,7 +672,7 @@ export const firebaseService = {
     const promptText = typeof promptOrObj === 'string' ? promptOrObj : (promptOrObj?.prompt || 'System Architecture');
     const lower = promptText.toLowerCase();
 
-    let title, description, diagramMermaid;
+    let title, description, diagramMermaid, c4DiagramMermaid, sequenceDiagramMermaid;
 
     if (lower.includes('payment') || lower.includes('stripe') || lower.includes('checkout') || lower.includes('kafka')) {
       title = 'Secure Event-Driven Payment Gateway Pipeline';
@@ -686,6 +686,43 @@ export const firebaseService = {
     KafkaBroker -->|Subscribe| ReceiptSvc[Customer Receipt Service]
     PaymentSvc --> PaymentDB[(PostgreSQL ACID Ledger)]
     LedgerSvc --> AuditLog[(Encrypted Audit DB)]`;
+
+      c4DiagramMermaid = `graph TB
+    subgraph User Experience Layer
+        Shopper[Checkout Web & Mobile App]
+    end
+    subgraph Ingress Boundary
+        Shopper -->|mTLS Tokenized| Gate[PCI-DSS Ingress Gateway]
+    end
+    subgraph Payment Processing Boundary
+        Gate --> Orchestrator[Payment Svc Container]
+        Orchestrator --> ExternalGW[External Payment Gateway - Stripe]
+        Orchestrator --> EventBus[Kafka Cluster: payments.v1]
+    end
+    subgraph Settlement & Downstream Boundary
+        EventBus --> LedgerWorker[Double-Entry Ledger Worker]
+        EventBus --> EmailWorker[Notification & Receipt Worker]
+        LedgerWorker --> LedgerDB[(Financial Ledger PostgreSQL)]
+        EmailWorker --> AuditStore[(Cold Storage Audit Trail)]
+    end`;
+
+      sequenceDiagramMermaid = `sequenceDiagram
+    autonumber
+    actor Customer as Checkout Client
+    participant Gateway as Ingress API Gateway
+    participant Svc as Payment Orchestrator
+    participant Stripe as Stripe Gateway
+    participant Kafka as Kafka Event Broker
+    participant Ledger as Ledger Worker
+    Customer->>Gateway: POST /v1/checkout (Card Nonce)
+    Gateway->>Svc: Validate idempotency key
+    Svc->>Stripe: Authorize & Capture Charge
+    Stripe-->>Svc: Charge Success (Charge ID)
+    Svc->>Kafka: Publish PaymentCaptured event
+    Svc-->>Customer: HTTP 200 (Transaction Confirmed)
+    Kafka->>Ledger: Consume PaymentCaptured
+    Ledger->>Ledger: Record double-entry credit/debit`;
+
     } else if (lower.includes('ai') || lower.includes('llm') || lower.includes('rag') || lower.includes('vector')) {
       title = 'RAG & LLM Augmented Agent Architecture';
       description = `Vector search embedding pipeline, semantic context retriever, and LLM orchestrator for: "${promptText}".`;
@@ -698,6 +735,43 @@ export const firebaseService = {
     Orchestrator -->|Augmented Prompt| LLM[Gemini 1.5 Pro / LLM Engine]
     LLM -->|Streaming Tokens| APIGateway
     APIGateway -->|SSE Stream| User`;
+
+      c4DiagramMermaid = `graph TB
+    subgraph Client Layer
+        Client[React AI Chat SPA]
+    end
+    subgraph Gateway & Security Boundary
+        Client -->|HTTPS / WSS| APIGW[API Gateway & Rate Limiter]
+        APIGW --> Filter[Prompt Sanitization & Guardrails]
+    end
+    subgraph Retrieval Augmented Generation Core
+        Filter --> Orchestrator[RAG Pipeline Orchestrator]
+        Orchestrator --> Embedder[Sentence-Transformers Embedder]
+        Embedder --> VectorStore[(Vector DB - Pinecone / pgvector)]
+        VectorStore -.->|Top-K Embeddings| Orchestrator
+        Orchestrator --> LLM[Gemini 1.5 Pro Foundation Model]
+    end
+    subgraph Telemetry & Audit Boundary
+        Orchestrator --> Audit[(Conversation & Token Audit DB)]
+    end`;
+
+      sequenceDiagramMermaid = `sequenceDiagram
+    autonumber
+    actor User as Chat User
+    participant Gateway as API Gateway
+    participant Guard as Safety Guardrails
+    participant Embed as Vector Embedder
+    participant VDB as Vector Database
+    participant LLM as Gemini LLM Engine
+    User->>Gateway: Submit Prompt query
+    Gateway->>Guard: Validate & sanitize input
+    Guard->>Embed: Generate 1536-dim text embedding
+    Embed->>VDB: Similarity search (Cosine Top-K)
+    VDB-->>Guard: Return relevant document chunks
+    Guard->>LLM: Stream Augmented Prompt (Context + Query)
+    LLM-->>Gateway: Yield token response chunks
+    Gateway-->>User: Server-Sent Events (SSE) stream`;
+
     } else if (lower.includes('iot') || lower.includes('telemetry') || lower.includes('sensor') || lower.includes('stream')) {
       title = 'High-Throughput IoT Telemetry Ingestion Pipeline';
       description = `Sub-second sensor metric aggregation, stream processing, and time-series persistence for: "${promptText}".`;
@@ -708,6 +782,42 @@ export const firebaseService = {
     StreamProcessor -->|Anomaly Detected| AlertEngine[PagerDuty / Slack Alert Engine]
     StreamProcessor --> TimeSeriesDB[(TimescaleDB / InfluxDB)]
     TimeSeriesDB --> Dashboard[Grafana / Synaptech Telemetry]`;
+
+      c4DiagramMermaid = `graph TB
+    subgraph Edge Devices Layer
+        Edge[10,000+ Edge IoT Sensor Fleet]
+    end
+    subgraph Ingestion Tier Boundary
+        Edge -->|MQTT QoS 1| MQTT[EMQX Distributed MQTT Cluster]
+        MQTT --> KafkaTopic[Kafka Topic: telemetry.raw]
+    end
+    subgraph Realtime Analytics Tier
+        KafkaTopic --> FlinkCluster[Apache Flink Stateful Stream Jobs]
+        FlinkCluster --> MLInference[Realtime Outlier Scoring Model]
+    end
+    subgraph Persistence & Visualization Tier
+        FlinkCluster --> TSDB[(TimescaleDB / InfluxDB Time-Series)]
+        MLInference --> AlertSvc[Incident Notification Dispatcher]
+        TSDB --> UI[Grafana Telemetry Dashboard]
+    end`;
+
+      sequenceDiagramMermaid = `sequenceDiagram
+    autonumber
+    actor Sensor as Edge Sensor
+    participant MQTT as EMQX MQTT Broker
+    participant Kafka as Kafka Telemetry Ingest
+    participant Flink as Apache Flink Engine
+    participant TSDB as TimescaleDB
+    participant Alert as Alert Notification Engine
+    Sensor->>MQTT: Publish telemetry metric packet (MQTT)
+    MQTT->>Kafka: Forward to raw ingestion topic
+    Kafka->>Flink: Consume sub-second event stream
+    Flink->>Flink: Calculate 5s sliding window average
+    alt Anomaly Detected
+        Flink->>Alert: Trigger critical threshold alert
+    end
+    Flink->>TSDB: Batch insert compressed time-series points`;
+
     } else {
       title = `${promptText.slice(0, 38)} Cloud Architecture`;
       description = `High availability, decoupled tier architecture with multi-zone redundancy and distributed caching for: "${promptText}".`;
@@ -718,6 +828,52 @@ export const firebaseService = {
     AppCluster -->|Read/Write Split| MasterDB[(PostgreSQL Primary)]
     MasterDB -->|Replication| ReplicaDB[(PostgreSQL Read Replica)]
     AppCluster --> S3Storage[(S3 Object Storage)]`;
+
+      c4DiagramMermaid = `graph TB
+    subgraph Presentation Tier
+        SPA[Single Page App Client]
+        Mobile[Mobile iOS & Android App]
+    end
+    subgraph Ingress Tier
+        SPA --> ALB[Application Load Balancer + WAF]
+        Mobile --> ALB
+        ALB --> Gateway[Spring Cloud API Gateway]
+    end
+    subgraph Application Service Boundary
+        Gateway --> AuthSvc[Authentication & JWT Service]
+        Gateway --> CoreSvc[Core Business Microservices]
+        Gateway --> ReportSvc[Reporting & Analytics Service]
+    end
+    subgraph Data Persistence Tier
+        CoreSvc --> Redis[(Redis Cache Cluster)]
+        CoreSvc --> PrimaryDB[(PostgreSQL Primary DB)]
+        ReportSvc --> ReadReplica[(PostgreSQL Read Replica)]
+        CoreSvc --> ObjectStore[(S3 Blob Storage)]
+    end`;
+
+      sequenceDiagramMermaid = `sequenceDiagram
+    autonumber
+    actor Client as Web/Mobile Client
+    participant LB as Application Load Balancer
+    participant GW as API Gateway
+    participant Auth as Auth Service
+    participant Core as Business Microservice
+    participant Cache as Redis Cache
+    participant DB as PostgreSQL Primary
+    Client->>LB: HTTPS Request with Bearer Token
+    LB->>GW: Route to active region
+    GW->>Auth: Validate JWT claims & permissions
+    Auth-->>GW: Token Validated
+    GW->>Core: Forward authenticated request
+    Core->>Cache: Query cache for entity
+    alt Cache Hit
+        Cache-->>Core: Return cached JSON payload
+    else Cache Miss
+        Core->>DB: Query primary database
+        DB-->>Core: Database record
+        Core->>Cache: Set cache with TTL
+    end
+    Core-->>Client: HTTP 200 OK Response`;
     }
 
     return {
@@ -725,6 +881,10 @@ export const firebaseService = {
       description,
       diagramMermaid,
       diagramSyntax: diagramMermaid,
+      c4DiagramMermaid,
+      c4: c4DiagramMermaid,
+      sequenceDiagramMermaid,
+      sequence: sequenceDiagramMermaid,
       style: typeof promptOrObj === 'object' ? (promptOrObj.style || style) : style
     };
   },
