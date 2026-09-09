@@ -670,17 +670,59 @@ export const firebaseService = {
 
   generateCustomArchitectureDiagram: async (promptOrObj, style = 'topology') => {
     const promptText = typeof promptOrObj === 'string' ? promptOrObj : (promptOrObj?.prompt || 'System Architecture');
-    const diagramMermaid = `graph TD
-  User((Client User)) --> Gateway[API Gateway / Router]
-  Gateway --> Auth[Auth & Session Service]
-  Gateway --> Engine[AI & Processing Core]
-  Engine --> Broker[Event Bus / Queue]
-  Broker --> Worker[Background Worker]
-  Engine --> DB[(Persistent Cloud Database)]`;
+    const lower = promptText.toLowerCase();
+
+    let title, description, diagramMermaid;
+
+    if (lower.includes('payment') || lower.includes('stripe') || lower.includes('checkout') || lower.includes('kafka')) {
+      title = 'Secure Event-Driven Payment Gateway Pipeline';
+      description = `Idempotent payment capture, event-driven ledger reconciliation, and webhook dispatch for: "${promptText}".`;
+      diagramMermaid = `graph TD
+    Customer[Checkout Client] -->|HTTPS POST| Ingress[Payment Gateway / Ingress]
+    Ingress -->|Tokenize & Authorize| PaymentSvc[Payment Orchestrator Service]
+    PaymentSvc -->|Card Tokenization| Stripe[Stripe / Adyen Payment Gateway]
+    PaymentSvc -->|Publish PaymentCaptured| KafkaBroker[((Kafka Event Broker))]
+    KafkaBroker -->|Subscribe| LedgerSvc[Financial Ledger Service]
+    KafkaBroker -->|Subscribe| ReceiptSvc[Customer Receipt Service]
+    PaymentSvc --> PaymentDB[(PostgreSQL ACID Ledger)]
+    LedgerSvc --> AuditLog[(Encrypted Audit DB)]`;
+    } else if (lower.includes('ai') || lower.includes('llm') || lower.includes('rag') || lower.includes('vector')) {
+      title = 'RAG & LLM Augmented Agent Architecture';
+      description = `Vector search embedding pipeline, semantic context retriever, and LLM orchestrator for: "${promptText}".`;
+      diagramMermaid = `graph TD
+    User[Chat Application] -->|Prompt| APIGateway[FastAPI / Spring API Gateway]
+    APIGateway --> Guardrails[Prompt Safety Guardrails]
+    Guardrails --> EmbeddingSvc[Text Embedding Model]
+    EmbeddingSvc -->|Vector Query| VectorDB[(Pinecone / pgvector / Qdrant)]
+    VectorDB -->|Relevant Context| Orchestrator[Context Fusion & Orchestrator]
+    Orchestrator -->|Augmented Prompt| LLM[Gemini 1.5 Pro / LLM Engine]
+    LLM -->|Streaming Tokens| APIGateway
+    APIGateway -->|SSE Stream| User`;
+    } else if (lower.includes('iot') || lower.includes('telemetry') || lower.includes('sensor') || lower.includes('stream')) {
+      title = 'High-Throughput IoT Telemetry Ingestion Pipeline';
+      description = `Sub-second sensor metric aggregation, stream processing, and time-series persistence for: "${promptText}".`;
+      diagramMermaid = `graph TD
+    Sensors[Edge IoT Sensors] -->|MQTT Protocol| Broker[EMQX / MQTT Broker]
+    Broker --> Ingest[Kafka Telemetry Topic]
+    Ingest --> StreamProcessor[Apache Flink / Spark Streaming]
+    StreamProcessor -->|Anomaly Detected| AlertEngine[PagerDuty / Slack Alert Engine]
+    StreamProcessor --> TimeSeriesDB[(TimescaleDB / InfluxDB)]
+    TimeSeriesDB --> Dashboard[Grafana / Synaptech Telemetry]`;
+    } else {
+      title = `${promptText.slice(0, 38)} Cloud Architecture`;
+      description = `High availability, decoupled tier architecture with multi-zone redundancy and distributed caching for: "${promptText}".`;
+      diagramMermaid = `graph TD
+    Clients[Web & Mobile Clients] -->|HTTPS / WAF| LoadBalancer[Cloud Load Balancer]
+    LoadBalancer --> AppCluster[Spring Boot Microservices Cluster]
+    AppCluster -->|Read-through Cache| RedisCluster[(Redis Distributed Cache)]
+    AppCluster -->|Read/Write Split| MasterDB[(PostgreSQL Primary)]
+    MasterDB -->|Replication| ReplicaDB[(PostgreSQL Read Replica)]
+    AppCluster --> S3Storage[(S3 Object Storage)]`;
+    }
 
     return {
-      title: `${promptText.slice(0, 38)} Architecture`,
-      description: `Synthesized interactive architecture diagram based on prompt: "${promptText}".`,
+      title,
+      description,
       diagramMermaid,
       diagramSyntax: diagramMermaid,
       style: typeof promptOrObj === 'object' ? (promptOrObj.style || style) : style
