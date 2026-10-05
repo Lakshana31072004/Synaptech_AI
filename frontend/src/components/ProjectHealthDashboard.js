@@ -1,5 +1,3 @@
-import React from 'react';
+import ProjectHealthDashboard from '../ProjectHealthDashboard';
 
-export default function ProjectHealthDashboard() {
-  return <div>Project Health Dashboard</div>;
-}
+export default ProjectHealthDashboard;

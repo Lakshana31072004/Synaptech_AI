@@ -1,0 +1,3 @@
+model_approach,mean_precision,mean_recall,mean_f1_score,transitive_coverage
+Baseline 1 (Unweighted 1-Hop Neighbor Check),1.0,0.6667,0.8,Incomplete (Misses multi-hop code modules)
+"Proposed Synaptech (Distance-Attenuated Multi-Hop Reachability, gamma=0.75)",1.0,1.0,1.0,Complete transitive reachability on verified repository links

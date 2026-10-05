@@ -156,7 +156,7 @@ const AdminDashboard = () => {
         setLoadingActivity(true);
         setUserActivities([]);
         try {
-            const data = await apiService.getUserActivity(user.id, 0, 20);
+            const data = await apiService.getUserActivity(user.id, 0, 200);
             setUserActivities(data?.content || (Array.isArray(data) ? data : []));
         } catch (err) {
             showError(err.message || 'Failed to load user activity.');
@@ -405,6 +405,7 @@ const AdminDashboard = () => {
                                 <th style={{ padding: '14px 20px' }}>User</th>
                                 <th style={{ padding: '14px 16px' }}>ID</th>
                                 <th style={{ padding: '14px 20px' }}>Roles</th>
+                                <th style={{ padding: '14px 20px' }}>Last Login Activity</th>
                                 <th style={{ padding: '14px 20px', textAlign: 'right' }}>Actions</th>
                             </tr>
                         </thead>
@@ -476,6 +477,23 @@ const AdminDashboard = () => {
                                                     <span style={{ color: '#94a3b8', fontStyle: 'italic', fontSize: '0.85rem' }}>None</span>
                                                 )}
                                             </div>
+                                        </td>
+
+                                        {/* Last Login Activity Column */}
+                                        <td style={{ padding: '14px 20px' }}>
+                                            <div style={{ fontSize: '0.85rem', color: '#0f172a', fontWeight: '600' }}>
+                                                🕒 {user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Recent'}
+                                            </div>
+                                            {user.lastLoginDetails && (
+                                                <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '2px' }}>
+                                                    {user.lastLoginDetails}
+                                                </div>
+                                            )}
+                                            {user.loginCount && (
+                                                <span style={{ display: 'inline-block', marginTop: '4px', fontSize: '0.72rem', background: '#f1f5f9', color: '#475569', padding: '1px 7px', borderRadius: '10px', border: '1px solid #e2e8f0' }}>
+                                                    {user.loginCount} sessions logged
+                                                </span>
+                                            )}
                                         </td>
 
                                         {/* Actions Column */}
@@ -798,7 +816,7 @@ const AdminDashboard = () => {
                             Activity Audit: <span style={{ color: '#2563eb' }}>{activityUser.username}</span>
                         </h3>
                         <p style={{ margin: '0 0 16px 0', color: '#64748b', fontSize: '0.9rem' }}>
-                            Recent security and action logs for this account.
+                            Security and action logs for this account ({userActivities.length} total events, {userActivities.filter(l => l.action === 'USER_LOGIN').length} logins).
                         </p>
 
                         <div style={{ flex: 1, overflowY: 'auto', border: '1px solid #e2e8f0', borderRadius: '8px', marginBottom: '16px' }}>

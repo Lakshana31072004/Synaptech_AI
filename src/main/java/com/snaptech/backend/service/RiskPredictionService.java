@@ -9,10 +9,24 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.util.Optional;
+
 @Service
 public class RiskPredictionService {
 
+    private final AiServiceClient aiServiceClient;
+
+    public RiskPredictionService(AiServiceClient aiServiceClient) {
+        this.aiServiceClient = aiServiceClient;
+    }
+
     public RiskPredictionResult predictRisk(RiskPredictionRequest request) {
+        // Attempt execution against the Python ML microservice first
+        Optional<RiskPredictionResult> mlResult = aiServiceClient.predictRiskViaModel(request);
+        if (mlResult.isPresent()) {
+            return mlResult.get();
+        }
+
         String bugTrend = request.getBugTrend() != null ? request.getBugTrend().toLowerCase().trim() : "stable";
         int sprintVelocity = request.getSprintVelocity() > 0 ? request.getSprintVelocity() : 30;
         String techDebt = request.getTechnicalDebt() != null ? request.getTechnicalDebt().toLowerCase().trim() : "medium";

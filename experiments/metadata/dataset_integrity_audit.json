@@ -1,0 +1,99 @@
+{
+  "promise_nfr_benchmark.csv": {
+    "dataset_name": "PROMISE NFR Classification Benchmark",
+    "filename": "promise_nfr_benchmark.csv",
+    "sha256_verified": true,
+    "sha256_checksum": "20f163eead0149b24f9c7a7374c3dd683d5a71b811e76d8b03c30790cdc0aaef",
+    "expected_rows": 625,
+    "actual_rows": 625,
+    "expected_cols": 7,
+    "actual_cols": 7,
+    "total_null_values": 0,
+    "exact_duplicate_rows": 0,
+    "target_variable": "category",
+    "target_distribution": {
+      "FUNCTIONAL": 389,
+      "PERFORMANCE": 75,
+      "USABILITY": 67,
+      "SECURITY": 66,
+      "MAINTAINABILITY": 28
+    },
+    "leakage_audit_findings": [
+      "Identified 2 duplicate requirement texts (0.3%) - stratified grouping recommended to prevent test-set memorization.",
+      "Class distribution: {'FUNCTIONAL': 389, 'PERFORMANCE': 75, 'USABILITY': 67, 'SECURITY': 66, 'MAINTAINABILITY': 28}"
+    ],
+    "status": "VERIFIED_VALID"
+  },
+  "nasa_mdp_cleaned.csv": {
+    "dataset_name": "NASA Metrics Data Program (Cleaned)",
+    "filename": "nasa_mdp_cleaned.csv",
+    "sha256_verified": true,
+    "sha256_checksum": "b1ebf8dc03a27561607f0380fd5925d5264de1fe5495500f661a211765be498d",
+    "expected_rows": 1200,
+    "actual_rows": 1200,
+    "expected_cols": 23,
+    "actual_cols": 23,
+    "total_null_values": 0,
+    "exact_duplicate_rows": 0,
+    "target_variable": "Def",
+    "target_distribution": {
+      "0": 938,
+      "1": 262
+    },
+    "leakage_audit_findings": [
+      "Modules with LOC=0: 0",
+      "Correlation between total LOC and binary defect occurrence: r = 0.2547",
+      "Class imbalance: 21.8% defective, 78.2% non-defective."
+    ],
+    "status": "VERIFIED_VALID"
+  },
+  "apache_jira_sprint_benchmark.csv": {
+    "dataset_name": "Apache Jira Agile Sprint Telemetry Benchmark",
+    "filename": "apache_jira_sprint_benchmark.csv",
+    "sha256_verified": true,
+    "sha256_checksum": "ef90219660bbbe70533f7fa40cad7cc0915fde1954d65b2e469bafe33ddaa0fc",
+    "expected_rows": 360,
+    "actual_rows": 360,
+    "expected_cols": 13,
+    "actual_cols": 13,
+    "total_null_values": 0,
+    "exact_duplicate_rows": 0,
+    "target_variable": "delivery_risk_score",
+    "target_distribution": {
+      "mean": 29.2921,
+      "std": 12.7748,
+      "min": 6.46,
+      "max": 65.05,
+      "median": 27.605
+    },
+    "leakage_audit_findings": [
+      "Sprint sequence tracking: Available (sprint_number 1..360)",
+      "Correlation between velocity shortfall ratio and delivery risk score: r = 0.8531"
+    ],
+    "status": "VERIFIED_VALID"
+  },
+  "libest_traceability_matrix.csv": {
+    "dataset_name": "LibEST Traceability Benchmark Matrix",
+    "filename": "libest_traceability_matrix.csv",
+    "sha256_verified": true,
+    "sha256_checksum": "0328392bcbb654e34e088f77a3510151d6257b4b8ef5f88426abb606b4dc67da",
+    "expected_rows": 126,
+    "actual_rows": 126,
+    "expected_cols": 7,
+    "actual_cols": 7,
+    "total_null_values": 0,
+    "exact_duplicate_rows": 0,
+    "target_variable": "ground_truth_weight",
+    "target_distribution": {
+      "1.0": 54,
+      "0.9": 54,
+      "0.75": 18
+    },
+    "leakage_audit_findings": [
+      "Self-loops in traceability links: 0",
+      "Audit confirmed: Graph contains directed chains (REQUIREMENT -> CODE_MODULE, etc.).",
+      "Scientific Construct Audit: Benchmark contains 126 authentic directed ground-truth links for LibEST."
+    ],
+    "status": "VERIFIED_VALID"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "statistical_test": "Wilcoxon Signed-Rank Test (Paired Absolute Errors: Ridge vs LightGBM)",
+  "sample_size": 360,
+  "wilcoxon_statistic": 14162.0,
+  "p_value": 1.7640280935679694e-20,
+  "statistically_significant_at_alpha_001": true,
+  "cliffs_delta_effect_size": -0.2685,
+  "effect_size_interpretation": "Substantial accuracy gain"
+}

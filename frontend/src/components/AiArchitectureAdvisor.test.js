@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import AiArchitectureAdvisor from './AiArchitectureAdvisor';
 import { NotificationProvider } from '../NotificationContext';
 import { apiService } from '../apiService';
@@ -26,9 +27,11 @@ describe('AiArchitectureAdvisor', () => {
 
   test('renders architecture advisor form and triggers recommendation', async () => {
     render(
-      <NotificationProvider>
-        <AiArchitectureAdvisor />
-      </NotificationProvider>
+      <MemoryRouter>
+        <NotificationProvider>
+          <AiArchitectureAdvisor />
+        </NotificationProvider>
+      </MemoryRouter>
     );
 
     expect(screen.getByText(/Module 3: Software Architecture Recommendation Engine/i)).toBeInTheDocument();

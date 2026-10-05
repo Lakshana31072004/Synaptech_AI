@@ -57,35 +57,35 @@ public class ArchitectureRecommendationController {
             guidelines.add("Set up OpenTelemetry for end-to-end distributed tracing.");
 
             diagramMermaid = "graph TD\n" +
-                    "    Client[Web & Mobile Clients] -->|HTTPS / WSS| Gateway[API Gateway / Ingress]\n" +
-                    "    Gateway -->|Async Ingest| ProducerService[Ingestion Producer Service]\n" +
-                    "    ProducerService -->|Publish Events| EventBroker[((Apache Kafka / Event Hub))]\n" +
-                    "    subgraph Event Mesh & Consumer Group\n" +
-                    "        EventBroker -->|Consumer Group 1| OrderProcessor[Order Event Consumer]\n" +
-                    "        EventBroker -->|Consumer Group 2| InventoryService[Inventory Consumer]\n" +
-                    "        EventBroker -->|Consumer Group 3| NotificationWorker[Notification Service]\n" +
-                    "        EventBroker -.->|Failed Retries| DLQ[((Dead Letter Queue))]\n" +
+                    "    Client[\"Web & Mobile Clients\"] -->|\"HTTPS / WSS\"| Gateway[\"API Gateway / Ingress\"]\n" +
+                    "    Gateway -->|\"Async Ingest\"| ProducerService[\"Ingestion Producer Service\"]\n" +
+                    "    ProducerService -->|\"Publish Events\"| EventBroker((\"Apache Kafka / Event Hub\"))\n" +
+                    "    subgraph EventMesh [\"Event Mesh & Consumer Group\"]\n" +
+                    "        EventBroker -->|\"Consumer Group 1\"| OrderProcessor[\"Order Event Consumer\"]\n" +
+                    "        EventBroker -->|\"Consumer Group 2\"| InventoryService[\"Inventory Consumer\"]\n" +
+                    "        EventBroker -->|\"Consumer Group 3\"| NotificationWorker[\"Notification Service\"]\n" +
+                    "        EventBroker -.->|\"Failed Retries\"| DLQ((\"Dead Letter Queue\"))\n" +
                     "    end\n" +
-                    "    OrderProcessor -->|Read/Write| OrderDB[(PostgreSQL Primary)]\n" +
-                    "    OrderProcessor -->|Fast Lookups| RedisCache[(Redis Cache)]\n" +
-                    "    InventoryService -->|Read/Write| InvDB[(Inventory DB)]\n";
+                    "    OrderProcessor -->|\"Read/Write\"| OrderDB[(\"PostgreSQL Primary\")]\n" +
+                    "    OrderProcessor -->|\"Fast Lookups\"| RedisCache[(\"Redis Cache\")]\n" +
+                    "    InventoryService -->|\"Read/Write\"| InvDB[(\"Inventory DB\")]\n";
 
             c4DiagramMermaid = "graph TB\n" +
-                    "    subgraph User Layer\n" +
-                    "        User[End User] -->|HTTPS| SPA[React Web Client]\n" +
+                    "    subgraph UserLayer [\"User Layer\"]\n" +
+                    "        User[\"End User\"] -->|\"HTTPS\"| SPA[\"React Web Client\"]\n" +
                     "    end\n" +
-                    "    subgraph Ingress & Routing Boundary\n" +
-                    "        SPA -->|REST/JSON| Gateway[Cloud API Gateway]\n" +
+                    "    subgraph IngressRouting [\"Ingress & Routing Boundary\"]\n" +
+                    "        SPA -->|\"REST/JSON\"| Gateway[\"Cloud API Gateway\"]\n" +
                     "    end\n" +
-                    "    subgraph Event Broker Boundary\n" +
-                    "        Gateway --> Ingest[Producer Ingestion API]\n" +
-                    "        Ingest --> Kafka[Kafka Topic: events.orders]\n" +
-                    "        Kafka --> Svc1[Order Processing Service]\n" +
-                    "        Kafka --> Svc2[Realtime Inventory Service]\n" +
+                    "    subgraph EventBrokerBoundary [\"Event Broker Boundary\"]\n" +
+                    "        Gateway --> Ingest[\"Producer Ingestion API\"]\n" +
+                    "        Ingest --> Kafka[\"Kafka Topic: events.orders\"]\n" +
+                    "        Kafka --> Svc1[\"Order Processing Service\"]\n" +
+                    "        Kafka --> Svc2[\"Realtime Inventory Service\"]\n" +
                     "    end\n" +
-                    "    subgraph Storage Boundary\n" +
-                    "        Svc1 --> DB1[(Orders Database)]\n" +
-                    "        Svc2 --> DB2[(Inventory Database)]\n" +
+                    "    subgraph StorageBoundary [\"Storage Boundary\"]\n" +
+                    "        Svc1 --> DB1[(\"Orders Database\")]\n" +
+                    "        Svc2 --> DB2[(\"Inventory Database\")]\n" +
                     "    end\n";
 
             sequenceDiagramMermaid = "sequenceDiagram\n" +
@@ -126,35 +126,35 @@ public class ArchitectureRecommendationController {
             guidelines.add("Avoid shared database tables across microservice boundaries.");
 
             diagramMermaid = "graph TD\n" +
-                    "    Clients[Web & Mobile Clients] -->|HTTPS| APIGW[Spring Cloud API Gateway]\n" +
-                    "    APIGW -->|JWT Validation| AuthService[Auth & Token Service]\n" +
-                    "    subgraph Kubernetes Microservices Mesh\n" +
-                    "        APIGW -->|Route /users| UserService[User Domain Service]\n" +
-                    "        APIGW -->|Route /orders| OrderService[Order Domain Service]\n" +
-                    "        APIGW -->|Route /billing| BillingService[Billing Domain Service]\n" +
-                    "        OrderService -->|gRPC Internal| UserService\n" +
-                    "        OrderService -->|gRPC Internal| BillingService\n" +
+                    "    Clients[\"Web & Mobile Clients\"] -->|\"HTTPS\"| APIGW[\"Spring Cloud API Gateway\"]\n" +
+                    "    APIGW -->|\"JWT Validation\"| AuthService[\"Auth & Token Service\"]\n" +
+                    "    subgraph MicroservicesMesh [\"Kubernetes Microservices Mesh\"]\n" +
+                    "        APIGW -->|\"Route /users\"| UserService[\"User Domain Service\"]\n" +
+                    "        APIGW -->|\"Route /orders\"| OrderService[\"Order Domain Service\"]\n" +
+                    "        APIGW -->|\"Route /billing\"| BillingService[\"Billing Domain Service\"]\n" +
+                    "        OrderService -->|\"gRPC Internal\"| UserService\n" +
+                    "        OrderService -->|\"gRPC Internal\"| BillingService\n" +
                     "    end\n" +
-                    "    UserService --> UserDB[(User DB)]\n" +
-                    "    OrderService --> OrderDB[(Order DB)]\n" +
-                    "    BillingService --> BillingDB[(Billing DB)]\n";
+                    "    UserService --> UserDB[(\"User DB\")]\n" +
+                    "    OrderService --> OrderDB[(\"Order DB\")]\n" +
+                    "    BillingService --> BillingDB[(\"Billing DB\")]\n";
 
             c4DiagramMermaid = "graph TB\n" +
-                    "    subgraph Client Tier\n" +
-                    "        C[End User] --> Web[Single Page Application]\n" +
+                    "    subgraph ClientTier [\"Client Tier\"]\n" +
+                    "        C[\"End User\"] --> Web[\"Single Page Application\"]\n" +
                     "    end\n" +
-                    "    subgraph Cloud Gateway Tier\n" +
-                    "        Web --> GW[Spring Cloud Gateway]\n" +
+                    "    subgraph GatewayTier [\"Cloud Gateway Tier\"]\n" +
+                    "        Web --> GW[\"Spring Cloud Gateway\"]\n" +
                     "    end\n" +
-                    "    subgraph Domain Contexts\n" +
-                    "        GW --> S1[User Service: Spring Boot]\n" +
-                    "        GW --> S2[Order Service: Spring Boot]\n" +
-                    "        GW --> S3[Payment Service: Spring Boot]\n" +
+                    "    subgraph DomainContexts [\"Domain Contexts\"]\n" +
+                    "        GW --> S1[\"User Service: Spring Boot\"]\n" +
+                    "        GW --> S2[\"Order Service: Spring Boot\"]\n" +
+                    "        GW --> S3[\"Payment Service: Spring Boot\"]\n" +
                     "    end\n" +
-                    "    subgraph Isolated Data Tier\n" +
-                    "        S1 --> D1[(User PostgreSQL)]\n" +
-                    "        S2 --> D2[(Order PostgreSQL)]\n" +
-                    "        S3 --> D3[(Payment PostgreSQL)]\n" +
+                    "    subgraph DataTier [\"Isolated Data Tier\"]\n" +
+                    "        S1 --> D1[(\"User PostgreSQL\")]\n" +
+                    "        S2 --> D2[(\"Order PostgreSQL\")]\n" +
+                    "        S3 --> D3[(\"Payment PostgreSQL\")]\n" +
                     "    end\n";
 
             sequenceDiagramMermaid = "sequenceDiagram\n" +
@@ -194,31 +194,31 @@ public class ArchitectureRecommendationController {
             guidelines.add("Use provisioned concurrency for latency-critical user-facing endpoints.");
 
             diagramMermaid = "graph TD\n" +
-                    "    User[End User] -->|Global CDN| CloudFront[CloudFront CDN & S3 SPA]\n" +
-                    "    User -->|API Calls| HttpApi[HTTP API Gateway]\n" +
-                    "    subgraph Serverless Execution Environment\n" +
-                    "        HttpApi --> LambdaAuth[Lambda: Authorizer]\n" +
-                    "        HttpApi --> Lambda1[Lambda: Read Handlers]\n" +
-                    "        HttpApi --> Lambda2[Lambda: Write Handlers]\n" +
-                    "        Lambda2 --> EventBridge[EventBridge Event Bus]\n" +
-                    "        EventBridge --> AsyncLambda[Lambda: Async Worker]\n" +
+                    "    User[\"End User\"] -->|\"Global CDN\"| CloudFront[\"CloudFront CDN & S3 SPA\"]\n" +
+                    "    User -->|\"API Calls\"| HttpApi[\"HTTP API Gateway\"]\n" +
+                    "    subgraph ServerlessEnv [\"Serverless Execution Environment\"]\n" +
+                    "        HttpApi --> LambdaAuth[\"Lambda: Authorizer\"]\n" +
+                    "        HttpApi --> Lambda1[\"Lambda: Read Handlers\"]\n" +
+                    "        HttpApi --> Lambda2[\"Lambda: Write Handlers\"]\n" +
+                    "        Lambda2 --> EventBridge[\"EventBridge Event Bus\"]\n" +
+                    "        EventBridge --> AsyncLambda[\"Lambda: Async Worker\"]\n" +
                     "    end\n" +
-                    "    Lambda1 --> DynamoDB[(DynamoDB NoSQL Table)]\n" +
+                    "    Lambda1 --> DynamoDB[(\"DynamoDB NoSQL Table\")]\n" +
                     "    Lambda2 --> DynamoDB\n" +
-                    "    AsyncLambda --> S3Bucket[(S3 Reports Bucket)]\n";
+                    "    AsyncLambda --> S3Bucket[(\"S3 Reports Bucket\")]\n";
 
             c4DiagramMermaid = "graph TB\n" +
-                    "    subgraph Client\n" +
-                    "        U[User Browser] --> CDN[CloudFront CDN]\n" +
+                    "    subgraph ClientTier [\"Client\"]\n" +
+                    "        U[\"User Browser\"] --> CDN[\"CloudFront CDN\"]\n" +
                     "    end\n" +
-                    "    subgraph Serverless Backend\n" +
-                    "        U --> APIGateway[Cloud API Gateway]\n" +
-                    "        APIGateway --> FN1[Auth Lambda]\n" +
-                    "        APIGateway --> FN2[Core Processing Lambda]\n" +
+                    "    subgraph ServerlessBackend [\"Serverless Backend\"]\n" +
+                    "        U --> APIGateway[\"Cloud API Gateway\"]\n" +
+                    "        APIGateway --> FN1[\"Auth Lambda\"]\n" +
+                    "        APIGateway --> FN2[\"Core Processing Lambda\"]\n" +
                     "    end\n" +
-                    "    subgraph Managed Cloud Storage\n" +
-                    "        FN2 --> DDB[(DynamoDB Single-Table)]\n" +
-                    "        FN2 --> Blob[(S3 Storage)]\n" +
+                    "    subgraph StorageTier [\"Managed Cloud Storage\"]\n" +
+                    "        FN2 --> DDB[(\"DynamoDB Single-Table\")]\n" +
+                    "        FN2 --> Blob[(\"S3 Storage\")]\n" +
                     "    end\n";
 
             sequenceDiagramMermaid = "sequenceDiagram\n" +
@@ -260,32 +260,32 @@ public class ArchitectureRecommendationController {
             guidelines.add("Automate architectural boundary validation using ArchUnit in CI.");
 
             diagramMermaid = "graph TD\n" +
-                    "    Client[React Web Application] -->|REST / JSON| Controllers[Web Controllers Layer]\n" +
-                    "    subgraph Modular Monolith Boundary (Clean Architecture)\n" +
-                    "        Controllers --> AppServices[Application Use Cases / Services]\n" +
-                    "        AppServices --> DomainModel[Core Domain Entities & Business Rules]\n" +
-                    "        AppServices --> OutgoingPorts[Repository & Integration Ports]\n" +
-                    "        subgraph Infrastructure Adapters\n" +
-                    "            OutgoingPorts --> JpaAdapter[Spring Data JPA Adapter]\n" +
-                    "            OutgoingPorts --> RedisAdapter[Redis Cache Adapter]\n" +
-                    "            OutgoingPorts --> MailAdapter[Notification Adapter]\n" +
+                    "    Client[\"React Web Application\"] -->|\"REST / JSON\"| Controllers[\"Web Controllers Layer\"]\n" +
+                    "    subgraph MonolithBoundary [\"Modular Monolith Boundary (Clean Architecture)\"]\n" +
+                    "        Controllers --> AppServices[\"Application Use Cases / Services\"]\n" +
+                    "        AppServices --> DomainModel[\"Core Domain Entities & Business Rules\"]\n" +
+                    "        AppServices --> OutgoingPorts[\"Repository & Integration Ports\"]\n" +
+                    "        subgraph InfraAdapters [\"Infrastructure Adapters\"]\n" +
+                    "            OutgoingPorts --> JpaAdapter[\"Spring Data JPA Adapter\"]\n" +
+                    "            OutgoingPorts --> RedisAdapter[\"Redis Cache Adapter\"]\n" +
+                    "            OutgoingPorts --> MailAdapter[\"Notification Adapter\"]\n" +
                     "        end\n" +
                     "    end\n" +
-                    "    JpaAdapter --> PostgreSQL[(PostgreSQL Database)]\n" +
-                    "    RedisAdapter --> RedisCache[(Redis In-Memory Cache)]\n";
+                    "    JpaAdapter --> PostgreSQL[(\"PostgreSQL Database\")]\n" +
+                    "    RedisAdapter --> RedisCache[(\"Redis In-Memory Cache\")]\n";
 
             c4DiagramMermaid = "graph TB\n" +
-                    "    subgraph User Interaction\n" +
-                    "        User[Software Engineer] --> UI[React Frontend SPA]\n" +
+                    "    subgraph UserLayer [\"User Interaction\"]\n" +
+                    "        User[\"Software Engineer\"] --> UI[\"React Frontend SPA\"]\n" +
                     "    end\n" +
-                    "    subgraph Modular Application Core\n" +
-                    "        UI --> API[Spring Boot REST Controller]\n" +
-                    "        API --> AppLayer[Application Services Layer]\n" +
-                    "        AppLayer --> DomainLayer[Domain Core & Entities]\n" +
-                    "        AppLayer --> InfraLayer[Infrastructure Layer: Persistence]\n" +
+                    "    subgraph CoreBoundary [\"Modular Application Core\"]\n" +
+                    "        UI --> API[\"Spring Boot REST Controller\"]\n" +
+                    "        API --> AppLayer[\"Application Services Layer\"]\n" +
+                    "        AppLayer --> DomainLayer[\"Domain Core & Entities\"]\n" +
+                    "        AppLayer --> InfraLayer[\"Infrastructure Layer: Persistence\"]\n" +
                     "    end\n" +
-                    "    subgraph Storage\n" +
-                    "        InfraLayer --> DB[(PostgreSQL Database)]\n" +
+                    "    subgraph StorageTier [\"Storage\"]\n" +
+                    "        InfraLayer --> DB[(\"PostgreSQL Database\")]\n" +
                     "    end\n";
 
             sequenceDiagramMermaid = "sequenceDiagram\n" +
@@ -332,32 +332,32 @@ public class ArchitectureRecommendationController {
             title = "Secure Event-Driven Payment Gateway Pipeline";
             description = "Idempotent payment capture, third-party webhook dispatch, and asynchronous ledger reconciliation.";
             diagramMermaid = "graph TD\n" +
-                    "    Customer[Checkout Client] -->|HTTPS POST| Ingress[Payment Gateway / Ingress]\n" +
-                    "    Ingress -->|Tokenize & Authorize| PaymentSvc[Payment Orchestrator Service]\n" +
-                    "    PaymentSvc -->|Card Tokenization| Stripe[Stripe / Adyen Payment Gateway]\n" +
-                    "    PaymentSvc -->|Publish PaymentCaptured| KafkaBroker[((Kafka Event Broker))]\n" +
-                    "    KafkaBroker -->|Subscribe| LedgerSvc[Financial Ledger Service]\n" +
-                    "    KafkaBroker -->|Subscribe| ReceiptSvc[Customer Receipt Service]\n" +
-                    "    PaymentSvc --> PaymentDB[(PostgreSQL ACID Ledger)]\n" +
-                    "    LedgerSvc --> AuditLog[(Encrypted Audit DB)]\n";
+                    "    Customer[\"Checkout Client\"] -->|\"HTTPS POST\"| Ingress[\"Payment Gateway / Ingress\"]\n" +
+                    "    Ingress -->|\"Tokenize & Authorize\"| PaymentSvc[\"Payment Orchestrator Service\"]\n" +
+                    "    PaymentSvc -->|\"Card Tokenization\"| Stripe[\"Stripe / Adyen Payment Gateway\"]\n" +
+                    "    PaymentSvc -->|\"Publish PaymentCaptured\"| KafkaBroker((\"Kafka Event Broker\"))\n" +
+                    "    KafkaBroker -->|\"Subscribe\"| LedgerSvc[\"Financial Ledger Service\"]\n" +
+                    "    KafkaBroker -->|\"Subscribe\"| ReceiptSvc[\"Customer Receipt Service\"]\n" +
+                    "    PaymentSvc --> PaymentDB[(\"PostgreSQL ACID Ledger\")]\n" +
+                    "    LedgerSvc --> AuditLog[(\"Encrypted Audit DB\")]\n";
 
             c4DiagramMermaid = "graph TB\n" +
-                    "    subgraph User Experience Layer\n" +
-                    "        Shopper[Checkout Web & Mobile App]\n" +
+                    "    subgraph UXLayer [\"User Experience Layer\"]\n" +
+                    "        Shopper[\"Checkout Web & Mobile App\"]\n" +
                     "    end\n" +
-                    "    subgraph Ingress Boundary\n" +
-                    "        Shopper -->|mTLS Tokenized| Gate[PCI-DSS Ingress Gateway]\n" +
+                    "    subgraph IngressBoundary [\"Ingress Boundary\"]\n" +
+                    "        Shopper -->|\"mTLS Tokenized\"| Gate[\"PCI-DSS Ingress Gateway\"]\n" +
                     "    end\n" +
-                    "    subgraph Payment Processing Boundary\n" +
-                    "        Gate --> Orchestrator[Payment Svc Container]\n" +
-                    "        Orchestrator --> ExternalGW[External Payment Gateway - Stripe]\n" +
-                    "        Orchestrator --> EventBus[Kafka Cluster: payments.v1]\n" +
+                    "    subgraph PaymentProcessing [\"Payment Processing Boundary\"]\n" +
+                    "        Gate --> Orchestrator[\"Payment Svc Container\"]\n" +
+                    "        Orchestrator --> ExternalGW[\"External Payment Gateway - Stripe\"]\n" +
+                    "        Orchestrator --> EventBus[\"Kafka Cluster: payments.v1\"]\n" +
                     "    end\n" +
-                    "    subgraph Settlement & Downstream Boundary\n" +
-                    "        EventBus --> LedgerWorker[Double-Entry Ledger Worker]\n" +
-                    "        EventBus --> EmailWorker[Notification & Receipt Worker]\n" +
-                    "        LedgerWorker --> LedgerDB[(Financial Ledger PostgreSQL)]\n" +
-                    "        EmailWorker --> AuditStore[(Cold Storage Audit Trail)]\n" +
+                    "    subgraph SettlementBoundary [\"Settlement & Downstream Boundary\"]\n" +
+                    "        EventBus --> LedgerWorker[\"Double-Entry Ledger Worker\"]\n" +
+                    "        EventBus --> EmailWorker[\"Notification & Receipt Worker\"]\n" +
+                    "        LedgerWorker --> LedgerDB[(\"Financial Ledger PostgreSQL\")]\n" +
+                    "        EmailWorker --> AuditStore[(\"Cold Storage Audit Trail\")]\n" +
                     "    end\n";
 
             sequenceDiagramMermaid = "sequenceDiagram\n" +
@@ -381,32 +381,32 @@ public class ArchitectureRecommendationController {
             title = "RAG & LLM Augmented Agent Architecture";
             description = "Vector search embedding pipeline, semantic retriever, and LLM inference orchestrator.";
             diagramMermaid = "graph TD\n" +
-                    "    User[Chat Application] -->|Prompt| APIGateway[FastAPI / Spring API Gateway]\n" +
-                    "    APIGateway --> Guardrails[Prompt Safety Guardrails]\n" +
-                    "    Guardrails --> EmbeddingSvc[Text Embedding Model]\n" +
-                    "    EmbeddingSvc -->|Vector Query| VectorDB[(Pinecone / pgvector / Qdrant)]\n" +
-                    "    VectorDB -->|Relevant Context| Orchestrator[Context Fusion & Orchestrator]\n" +
-                    "    Orchestrator -->|Augmented Prompt| LLM[Gemini 1.5 Pro / LLM Engine]\n" +
-                    "    LLM -->|Streaming Tokens| APIGateway\n" +
-                    "    APIGateway -->|SSE Stream| User\n";
+                    "    User[\"Chat Application\"] -->|\"Prompt\"| APIGateway[\"FastAPI / Spring API Gateway\"]\n" +
+                    "    APIGateway --> Guardrails[\"Prompt Safety Guardrails\"]\n" +
+                    "    Guardrails --> EmbeddingSvc[\"Text Embedding Model\"]\n" +
+                    "    EmbeddingSvc -->|\"Vector Query\"| VectorDB[(\"Pinecone / pgvector / Qdrant\")]\n" +
+                    "    VectorDB -->|\"Relevant Context\"| Orchestrator[\"Context Fusion & Orchestrator\"]\n" +
+                    "    Orchestrator -->|\"Augmented Prompt\"| LLM[\"Gemini 1.5 Pro / LLM Engine\"]\n" +
+                    "    LLM -->|\"Streaming Tokens\"| APIGateway\n" +
+                    "    APIGateway -->|\"SSE Stream\"| User\n";
 
             c4DiagramMermaid = "graph TB\n" +
-                    "    subgraph Client Layer\n" +
-                    "        Client[React AI Chat SPA]\n" +
+                    "    subgraph ClientLayer [\"Client Layer\"]\n" +
+                    "        Client[\"React AI Chat SPA\"]\n" +
                     "    end\n" +
-                    "    subgraph Gateway & Security Boundary\n" +
-                    "        Client -->|HTTPS / WSS| APIGW[API Gateway & Rate Limiter]\n" +
-                    "        APIGW --> Filter[Prompt Sanitization & Guardrails]\n" +
+                    "    subgraph GatewayBoundary [\"Gateway & Security Boundary\"]\n" +
+                    "        Client -->|\"HTTPS / WSS\"| APIGW[\"API Gateway & Rate Limiter\"]\n" +
+                    "        APIGW --> Filter[\"Prompt Sanitization & Guardrails\"]\n" +
                     "    end\n" +
-                    "    subgraph Retrieval Augmented Generation Core\n" +
-                    "        Filter --> Orchestrator[RAG Pipeline Orchestrator]\n" +
-                    "        Orchestrator --> Embedder[Sentence-Transformers Embedder]\n" +
-                    "        Embedder --> VectorStore[(Vector DB - Pinecone / pgvector)]\n" +
-                    "        VectorStore -.->|Top-K Embeddings| Orchestrator\n" +
-                    "        Orchestrator --> LLM[Gemini 1.5 Pro Foundation Model]\n" +
+                    "    subgraph RAGCore [\"Retrieval Augmented Generation Core\"]\n" +
+                    "        Filter --> Orchestrator[\"RAG Pipeline Orchestrator\"]\n" +
+                    "        Orchestrator --> Embedder[\"Sentence-Transformers Embedder\"]\n" +
+                    "        Embedder --> VectorStore[(\"Vector DB - Pinecone / pgvector\")]\n" +
+                    "        VectorStore -.->|\"Top-K Embeddings\"| Orchestrator\n" +
+                    "        Orchestrator --> LLM[\"Gemini 1.5 Pro Foundation Model\"]\n" +
                     "    end\n" +
-                    "    subgraph Telemetry & Audit Boundary\n" +
-                    "        Orchestrator --> Audit[(Conversation & Token Audit DB)]\n" +
+                    "    subgraph AuditBoundary [\"Telemetry & Audit Boundary\"]\n" +
+                    "        Orchestrator --> Audit[(\"Conversation & Token Audit DB\")]\n" +
                     "    end\n";
 
             sequenceDiagramMermaid = "sequenceDiagram\n" +
@@ -430,29 +430,29 @@ public class ArchitectureRecommendationController {
             title = "High-Throughput IoT Telemetry Ingestion Pipeline";
             description = "Sub-second sensor metric aggregation, stream processing, and time-series persistence.";
             diagramMermaid = "graph TD\n" +
-                    "    Sensors[Edge IoT Sensors] -->|MQTT Protocol| Broker[EMQX / MQTT Broker]\n" +
-                    "    Broker --> Ingest[Kafka Telemetry Topic]\n" +
-                    "    Ingest --> StreamProcessor[Apache Flink / Spark Streaming]\n" +
-                    "    StreamProcessor -->|Anomaly Detected| AlertEngine[PagerDuty / Slack Alert Engine]\n" +
-                    "    StreamProcessor --> TimeSeriesDB[(TimescaleDB / InfluxDB)]\n" +
-                    "    TimeSeriesDB --> Dashboard[Grafana / Synaptech Telemetry]\n";
+                    "    Sensors[\"Edge IoT Sensors\"] -->|\"MQTT Protocol\"| Broker[\"EMQX / MQTT Broker\"]\n" +
+                    "    Broker --> Ingest[\"Kafka Telemetry Topic\"]\n" +
+                    "    Ingest --> StreamProcessor[\"Apache Flink / Spark Streaming\"]\n" +
+                    "    StreamProcessor -->|\"Anomaly Detected\"| AlertEngine[\"PagerDuty / Slack Alert Engine\"]\n" +
+                    "    StreamProcessor --> TimeSeriesDB[(\"TimescaleDB / InfluxDB\")]\n" +
+                    "    TimeSeriesDB --> Dashboard[\"Grafana / Synaptech Telemetry\"]\n";
 
             c4DiagramMermaid = "graph TB\n" +
-                    "    subgraph Edge Devices Layer\n" +
-                    "        Edge[10,000+ Edge IoT Sensor Fleet]\n" +
+                    "    subgraph EdgeDevicesLayer [\"Edge Devices Layer\"]\n" +
+                    "        Edge[\"10,000+ Edge IoT Sensor Fleet\"]\n" +
                     "    end\n" +
-                    "    subgraph Ingestion Tier Boundary\n" +
-                    "        Edge -->|MQTT QoS 1| MQTT[EMQX Distributed MQTT Cluster]\n" +
-                    "        MQTT --> KafkaTopic[Kafka Topic: telemetry.raw]\n" +
+                    "    subgraph IngestBoundary [\"Ingestion Tier Boundary\"]\n" +
+                    "        Edge -->|\"MQTT QoS 1\"| MQTT[\"EMQX Distributed MQTT Cluster\"]\n" +
+                    "        MQTT --> KafkaTopic[\"Kafka Topic: telemetry.raw\"]\n" +
                     "    end\n" +
-                    "    subgraph Realtime Analytics Tier\n" +
-                    "        KafkaTopic --> FlinkCluster[Apache Flink Stateful Stream Jobs]\n" +
-                    "        FlinkCluster --> MLInference[Realtime Outlier Scoring Model]\n" +
+                    "    subgraph AnalyticsTier [\"Realtime Analytics Tier\"]\n" +
+                    "        KafkaTopic --> FlinkCluster[\"Apache Flink Stateful Stream Jobs\"]\n" +
+                    "        FlinkCluster --> MLInference[\"Realtime Outlier Scoring Model\"]\n" +
                     "    end\n" +
-                    "    subgraph Persistence & Visualization Tier\n" +
-                    "        FlinkCluster --> TSDB[(TimescaleDB / InfluxDB Time-Series)]\n" +
-                    "        MLInference --> AlertSvc[Incident Notification Dispatcher]\n" +
-                    "        TSDB --> UI[Grafana Telemetry Dashboard]\n" +
+                    "    subgraph PersistenceTier [\"Persistence & Visualization Tier\"]\n" +
+                    "        FlinkCluster --> TSDB[(\"TimescaleDB / InfluxDB Time-Series\")]\n" +
+                    "        MLInference --> AlertSvc[\"Incident Notification Dispatcher\"]\n" +
+                    "        TSDB --> UI[\"Grafana Telemetry Dashboard\"]\n" +
                     "    end\n";
 
             sequenceDiagramMermaid = "sequenceDiagram\n" +
@@ -476,33 +476,33 @@ public class ArchitectureRecommendationController {
             title = "Enterprise Cloud-Native Tiered Architecture";
             description = "High availability, decoupled tier architecture with multi-zone redundancy and distributed caching.";
             diagramMermaid = "graph TD\n" +
-                    "    Clients[Web & Mobile Clients] -->|HTTPS / WAF| LoadBalancer[Cloud Load Balancer]\n" +
-                    "    LoadBalancer --> AppCluster[Spring Boot Microservices Cluster]\n" +
-                    "    AppCluster -->|Read-through Cache| RedisCluster[(Redis Distributed Cache)]\n" +
-                    "    AppCluster -->|Read/Write Split| MasterDB[(PostgreSQL Primary)]\n" +
-                    "    MasterDB -->|Replication| ReplicaDB[(PostgreSQL Read Replica)]\n" +
-                    "    AppCluster --> S3Storage[(S3 Object Storage)]\n";
+                    "    Clients[\"Web & Mobile Clients\"] -->|\"HTTPS / WAF\"| LoadBalancer[\"Cloud Load Balancer\"]\n" +
+                    "    LoadBalancer --> AppCluster[\"Spring Boot Microservices Cluster\"]\n" +
+                    "    AppCluster -->|\"Read-through Cache\"| RedisCluster[(\"Redis Distributed Cache\")]\n" +
+                    "    AppCluster -->|\"Read/Write Split\"| MasterDB[(\"PostgreSQL Primary\")]\n" +
+                    "    MasterDB -->|\"Replication\"| ReplicaDB[(\"PostgreSQL Read Replica\")]\n" +
+                    "    AppCluster --> S3Storage[(\"S3 Object Storage\")]\n";
 
             c4DiagramMermaid = "graph TB\n" +
-                    "    subgraph Presentation Tier\n" +
-                    "        SPA[Single Page App Client]\n" +
-                    "        Mobile[Mobile iOS & Android App]\n" +
+                    "    subgraph PresentationTier [\"Presentation Tier\"]\n" +
+                    "        SPA[\"Single Page App Client\"]\n" +
+                    "        Mobile[\"Mobile iOS & Android App\"]\n" +
                     "    end\n" +
-                    "    subgraph Ingress Tier\n" +
-                    "        SPA --> ALB[Application Load Balancer + WAF]\n" +
+                    "    subgraph IngressTier [\"Ingress Tier\"]\n" +
+                    "        SPA --> ALB[\"Application Load Balancer + WAF\"]\n" +
                     "        Mobile --> ALB\n" +
-                    "        ALB --> Gateway[Spring Cloud API Gateway]\n" +
+                    "        ALB --> Gateway[\"Spring Cloud API Gateway\"]\n" +
                     "    end\n" +
-                    "    subgraph Application Service Boundary\n" +
-                    "        Gateway --> AuthSvc[Authentication & JWT Service]\n" +
-                    "        Gateway --> CoreSvc[Core Business Microservices]\n" +
-                    "        Gateway --> ReportSvc[Reporting & Analytics Service]\n" +
+                    "    subgraph AppServiceBoundary [\"Application Service Boundary\"]\n" +
+                    "        Gateway --> AuthSvc[\"Authentication & JWT Service\"]\n" +
+                    "        Gateway --> CoreSvc[\"Core Business Microservices\"]\n" +
+                    "        Gateway --> ReportSvc[\"Reporting & Analytics Service\"]\n" +
                     "    end\n" +
-                    "    subgraph Data Persistence Tier\n" +
-                    "        CoreSvc --> Redis[(Redis Cache Cluster)]\n" +
-                    "        CoreSvc --> PrimaryDB[(PostgreSQL Primary DB)]\n" +
-                    "        ReportSvc --> ReadReplica[(PostgreSQL Read Replica)]\n" +
-                    "        CoreSvc --> ObjectStore[(S3 Blob Storage)]\n" +
+                    "    subgraph DataTier [\"Data Persistence Tier\"]\n" +
+                    "        CoreSvc --> Redis[(\"Redis Cache Cluster\")]\n" +
+                    "        CoreSvc --> PrimaryDB[(\"PostgreSQL Primary DB\")]\n" +
+                    "        ReportSvc --> ReadReplica[(\"PostgreSQL Read Replica\")]\n" +
+                    "        CoreSvc --> ObjectStore[(\"S3 Blob Storage\")]\n" +
                     "    end\n";
 
             sequenceDiagramMermaid = "sequenceDiagram\n" +

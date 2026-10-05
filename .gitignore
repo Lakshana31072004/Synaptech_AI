@@ -48,3 +48,16 @@ Thumbs.db
 data/
 *.mv.db
 *.trace.db
+
+# Python & AI Services
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+ai-services/__pycache__/
+ai-services/.pytest_cache/
+.env
+*.env
+*.key
+*.pem
+secrets/

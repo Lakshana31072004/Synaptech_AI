@@ -1,0 +1,18 @@
+{
+  "model_name": "requirement_classifier_v1",
+  "version": "1.0.0",
+  "sentence_transformer": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_dimension": 384,
+  "algorithm": "LogisticRegression(class_weight=balanced)",
+  "categories": [
+    "FUNCTIONAL",
+    "MAINTAINABILITY",
+    "PERFORMANCE",
+    "SECURITY",
+    "USABILITY"
+  ],
+  "macro_f1_ngram": 0.7176,
+  "macro_f1_sentence_transformer": 0.6992,
+  "dataset": "PROMISE NFR Classification Benchmark (625 requirements)",
+  "random_seed": 42
+}

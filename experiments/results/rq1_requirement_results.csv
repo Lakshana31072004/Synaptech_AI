@@ -1,0 +1,6 @@
+model_name,accuracy,macro_precision,macro_recall,macro_f1,weighted_f1,cohen_kappa
+Baseline 1 (Regex Lexicon),0.5664,0.505,0.299,0.3299,0.5304,0.11
+Baseline 2 (TF-IDF + Naive Bayes),0.6656,0.7102,0.2793,0.2969,0.5684,0.1666
+Baseline 3 (TF-IDF + Standard LR),0.7248,0.7038,0.385,0.4409,0.6661,0.3669
+Proposed Model A (Calibrated N-Gram LR),0.8384,0.7363,0.7016,0.7176,0.8353,0.7114
+Proposed Model B (all-MiniLM-L6-v2 384-D + LR),0.7856,0.6667,0.7548,0.6992,0.7942,0.6528

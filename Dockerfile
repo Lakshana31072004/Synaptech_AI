@@ -8,8 +8,8 @@ RUN mvn clean package -DskipTests
 # Run stage
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=build /app/target/backend-0.0.1-SNAPSHOT.jar app.jar
-RUN mkdir -p /app/data
+COPY --from=build /app/target/snaptech-backend-0.0.1-SNAPSHOT.jar app.jar
+RUN mkdir -p /app/data /app/uploads
 EXPOSE 8081
 ENV PORT=8081
 ENTRYPOINT ["java", "-Dserver.port=${PORT}", "-jar", "app.jar"]

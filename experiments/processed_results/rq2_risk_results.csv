@@ -1,0 +1,6 @@
+model_pipeline,r2_score,mae,rmse,pearson_r
+Baseline 1: Dummy (Mean),0.0,10.3764,12.757,0.0
+Baseline 2: Linear Regression (OLS),0.9221,2.8517,3.5611,0.9602
+Baseline 3: Ridge Regression,0.9221,2.8531,3.5615,0.9602
+Baseline 4: Random Forest,0.8989,3.2684,4.0571,0.9484
+Proposed: LightGBM Regressor,0.8989,3.1859,4.0563,0.9482

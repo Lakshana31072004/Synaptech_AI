@@ -3,6 +3,48 @@ import mermaid from 'mermaid';
 import './ArchitectureDiagramCanvas.css';
 import { useNotification } from '../NotificationContext';
 
+// Helper to auto-repair common Mermaid syntax issues
+export const sanitizeMermaidCode = (raw) => {
+  if (!raw || typeof raw !== 'string') return '';
+  let code = raw.trim();
+
+  // Strip markdown code fences if present
+  code = code.replace(/^```(?:mermaid)?\s*/i, '').replace(/```\s*$/, '').trim();
+
+  // Fix [((text))] -> (("text"))
+  code = code.replace(/\[\(\((.*?)\)\)\]/g, '(("$1"))');
+
+  // Fix subgraphs with unquoted complex titles or parentheses
+  let subIndex = 0;
+  code = code.split('\n').map((line) => {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('subgraph ')) {
+      const content = trimmed.substring(9).trim();
+      if (
+        content.includes('["') ||
+        content.includes("['") ||
+        /^"[^"]+"$/.test(content) ||
+        /^[A-Za-z0-9_]+$/.test(content)
+      ) {
+        return line;
+      }
+      subIndex++;
+      const idTitleMatch = content.match(/^([A-Za-z0-9_]+)\s*\[(.+)\]$/);
+      const indent = line.substring(0, line.indexOf('subgraph'));
+      if (idTitleMatch) {
+        const id = idTitleMatch[1];
+        const title = idTitleMatch[2].replace(/^"|"$/g, '');
+        return `${indent}subgraph ${id} ["${title}"]`;
+      }
+      const safeTitle = content.replace(/"/g, "'");
+      return `${indent}subgraph sub_${subIndex} ["${safeTitle}"]`;
+    }
+    return line;
+  }).join('\n');
+
+  return code;
+};
+
 const ArchitectureDiagramCanvas = ({
   topology,
   c4,
@@ -60,14 +102,18 @@ const ArchitectureDiagramCanvas = ({
   const renderDiagram = useCallback(async (code, targetRef) => {
     if (!code || !targetRef.current) return;
     setRenderError(null);
+    const sanitized = sanitizeMermaidCode(code);
+    const uniqueId = `mermaid-svg-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
     try {
-      const uniqueId = `mermaid-svg-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-      const { svg } = await mermaid.render(uniqueId, code);
+      const { svg } = await mermaid.render(uniqueId, sanitized);
       if (targetRef.current) {
         targetRef.current.innerHTML = svg;
       }
     } catch (err) {
       console.error('Mermaid render error:', err);
+      // Clean up leftover Mermaid error elements from DOM
+      const errorEl = document.getElementById(uniqueId) || document.getElementById('d' + uniqueId);
+      if (errorEl) errorEl.remove();
       setRenderError('Invalid diagram syntax. Please review the diagram definition.');
     }
   }, []);
@@ -239,8 +285,16 @@ const ArchitectureDiagramCanvas = ({
       {activeView !== 'editor' ? (
         <div className="canvas-viewport">
           {renderError ? (
-            <div style={{ color: '#f87171', background: 'rgba(239, 68, 68, 0.1)', padding: '16px 22px', borderRadius: '8px', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
-              ⚠️ {renderError}
+            <div style={{ color: '#f87171', background: 'rgba(239, 68, 68, 0.1)', padding: '16px 22px', borderRadius: '8px', border: '1px solid rgba(239, 68, 68, 0.3)', textAlign: 'center' }}>
+              <div style={{ marginBottom: '10px', fontWeight: 500 }}>⚠️ {renderError}</div>
+              <button
+                type="button"
+                className="tool-btn"
+                onClick={() => setActiveView('editor')}
+                style={{ background: 'rgba(239, 68, 68, 0.2)', border: '1px solid rgba(239, 68, 68, 0.4)', color: '#fca5a5' }}
+              >
+                ✏️ Open in Live Editor to Inspect / Fix
+              </button>
             </div>
           ) : (
             <div

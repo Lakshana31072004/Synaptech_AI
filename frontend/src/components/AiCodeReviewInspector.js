@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AiCodeReviewInspector.css';
 import { apiService } from '../apiService';
 import { useNotification } from '../NotificationContext';
@@ -60,12 +61,30 @@ const SAMPLES = {
 };
 
 const AiCodeReviewInspector = () => {
+  const navigate = useNavigate();
   const [code, setCode] = useState(SAMPLES.vulnerable_sql.code);
   const [language, setLanguage] = useState('java');
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState(null);
+  const [pipelineNotice, setPipelineNotice] = useState(null);
 
   const { showSuccess, showError } = useNotification();
+
+  useEffect(() => {
+    try {
+      const pendingCode = localStorage.getItem('synaptech_pending_code_inspection');
+      if (pendingCode) {
+        const parsed = JSON.parse(pendingCode);
+        if (parsed.code) {
+          setCode(parsed.code);
+          if (parsed.language) setLanguage(parsed.language);
+          setPipelineNotice(parsed.componentName || 'Architecture Blueprint Component');
+          showSuccess(`Ingested "${parsed.componentName}" code from Module 3 Architecture Canvas!`);
+          localStorage.removeItem('synaptech_pending_code_inspection');
+        }
+      }
+    } catch {}
+  }, [showSuccess]);
 
   const handleLoadSample = (sampleKey) => {
     const sample = SAMPLES[sampleKey];
@@ -106,6 +125,43 @@ const AiCodeReviewInspector = () => {
     );
   };
 
+  const handleFeedToHealthAndRisk = () => {
+    if (!report) return;
+    const activeProjectId = localStorage.getItem('synaptech_active_project') || '1';
+    const qualityScore = report.overallQualityScore ?? report.codeQualityScore ?? 75;
+    const vulnCount = (report.vulnerabilities || []).length;
+    const bugTrend = vulnCount >= 2 ? 'increasing' : (vulnCount === 1 ? 'stable' : 'decreasing');
+    const technicalDebt = qualityScore < 70 ? 'high' : (qualityScore < 85 ? 'medium' : 'low');
+
+    const metricsData = {
+      codeQualityIndex: qualityScore,
+      bugTrend,
+      technicalDebt,
+      vulnerabilitiesCount: vulnCount,
+      riskLevel: report.riskLevel || 'Medium',
+      source: 'Module 4 AI Code Review Inspector',
+      timestamp: new Date().toISOString()
+    };
+
+    localStorage.setItem(`synaptech_pending_risk_metrics_${activeProjectId}`, JSON.stringify(metricsData));
+    showSuccess(`Exported Code Quality (${qualityScore}/100) & Defect Influx to Module 5 (Health & Risk)!`);
+    navigate('/risk');
+  };
+
+  const handleSyncToTraceabilityAndRisk = () => {
+    if (!report) return;
+    const activeProjectId = localStorage.getItem('synaptech_active_project') || '1';
+    const vulnData = {
+      issues: report.vulnerabilities || [],
+      riskLevel: report.riskLevel || 'Medium',
+      qualityScore: report.overallQualityScore ?? report.codeQualityScore ?? 75,
+      timestamp: new Date().toISOString()
+    };
+    localStorage.setItem(`synaptech_code_vulnerabilities_${activeProjectId}`, JSON.stringify(vulnData));
+    showSuccess(`Security telemetry & ${(report.vulnerabilities || []).length} vulnerability flags synced to Risk & Traceability!`);
+    navigate('/traceability');
+  };
+
   const lineCount = code.split('\n').length;
 
   return (
@@ -114,6 +170,30 @@ const AiCodeReviewInspector = () => {
         <h2>Module 4: AI Code Review &amp; Security Vulnerability Inspector</h2>
         <p>Automated static analysis for OWASP Top 10 vulnerabilities, resource management leaks, architectural anti-patterns, and secure refactoring.</p>
       </div>
+
+      {pipelineNotice && (
+        <div style={{
+          background: 'rgba(16, 185, 129, 0.15)',
+          border: '1px solid rgba(52, 211, 153, 0.4)',
+          borderRadius: '8px',
+          padding: '8px 14px',
+          color: '#6ee7b7',
+          fontSize: '0.86rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '16px'
+        }}>
+          <span>✨ <strong>Continuous Pipeline Active:</strong> Ingested component code for <strong>"{pipelineNotice}"</strong> from Module 3 Architecture Blueprint. Ready for AST inspection.</span>
+          <button
+            type="button"
+            onClick={() => setPipelineNotice(null)}
+            style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '0.9rem' }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* Language & Samples Bar */}
       <div className="review-controls-bar">
@@ -159,30 +239,64 @@ const AiCodeReviewInspector = () => {
           />
         </div>
 
-        <button type="submit" disabled={loading} className="primary-btn">
-          {loading ? 'Analyzing Code & Checking OWASP Vulnerabilities...' : '🛡️ Run AI Vulnerability & Code Review'}
-        </button>
+        <div className="review-actions">
+          <button type="submit" disabled={loading || !code.trim()} className="primary-btn">
+            {loading ? 'Inspecting Code for OWASP & Quality...' : 'Run AI Security & Quality Review'}
+          </button>
+        </div>
       </form>
 
       {/* Results Section */}
       {report && (
-        <div className="review-results-container">
-          {/* Score Hero Banner */}
-          <div className="review-score-hero">
+        <div className="review-results">
+          {/* Top Score & Summary Banner */}
+          <div className="review-hero-card">
             <div>
-              <span style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#94a3b8', fontWeight: 700 }}>
-                Code Security Evaluation
-              </span>
-              <h3 style={{ margin: '4px 0 8px 0', fontSize: '1.4rem', color: '#f8fafc', fontFamily: 'var(--font-heading)' }}>
-                {report.summary}
+              <h3 style={{ margin: '0 0 8px 0', fontSize: '1.45rem', fontFamily: 'var(--font-heading)' }}>
+                Code Review Verdict &bull; {report.targetModule || 'Service Component'}
               </h3>
-              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <p style={{ margin: '0 0 14px 0', color: '#cbd5e1', fontSize: '0.94rem' }}>
+                {report.summary}
+              </p>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
                 <span className={`status-pill score-badge-${(report.riskLevel || 'low').toLowerCase()}`}>
                   Risk Level: {report.riskLevel || 'Low'}
                 </span>
                 <span style={{ color: '#cbd5e1', fontSize: '0.88rem' }}>
                   &bull; {(report.vulnerabilities || []).length} Security Issue(s) &bull; {(report.codeSmells || []).length} Smell(s)
                 </span>
+                <button
+                  type="button"
+                  onClick={handleFeedToHealthAndRisk}
+                  className="primary-btn"
+                  style={{
+                    fontSize: '0.8rem',
+                    padding: '5px 12px',
+                    background: 'linear-gradient(135deg, #10b981 0%, #3b82f6 100%)',
+                    color: '#ffffff',
+                    border: 'none',
+                    boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  📊 Feed Quality to Health Telemetry (Module 5) &rarr;
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSyncToTraceabilityAndRisk}
+                  className="primary-btn"
+                  style={{
+                    fontSize: '0.8rem',
+                    padding: '5px 12px',
+                    background: 'linear-gradient(135deg, #ef4444 0%, #f97316 100%)',
+                    color: '#ffffff',
+                    border: 'none',
+                    boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  🛡️ Sync to Traceability &amp; Risk &rarr;
+                </button>
               </div>
             </div>
 

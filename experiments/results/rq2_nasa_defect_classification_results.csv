@@ -1,0 +1,5 @@
+model_name,accuracy,precision,recall,f1_score,roc_auc
+Baseline 1 (Dummy Most Frequent),0.7817,0.0,0.0,0.0,0.5
+Baseline 2 (Logistic Regression),0.705,0.3663,0.4809,0.4158,0.6598
+Baseline 3 (Random Forest),0.7192,0.3932,0.5267,0.4502,0.6766
+Proposed Model (LightGBM Classifier),0.7642,0.4087,0.1794,0.2493,0.6454

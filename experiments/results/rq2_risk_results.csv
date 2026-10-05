@@ -1,0 +1,5 @@
+model_name,r2_score,mae,rmse,pearson_r
+Baseline 1 (Dummy Mean),-0.009,10.4269,12.8141,-0.1956
+Baseline 2 (Ridge Regression),0.922,2.8551,3.5624,0.9602
+Baseline 3 (Random Forest),0.8985,3.2738,4.0644,0.9482
+Proposed Model (Tuned LightGBM),0.899,3.2444,4.0547,0.9482

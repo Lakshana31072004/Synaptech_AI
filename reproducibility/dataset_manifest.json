@@ -1,0 +1,67 @@
+{
+  "project_name": "Synaptech AI",
+  "academic_level": "M.Tech Final Year Thesis - Software Engineering",
+  "phase": "Phase 6 - Final System Hardening, Research Validation & Reproducibility",
+  "datasets": [
+    {
+      "dataset_name": "PROMISE NFR Classification Benchmark",
+      "filename": "promise_nfr_benchmark.csv",
+      "canonical_path": "datasets/promise_nfr_benchmark.csv",
+      "source_authority": "Tera-PROMISE Software Engineering Repository",
+      "license": "Creative Commons Attribution 3.0 (Open Science)",
+      "row_count": 625,
+      "feature_count": 7,
+      "sha256_checksum": "20f163eead0149b24f9c7a7374c3dd683d5a71b811e76d8b03c30790cdc0aaef",
+      "research_task": "RQ1: Requirement Quality & Non-Functional Attribute Classification (ISO/IEC 25010)",
+      "target_variable": "category",
+      "target_classes": ["FUNCTIONAL", "PERFORMANCE", "USABILITY", "SECURITY", "MAINTAINABILITY"],
+      "leakage_audit": "Clean. 2 identical requirement sentences detected and verified (0.3% of corpus), evaluated via Stratified 10-fold CV."
+    },
+    {
+      "dataset_name": "NASA Metrics Data Program (Cleaned)",
+      "filename": "nasa_mdp_cleaned.csv",
+      "canonical_path": "datasets/nasa_mdp_cleaned.csv",
+      "source_authority": "NASA Metrics Data Program (MC1, PC1, JM1, KC1, CM1)",
+      "license": "Public Domain (US Government Work)",
+      "row_count": 1200,
+      "feature_count": 23,
+      "sha256_checksum": "b1ebf8dc03a27561607f0380fd5925d5264de1fe5495500f661a211765be498d",
+      "research_task": "RQ2: Module-Level Defect Proneness & Defect Density Estimation",
+      "target_variable": "Def",
+      "target_classes": ["0 (Clean: 938 modules)", "1 (Defective: 262 modules)"],
+      "leakage_audit": "Clean. Strictly positive LOC. Severe class imbalance (21.8% defective) addressed with cost-sensitive class balancing."
+    },
+    {
+      "dataset_name": "Apache Jira Agile Sprint Telemetry Benchmark",
+      "filename": "apache_jira_sprint_benchmark.csv",
+      "canonical_path": "datasets/apache_jira_sprint_benchmark.csv",
+      "source_authority": "Apache Software Foundation (Hadoop, Zookeeper, Cassandra Jira Repositories)",
+      "license": "Apache License 2.0 (Open Source)",
+      "row_count": 360,
+      "feature_count": 13,
+      "sha256_checksum": "ef90219660bbbe70533f7fa40cad7cc0915fde1954d65b2e469bafe33ddaa0fc",
+      "research_task": "RQ2: Sprint Milestone Delivery Shortfall & Project Risk Regression",
+      "target_variable": "delivery_risk_score",
+      "target_distribution": {
+        "mean": 29.2921,
+        "std": 12.7748,
+        "min": 6.46,
+        "max": 65.05
+      },
+      "leakage_audit": "Clean. Sequential sprint tracking maintained across projects without future target leakage."
+    },
+    {
+      "dataset_name": "LibEST Traceability Benchmark Matrix",
+      "filename": "libest_traceability_matrix.csv",
+      "canonical_path": "datasets/libest_traceability_matrix.csv",
+      "source_authority": "LibEST Open-Source Software Engineering Benchmark",
+      "license": "BSD 3-Clause License",
+      "row_count": 126,
+      "feature_count": 7,
+      "sha256_checksum": "0328392bcbb654e34e088f77a3510151d6257b4b8ef5f88426abb606b4dc67da",
+      "research_task": "RQ4: Artifact Traceability & Distance-Attenuated Change Impact Analysis",
+      "target_variable": "ground_truth_weight",
+      "leakage_audit": "Clean. 126 authentic directed ground-truth links. Distance attenuation (gamma=0.75) verified to evaluate transitive graph reachability without blast-radius overestimation."
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import AiRequirementAnalyzer from './AiRequirementAnalyzer';
 import { NotificationProvider } from '../NotificationContext';
 import { apiService } from '../apiService';
@@ -32,9 +33,11 @@ describe('AiRequirementAnalyzer', () => {
 
   test('renders analyzer, triggers analysis, and displays classified requirements', async () => {
     render(
-      <NotificationProvider>
-        <AiRequirementAnalyzer />
-      </NotificationProvider>
+      <MemoryRouter>
+        <NotificationProvider>
+          <AiRequirementAnalyzer />
+        </NotificationProvider>
+      </MemoryRouter>
     );
 
     expect(screen.getByText(/Module 1: AI Requirement Analyzer/i)).toBeInTheDocument();

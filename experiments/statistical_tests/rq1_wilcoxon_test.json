@@ -1,0 +1,9 @@
+{
+  "comparison": "Proposed Model A vs Baseline 3 (TF-IDF LR) on 0-1 Classification Loss",
+  "sample_size": 625,
+  "wilcoxon_statistic": 5551.0,
+  "p_value": 1.465957487646805e-08,
+  "statistically_significant": true,
+  "cliffs_delta": -0.0976,
+  "effect_size": "Medium improvement in classification accuracy"
+}

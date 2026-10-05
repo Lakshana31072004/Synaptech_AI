@@ -1,0 +1,5 @@
+model_pipeline,accuracy,precision,recall,macro_f1,roc_auc
+Baseline 1: Dummy Prior,0.7817,0.0,0.0,0.0,0.5
+Baseline 2: Logistic Regression (Balanced),0.7067,0.3653,0.4656,0.4094,0.662
+Baseline 3: Random Forest (Balanced),0.72,0.3943,0.5267,0.451,0.6768
+Proposed: LightGBM Classifier,0.6817,0.3266,0.4313,0.3717,0.6394

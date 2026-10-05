@@ -1,0 +1,18 @@
+{
+  "model_name": "risk_lightgbm_v1",
+  "version": "1.0.0",
+  "algorithm": "LightGBMRegressor",
+  "feature_names": [
+    "sprint_velocity_variance",
+    "defect_arrival_rate",
+    "technical_debt_ratio",
+    "code_quality_index",
+    "requirement_churn"
+  ],
+  "r2_score": 0.899,
+  "mae": 3.2444,
+  "rmse": 4.0547,
+  "shap_fidelity_error": 3.552713678800501e-14,
+  "dataset": "Apache Jira Agile Sprint Benchmark (360 sprint iterations)",
+  "random_seed": 42
+}

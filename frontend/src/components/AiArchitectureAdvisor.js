@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AiArchitectureAdvisor.css';
 import { apiService } from '../apiService';
 import { useNotification } from '../NotificationContext';
@@ -14,13 +15,33 @@ const AiArchitectureAdvisor = () => {
 
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [importedNotice, setImportedNotice] = useState(false);
 
   // Custom standalone prompt state
   const [customPrompt, setCustomPrompt] = useState('');
   const [customLoading, setCustomLoading] = useState(false);
   const [customDiagram, setCustomDiagram] = useState(null);
 
+  const navigate = useNavigate();
   const { showSuccess, showError } = useNotification();
+
+  useEffect(() => {
+    const pendingCriteria = localStorage.getItem('synaptech_pending_arch_criteria');
+    if (pendingCriteria) {
+      try {
+        const parsed = JSON.parse(pendingCriteria);
+        if (parsed.teamSize) setTeamSize(parsed.teamSize);
+        if (parsed.scalabilityRequirement) setScalabilityRequirement(parsed.scalabilityRequirement);
+        if (parsed.latencyRequirement) setLatencyRequirement(parsed.latencyRequirement);
+        if (parsed.projectType) setProjectType(parsed.projectType);
+        setImportedNotice(true);
+        showSuccess('Pre-filled architecture parameters derived from Sprint Planner (Module 2)!');
+      } catch (e) {
+        console.error('Error parsing pending arch criteria', e);
+      }
+      localStorage.removeItem('synaptech_pending_arch_criteria');
+    }
+  }, [showSuccess]);
 
   const handleRecommend = async (e) => {
     e.preventDefault();
@@ -41,6 +62,106 @@ const AiArchitectureAdvisor = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRegisterToTraceability = () => {
+    if (!report) return;
+    const activeProjectId = localStorage.getItem('synaptech_active_project') || '1';
+    const components = Object.entries(report.suggestedTechStack || {}).map(([layer, tech]) => ({
+      name: `${layer}: ${tech}`,
+      layer,
+      status: 'Active'
+    }));
+    localStorage.setItem(`synaptech_registered_arch_${activeProjectId}`, JSON.stringify({
+      archName: report.recommendedArchitecture,
+      components
+    }));
+    showSuccess(`Registered ${components.length} architectural components to Traceability Graph (Module 6)!`);
+    navigate('/traceability');
+  };
+
+  const handleInspectComponentInModule4 = () => {
+    if (!report) return;
+    const archName = report.recommendedArchitecture || 'Microservices Gateway';
+    let codeTemplate = '';
+    if (archName.toLowerCase().includes('event') || archName.toLowerCase().includes('kafka') || archName.toLowerCase().includes('iot')) {
+      codeTemplate = `// Architecture Component: \${archName}
+// Ingested from Synaptech Module 3 Architecture Blueprint
+package com.synaptech.telemetry.consumer;
+
+import org.springframework.stereotype.Service;
+import java.sql.Connection;
+import java.sql.Statement;
+
+@Service
+public class TelemetryStreamConsumer {
+
+    // Edge sensor ingestion worker
+    public void processSensorPayload(Connection conn, String deviceId, String telemetryPayload) throws Exception {
+        Statement stmt = conn.createStatement();
+        // Dynamic string concatenation - inspection target for SQLi and resource leak
+        String query = "INSERT INTO sensor_logs (device_id, payload) VALUES ('" + deviceId + "', '" + telemetryPayload + "')";
+        stmt.executeUpdate(query);
+    }
+}`;
+    } else if (archName.toLowerCase().includes('serverless')) {
+      codeTemplate = `// Architecture Component: \${archName}
+// Ingested from Synaptech Module 3 Architecture Blueprint
+package com.synaptech.serverless.handler;
+
+import java.sql.*;
+
+public class ServerlessOrderHandler {
+
+    public void handleRequest(String orderId, String authHeader) throws Exception {
+        // Authenticate request token
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new SecurityException("Unauthorized request token");
+        }
+        
+        Connection conn = DriverManager.getConnection("jdbc:postgresql://cloud-db:5432/orders");
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM orders WHERE order_id = '" + orderId + "'");
+        while (rs.next()) {
+            System.out.println("Processing order: " + rs.getString("order_id"));
+        }
+    }
+}`;
+    } else {
+      codeTemplate = `// Architecture Component: \${archName}
+// Ingested from Synaptech Module 3 Architecture Blueprint
+package com.synaptech.gateway.service;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class CoreBffGatewayController {
+
+    private String internalApiKey = "sk_live_sec_prod_992147102";
+
+    public void dispatchRoute(Connection conn, String tenantId, String routePath) throws Exception {
+        Statement stmt = conn.createStatement();
+        // Ingestion path requiring security inspection
+        String sql = "SELECT target_service_url FROM route_registry WHERE tenant_id = '" + tenantId + "' AND path = '" + routePath + "'";
+        ResultSet rs = stmt.executeQuery(sql);
+        if (rs.next()) {
+            System.out.println("Routing to: " + rs.getString("target_service_url"));
+        }
+    }
+}`;
+    }
+
+    const payload = {
+      componentName: archName,
+      language: 'java',
+      code: codeTemplate,
+      source: 'Module 3 Architecture Blueprint',
+      timestamp: new Date().toISOString()
+    };
+    localStorage.setItem('synaptech_pending_code_inspection', JSON.stringify(payload));
+    showSuccess(`Scaffolded component "${archName}" code exported to Module 4 (Code Review Inspector)!`);
+    navigate('/code-review');
   };
 
   const handleCustomDiagramGenerate = async (e) => {
@@ -64,6 +185,30 @@ const AiArchitectureAdvisor = () => {
         <h2>Module 3: Software Architecture Recommendation Engine &amp; Live Canvas</h2>
         <p>AI-driven architectural pattern synthesis, interactive diagram topologies, trade-off evaluation, and tailored technology blueprints.</p>
       </div>
+
+      {importedNotice && (
+        <div style={{
+          background: 'rgba(59, 130, 246, 0.15)',
+          border: '1px solid rgba(96, 165, 250, 0.4)',
+          borderRadius: '8px',
+          padding: '8px 14px',
+          color: '#93c5fd',
+          fontSize: '0.86rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '16px'
+        }}>
+          <span>✨ <strong>Continuous Pipeline Active:</strong> Architecture parameters pre-configured from Sprint Planner.</span>
+          <button
+            type="button"
+            onClick={() => setImportedNotice(false)}
+            style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '0.9rem' }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       <form onSubmit={handleRecommend} className="arch-form">
         <div className="arch-form-grid">
@@ -178,11 +323,45 @@ const AiArchitectureAdvisor = () => {
         <div className="arch-results">
           {/* Main Recommended Architecture Card */}
           <div className="arch-card">
-            <div className="arch-card-header">
-              <h3>{report.recommendedArchitecture}</h3>
-              <span className="confidence-badge">
-                Confidence: {report.confidenceScore}%
-              </span>
+            <div className="arch-card-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
+              <div>
+                <h3 style={{ margin: '0 0 6px 0' }}>{report.recommendedArchitecture}</h3>
+                <span className="confidence-badge">
+                  Confidence: {report.confidenceScore}%
+                </span>
+              </div>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  onClick={handleInspectComponentInModule4}
+                  className="primary-btn"
+                  style={{
+                    fontSize: '0.84rem',
+                    padding: '6px 14px',
+                    background: 'linear-gradient(135deg, #10b981 0%, #3b82f6 100%)',
+                    color: '#ffffff',
+                    border: 'none',
+                    boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
+                  }}
+                >
+                  💻 Inspect Component Code (Module 4) &rarr;
+                </button>
+                <button
+                  type="button"
+                  onClick={handleRegisterToTraceability}
+                  className="primary-btn"
+                  style={{
+                    fontSize: '0.84rem',
+                    padding: '6px 14px',
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                    color: '#ffffff',
+                    border: 'none',
+                    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                  }}
+                >
+                  🕸️ Register to Traceability Graph (Module 6) &rarr;
+                </button>
+              </div>
             </div>
             <p className="arch-summary">{report.summary}</p>
             {report.alternativeArchitecture && (

@@ -1,0 +1,6 @@
+configuration,features_enabled,sprint_risk_r2,defect_proneness_auc,req_macro_f1,shap_fidelity_error
+Config A: Full Synaptech Platform (Complete Pipeline),All Features + Scaling + Sublinear TF + Balanced Weights + TreeSHAP,0.899,0.6766,0.7176,3.55e-14
+Config B: Without Feature Scaling (No StandardScaler),Raw Telemetry Metrics without Z-Score Normalization,0.8988,0.654,0.7176,3.55e-14
+Config C: Linear Baselines Only (OLS / Ridge / Standard LR),Strictly Linear Models (No Gradient Boosting / Decision Trees),0.8197,0.6598,0.4409,N/A
+Config D: Without Sublinear TF-IDF & N-Gram Tokenization,Standard Unigram Term Frequency,0.899,0.6766,0.6128,3.55e-14
+Config E: Without Cost-Sensitive Class Balancing,Uniform Sample Weights on NASA & PROMISE Datasets,0.899,0.6454,0.584,3.55e-14

@@ -1,0 +1,64 @@
+{
+  "environment": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD",
+    "python_version": "3.14.0"
+  },
+  "benchmarks": [
+    {
+      "operation": "Requirement Classification (<35ms target)",
+      "requests": 100,
+      "warmup_requests": 10,
+      "mean_ms": 0.82,
+      "p50_ms": 0.75,
+      "p95_ms": 1.17,
+      "p99_ms": 1.48,
+      "min_ms": 0.7,
+      "max_ms": 1.5
+    },
+    {
+      "operation": "Risk Prediction (<25ms target)",
+      "requests": 100,
+      "warmup_requests": 10,
+      "mean_ms": 6.79,
+      "p50_ms": 6.51,
+      "p95_ms": 8.7,
+      "p99_ms": 9.6,
+      "min_ms": 5.6,
+      "max_ms": 13.58
+    },
+    {
+      "operation": "TreeSHAP Attribution (<50ms target)",
+      "requests": 100,
+      "warmup_requests": 10,
+      "mean_ms": 7.14,
+      "p50_ms": 6.69,
+      "p95_ms": 8.73,
+      "p99_ms": 14.38,
+      "min_ms": 5.57,
+      "max_ms": 21.8
+    },
+    {
+      "operation": "Graph Traversal (<20ms target)",
+      "requests": 100,
+      "warmup_requests": 10,
+      "mean_ms": 0.04,
+      "p50_ms": 0.04,
+      "p95_ms": 0.04,
+      "p99_ms": 0.05,
+      "min_ms": 0.04,
+      "max_ms": 0.05
+    },
+    {
+      "operation": "Complete What-If Simulation (<150ms target)",
+      "requests": 100,
+      "warmup_requests": 10,
+      "mean_ms": 13.38,
+      "p50_ms": 12.72,
+      "p95_ms": 16.61,
+      "p99_ms": 18.67,
+      "min_ms": 11.41,
+      "max_ms": 19.87
+    }
+  ]
+}

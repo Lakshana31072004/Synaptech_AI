@@ -1,0 +1,69 @@
+{
+  "project": "Synaptech AI Platform",
+  "experiments": [
+    {
+      "experiment_id": "EXP-RQ1",
+      "research_question": "RQ1: Requirement Quality & NFR Classification",
+      "script": "ai-services/training/verify_models_and_statistics.py::verify_rq1_requirements",
+      "dataset": "datasets/promise_nfr_benchmark.csv",
+      "splits": "10-Fold Stratified CV (Random Seed: 42)",
+      "metrics_file": "experiments/processed_results/rq1_requirement_results.csv",
+      "per_class_metrics": "experiments/processed_results/rq1_per_class_metrics.csv",
+      "raw_confusion_matrix": "experiments/raw_results/rq1_confusion_matrix.json",
+      "plot": "experiments/plots/rq1_confusion_matrix.png",
+      "statistical_test": "experiments/statistical_tests/rq1_wilcoxon_test.json"
+    },
+    {
+      "experiment_id": "EXP-RQ2-NASA",
+      "research_question": "RQ2 (Part A): NASA Module Defect Proneness & Density",
+      "script": "ai-services/training/verify_models_and_statistics.py::verify_rq2_nasa",
+      "dataset": "datasets/nasa_mdp_cleaned.csv",
+      "splits": "10-Fold Stratified CV (Random Seed: 42)",
+      "classification_metrics": "experiments/processed_results/rq2_nasa_defect_classification_results.csv",
+      "regression_metrics": "experiments/processed_results/rq2_nasa_defect_regression_results.csv"
+    },
+    {
+      "experiment_id": "EXP-RQ2-JIRA",
+      "research_question": "RQ2 (Part B): Agile Sprint Delivery Risk Regression",
+      "script": "ai-services/training/verify_models_and_statistics.py::verify_rq2_jira_and_statistics",
+      "dataset": "datasets/apache_jira_sprint_benchmark.csv",
+      "splits": "10-Fold CV (Random Seed: 42)",
+      "metrics_file": "experiments/processed_results/rq2_risk_results.csv",
+      "statistical_test": "experiments/statistical_tests/rq2_wilcoxon_test_report.json",
+      "plots": [
+        "experiments/plots/predicted_vs_actual.png",
+        "experiments/plots/residuals.png",
+        "experiments/plots/model_comparison.png"
+      ]
+    },
+    {
+      "experiment_id": "EXP-RQ3",
+      "research_question": "RQ3: TreeSHAP Axiomatic Fidelity & Stability",
+      "script": "ai-services/training/verify_models_and_statistics.py::verify_rq3_shap",
+      "dataset": "datasets/apache_jira_sprint_benchmark.csv",
+      "metrics_file": "experiments/processed_results/rq3_shap_results.csv",
+      "raw_attributions": "experiments/raw_results/rq3_feature_attributions.json",
+      "plot": "experiments/plots/shap_feature_importance.png"
+    },
+    {
+      "experiment_id": "EXP-RQ4",
+      "research_question": "RQ4: Artifact Traceability & Multi-Hop Reachability",
+      "script": "ai-services/training/verify_models_and_statistics.py::verify_rq4_libest_traceability",
+      "dataset": "datasets/libest_traceability_matrix.csv",
+      "metrics_file": "experiments/processed_results/rq4_traceability_results.csv",
+      "construct_audit": "experiments/error_analysis/libest_construct_audit.json"
+    },
+    {
+      "experiment_id": "EXP-ABLATION",
+      "research_question": "Ablation Study (Configurations A to E)",
+      "script": "ai-services/training/verify_models_and_statistics.py::verify_ablation_study",
+      "results_file": "experiments/ablation/ablation_study_results.csv"
+    },
+    {
+      "experiment_id": "EXP-LATENCY",
+      "research_question": "System Execution Latencies vs Target SLAs",
+      "script": "ai-services/training/evaluate_experiments.py::evaluate_latency_benchmarks",
+      "results_file": "experiments/results/latency_benchmarks.csv"
+    }
+  ]
+}

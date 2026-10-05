@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import AiCodeReviewInspector from './AiCodeReviewInspector';
 import { NotificationProvider } from '../NotificationContext';
 import { apiService } from '../apiService';
@@ -10,13 +11,12 @@ describe('AiCodeReviewInspector', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     apiService.reviewCode.mockResolvedValue({
-      overallQualityScore: 45,
-      riskLevel: 'Critical',
-      summary: 'Found 1 security vulnerability(ies). Overall security risk is Critical.',
+      summary: 'Security vulnerability detected.',
+      riskLevel: 'High',
+      overallQualityScore: 62,
       vulnerabilities: [
         {
-          title: 'Potential SQL Injection via Dynamic Query Construction',
-          severity: 'Critical',
+          title: 'Potential SQL Injection',
           category: 'OWASP A03:2021 - Injection (CWE-89)',
           description: 'Raw string concatenation detected in query.',
           snippet: 'SELECT * FROM users WHERE name = ' + 'input',
@@ -31,20 +31,22 @@ describe('AiCodeReviewInspector', () => {
 
   test('renders code review inspector and triggers analysis', async () => {
     render(
-      <NotificationProvider>
-        <AiCodeReviewInspector />
-      </NotificationProvider>
+      <MemoryRouter>
+        <NotificationProvider>
+          <AiCodeReviewInspector />
+        </NotificationProvider>
+      </MemoryRouter>
     );
 
     expect(screen.getByText(/Module 4: AI Code Review & Security Vulnerability Inspector/i)).toBeInTheDocument();
 
-    const submitBtn = screen.getByRole('button', { name: /Run AI Vulnerability & Code Review/i });
+    const submitBtn = screen.getByRole('button', { name: /Run AI (Security & Quality|Vulnerability & Code) Review/i });
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
       expect(screen.getByText(/Potential SQL Injection/i)).toBeInTheDocument();
-      expect(screen.getByText(/Risk Level: Critical/i)).toBeInTheDocument();
-      expect(screen.getByText('45')).toBeInTheDocument();
+      expect(screen.getByText(/Risk Level: High/i)).toBeInTheDocument();
+      expect(screen.getByText('62')).toBeInTheDocument();
       expect(screen.getByText(/Copy Refactored Code/i)).toBeInTheDocument();
     });
   });

@@ -1,0 +1,5 @@
+model_pipeline,r2_score,mae,rmse,pearson_r
+Baseline 1: Dummy Mean,0.0,0.8475,2.8772,0.0
+Baseline 2: Ridge Regression,0.6725,0.6096,1.6467,0.8556
+Baseline 3: Random Forest Regressor,0.3966,0.5707,2.2351,0.6907
+Proposed: LightGBM Regressor,0.2663,0.6226,2.4644,0.5262

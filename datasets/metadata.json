@@ -1,0 +1,40 @@
+{
+  "datasets": [
+    {
+      "dataset_name": "PROMISE NFR Classification Benchmark",
+      "filename": "promise_nfr_benchmark.csv",
+      "row_count": 625,
+      "feature_count": 7,
+      "sha256_checksum": "20f163eead0149b24f9c7a7374c3dd683d5a71b811e76d8b03c30790cdc0aaef",
+      "research_task": "RQ1: Requirement Quality Classification (ISO/IEC 25010)",
+      "target_variable": "category"
+    },
+    {
+      "dataset_name": "NASA Metrics Data Program (Cleaned)",
+      "filename": "nasa_mdp_cleaned.csv",
+      "row_count": 1200,
+      "feature_count": 23,
+      "sha256_checksum": "b1ebf8dc03a27561607f0380fd5925d5264de1fe5495500f661a211765be498d",
+      "research_task": "RQ2: Module Defect Density Prediction",
+      "target_variable": "defect_density"
+    },
+    {
+      "dataset_name": "Apache Jira Agile Sprint Telemetry Benchmark",
+      "filename": "apache_jira_sprint_benchmark.csv",
+      "row_count": 360,
+      "feature_count": 13,
+      "sha256_checksum": "ef90219660bbbe70533f7fa40cad7cc0915fde1954d65b2e469bafe33ddaa0fc",
+      "research_task": "RQ2: Sprint Delivery Shortfall and Project Risk Regression",
+      "target_variable": "delivery_risk_score"
+    },
+    {
+      "dataset_name": "LibEST Traceability Benchmark Matrix",
+      "filename": "libest_traceability_matrix.csv",
+      "row_count": 126,
+      "feature_count": 7,
+      "sha256_checksum": "0328392bcbb654e34e088f77a3510151d6257b4b8ef5f88426abb606b4dc67da",
+      "research_task": "RQ4: Artifact Traceability & Change Impact Analysis",
+      "target_variable": "ground_truth_weight"
+    }
+  ]
+}

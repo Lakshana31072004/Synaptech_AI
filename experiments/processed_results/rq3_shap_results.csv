@@ -1,0 +1,5 @@
+metric,measured_value
+Mean Local Additivity Error,1.67e-14
+Maximum Local Additivity Error,5.68e-14
+Top-3 Feature Jaccard Stability across Cohorts,0.7344
+Exact Additivity SLA Target Met (< 1e-5),True

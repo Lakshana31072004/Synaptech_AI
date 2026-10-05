@@ -1,0 +1,6 @@
+model_name,accuracy,precision_macro,recall_macro,macro_f1,weighted_f1,cohen_kappa
+Baseline 1: Regex Heuristic,0.6192,0.636,0.3167,0.3532,0.5741,0.179
+Baseline 2: Multinomial Naive Bayes,0.6512,0.6997,0.253,0.2518,0.5402,0.1144
+Baseline 3: TF-IDF Unigram Logistic Regression,0.7296,0.7061,0.3949,0.4541,0.674,0.3815
+Proposed Model A: Char/Word N-Gram LR,0.8272,0.7275,0.6887,0.7067,0.8242,0.6898
+Proposed Model B: MiniLM-L6 Frozen Embeddings + LR,0.7792,0.6614,0.7593,0.6965,0.7883,0.6454

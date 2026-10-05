@@ -12,7 +12,7 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class RootController {
 
-    @GetMapping("/")
+    @GetMapping({"/", "/api"})
     public ResponseEntity<Map<String, Object>> rootInfo() {
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("status", "UP");

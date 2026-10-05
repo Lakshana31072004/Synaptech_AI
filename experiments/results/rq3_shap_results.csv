@@ -1,0 +1,5 @@
+metric_name,measured_value
+Mean Local Fidelity Error,1.67e-14
+Max Local Fidelity Error,5.68e-14
+Top-3 Jaccard Stability,0.7344
+Exact Fidelity Met (<1e-5),True

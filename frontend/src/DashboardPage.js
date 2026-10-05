@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ProjectHealthDashboard from './ProjectHealthDashboard';
 import AiSprintPlanner from './components/AiSprintPlanner';
 import AiRequirementAnalyzer from './components/AiRequirementAnalyzer';
 import AiArchitectureAdvisor from './components/AiArchitectureAdvisor';
 import AiCodeReviewInspector from './components/AiCodeReviewInspector';
+import TraceabilityWhatIfDashboard from './components/TraceabilityWhatIfDashboard';
 import ExecutiveReportModal from './components/ExecutiveReportModal';
 import { useAuth } from './AuthContext';
+import { useNotification } from './NotificationContext';
 
 const DashboardPage = () => {
     const [activeTab, setActiveTab] = useState('analyzer');
     const [reportModalOpen, setReportModalOpen] = useState(false);
     const [reportType, setReportType] = useState('adr');
     const { userProfile, user } = useAuth();
+    const { showSuccess, showError, showInfo } = useNotification();
+    const navigate = useNavigate();
 
     const username = userProfile?.username || user?.sub || 'Engineer';
 
@@ -28,6 +33,7 @@ const DashboardPage = () => {
         { id: 'advisor', label: 'Module 3: Architecture Advisor', icon: '🏛️', desc: 'System design & live diagram canvas' },
         { id: 'review', label: 'Module 4: Code Review & Security', icon: '🛡️', desc: 'OWASP vulnerability scan & refactoring' },
         { id: 'telemetry', label: 'Module 5: Telemetry & Health', icon: '📊', desc: 'Real-time project vitals & simulation' },
+        { id: 'traceability', label: 'Module 6: Traceability & What-If', icon: '🕸️', desc: 'Artifact graph & counterfactual simulation' },
         { id: 'all', label: 'Unified View', icon: '📑', desc: 'Continuous stream of all modules' },
     ];
 
@@ -154,7 +160,7 @@ const DashboardPage = () => {
                     </div>
                 </div>
             </div>
-
+  
             {/* --- Module Tabs Navigation (HTFlow AI Segmented Switcher) --- */}
             <div style={{
                 display: 'flex',
@@ -265,9 +271,22 @@ const DashboardPage = () => {
                         padding: '28px',
                         border: '1px solid var(--border-subtle)',
                         boxShadow: 'var(--shadow-md)',
-                        marginBottom: '0'
+                        marginBottom: activeTab === 'all' ? '28px' : '0'
                     }}>
                         <ProjectHealthDashboard />
+                    </div>
+                )}
+
+                {(activeTab === 'traceability' || activeTab === 'all') && (
+                    <div style={{
+                        background: 'var(--bg-surface)',
+                        borderRadius: '16px',
+                        padding: '28px',
+                        border: '1px solid var(--border-subtle)',
+                        boxShadow: 'var(--shadow-md)',
+                        marginBottom: '0'
+                    }}>
+                        <TraceabilityWhatIfDashboard />
                     </div>
                 )}
             </div>

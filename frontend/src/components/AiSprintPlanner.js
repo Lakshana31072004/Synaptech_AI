@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AiSprintPlanner.css';
 import { apiService } from '../apiService';
 import { useNotification } from '../NotificationContext';
@@ -12,7 +13,19 @@ const AiSprintPlanner = () => {
   const [sprintDurationWeeks, setSprintDurationWeeks] = useState(2);
   const [plan, setPlan] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [importedNotice, setImportedNotice] = useState(false);
+  const navigate = useNavigate();
   const { showSuccess, showError } = useNotification();
+
+  useEffect(() => {
+    const pendingStories = localStorage.getItem('synaptech_pending_sprint_stories');
+    if (pendingStories && pendingStories.trim()) {
+      setProjectRequirements(pendingStories);
+      setImportedNotice(true);
+      showSuccess('Automatically imported user stories from Module 1 (Requirement Analyzer)!');
+      localStorage.removeItem('synaptech_pending_sprint_stories');
+    }
+  }, [showSuccess]);
 
   const handleGeneratePlan = async () => {
     setLoading(true);
@@ -32,10 +45,47 @@ const AiSprintPlanner = () => {
     }
   };
 
+  const handleDeriveArchitecture = () => {
+    const points = plan?.totalEstimatedStoryPoints || 30;
+    const archCriteria = {
+      teamSize: Number(developerCount),
+      scalabilityRequirement: points > 50 ? 'High (Millions of users)' : 'Medium (Tens of thousands)',
+      latencyRequirement: 'Standard (<500ms)',
+      projectType: 'Web Application'
+    };
+    localStorage.setItem('synaptech_pending_arch_criteria', JSON.stringify(archCriteria));
+    showSuccess('Exported sprint capacity constraints to Module 3 (Architecture Advisor)!');
+    navigate('/architecture');
+  };
+
   return (
     <div className="sprint-planner-container">
       <h2>Module 2: AI Sprint Planner</h2>
       <p className="subtitle">Automatically generate story point estimations, sprint timelines, and sprint backlogs using AI.</p>
+
+      {importedNotice && (
+        <div style={{
+          background: 'rgba(59, 130, 246, 0.15)',
+          border: '1px solid rgba(96, 165, 250, 0.4)',
+          borderRadius: '8px',
+          padding: '8px 14px',
+          color: '#93c5fd',
+          fontSize: '0.86rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '14px'
+        }}>
+          <span>✨ <strong>Continuous Pipeline Active:</strong> Pre-populated with user stories exported from Module 1.</span>
+          <button
+            type="button"
+            onClick={() => setImportedNotice(false)}
+            style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '0.9rem' }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       <div className="planner-form">
         <label>
@@ -59,8 +109,9 @@ const AiSprintPlanner = () => {
               max="200"
             />
           </label>
+
           <label>
-            Developer Count:
+            Developers Count:
             <input
               type="number"
               value={developerCount}
@@ -69,6 +120,7 @@ const AiSprintPlanner = () => {
               max="50"
             />
           </label>
+
           <label>
             Sprint Duration (weeks):
             <input
@@ -76,7 +128,7 @@ const AiSprintPlanner = () => {
               value={sprintDurationWeeks}
               onChange={(e) => setSprintDurationWeeks(e.target.value)}
               min="1"
-              max="6"
+              max="4"
             />
           </label>
         </div>
@@ -88,7 +140,24 @@ const AiSprintPlanner = () => {
 
       {plan && (
         <div className="plan-results">
-          <h3>Generated Sprint Planning Report</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '14px' }}>
+            <h3 style={{ margin: 0 }}>Generated Sprint Planning Report</h3>
+            <button
+              type="button"
+              onClick={handleDeriveArchitecture}
+              className="primary-btn"
+              style={{
+                fontSize: '0.85rem',
+                padding: '6px 14px',
+                background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                color: '#ffffff',
+                border: 'none',
+                boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+              }}
+            >
+              🏛️ Derive Architecture Blueprint (Module 3) &rarr;
+            </button>
+          </div>
           
           <div className="metrics-grid">
             <div className="metric-card">

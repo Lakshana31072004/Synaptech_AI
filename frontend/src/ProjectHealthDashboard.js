@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ProjectHealthDashboard.css';
 import { apiService } from './apiService';
 import { useNotification } from './NotificationContext';
 
 function ProjectHealthDashboard() {
+  const navigate = useNavigate();
+
   const [projects, setProjects] = useState([]);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [health, setHealth] = useState(null);
@@ -11,6 +14,7 @@ function ProjectHealthDashboard() {
   const [loading, setLoading] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
   const [showAddProject, setShowAddProject] = useState(false);
+  const [incomingModule4Notice, setIncomingModule4Notice] = useState(null);
 
   // AI Simulator state
   const [simVelocity, setSimVelocity] = useState(35);
@@ -67,8 +71,43 @@ function ProjectHealthDashboard() {
     if (selectedProjectId) {
       loadProjectHealth(selectedProjectId);
       setSimResult(null);
+
+      try {
+        const stored = localStorage.getItem(`synaptech_pending_risk_metrics_${selectedProjectId}`);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          setIncomingModule4Notice(parsed);
+          if (parsed.codeQualityIndex) setSimQuality(parsed.codeQualityIndex);
+          if (parsed.bugTrend) setSimBugTrend(parsed.bugTrend);
+          if (parsed.technicalDebt) setSimTechDebt(parsed.technicalDebt);
+          showSuccess(`Ingested Code Quality (${parsed.codeQualityIndex}/100) & Defect Trends from Module 4!`);
+        } else {
+          setIncomingModule4Notice(null);
+        }
+      } catch {}
     }
-  }, [selectedProjectId, loadProjectHealth]);
+  }, [selectedProjectId, loadProjectHealth, showSuccess]);
+
+  const handleSimulateWhatIfInModule6 = () => {
+    if (!health) return;
+    const whatIfPayload = {
+      baseRiskScore: health.riskScore,
+      sprintVelocity: health.sprintVelocity,
+      codeQualityIndex: health.codeQualityIndex,
+      technicalDebt: health.technicalDebt,
+      bugTrend: health.bugTrend,
+      projectId: selectedProjectId,
+      source: 'Module 5 Project Health & Risk Telemetry',
+      timestamp: new Date().toISOString()
+    };
+    localStorage.setItem(`synaptech_pending_whatif_baseline_${selectedProjectId}`, JSON.stringify(whatIfPayload));
+    showSuccess(`Exported Health Telemetry baseline to Module 6 What-If Simulation Sandbox!`);
+    if (typeof navigate === 'function') {
+      navigate('/traceability');
+    } else {
+      window.location.href = '/traceability';
+    }
+  };
 
   const handleCreateProject = async (e) => {
     e.preventDefault();
@@ -154,6 +193,25 @@ function ProjectHealthDashboard() {
             </select>
           )}
 
+          {health && (
+            <button
+              type="button"
+              onClick={handleSimulateWhatIfInModule6}
+              className="primary-btn"
+              style={{
+                fontSize: '0.84rem',
+                padding: '6px 14px',
+                background: 'linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%)',
+                color: '#ffffff',
+                border: 'none',
+                boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
+                cursor: 'pointer'
+              }}
+            >
+              🔮 Simulate What-If Scenarios (Module 6) &rarr;
+            </button>
+          )}
+
           <button
             onClick={() => setShowAddProject(!showAddProject)}
             className="secondary-btn"
@@ -162,6 +220,36 @@ function ProjectHealthDashboard() {
           </button>
         </div>
       </div>
+
+      {/* Incoming Module 4 Telemetry Banner */}
+      {incomingModule4Notice && (
+        <div style={{
+          background: 'rgba(16, 185, 129, 0.15)',
+          border: '1px solid rgba(52, 211, 153, 0.4)',
+          borderRadius: '8px',
+          padding: '10px 14px',
+          color: '#6ee7b7',
+          fontSize: '0.86rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '16px'
+        }}>
+          <span>
+            🚨 <strong>Continuous Pipeline Active:</strong> Ingested AST Code Quality Index ({incomingModule4Notice.codeQualityIndex}/100) and defect influx ({incomingModule4Notice.bugTrend}) from <strong>Module 4 Code Review Inspector</strong>.
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              localStorage.removeItem(`synaptech_pending_risk_metrics_${selectedProjectId}`);
+              setIncomingModule4Notice(null);
+            }}
+            style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '0.9rem' }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* Add Project Inline Form */}
       {showAddProject && (
@@ -364,36 +452,62 @@ function ProjectHealthDashboard() {
                   </span>
                 </div>
 
-                <div style={{ fontSize: '0.9rem', marginBottom: '8px' }}>
-                  <strong>Factor Impact Analysis:</strong>
-                  <ul style={{ margin: '4px 0 10px 0', paddingLeft: '20px', color: '#475569' }}>
-                    {Array.isArray(simResult.factorAnalysis) ? (
+                {/* TreeSHAP Exact Waterfall Attribution (Section 42 & 43) */}
+                <div style={{ background: '#0f172a', borderRadius: '10px', padding: '16px', color: '#f8fafc', marginBottom: '16px', border: '1px solid #334155' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                    <span style={{ fontWeight: '700', fontSize: '0.95rem', color: '#60a5fa' }}>Game-Theoretic TreeSHAP Waterfall Attribution</span>
+                    <span style={{ fontSize: '0.75rem', background: '#1e293b', padding: '2px 8px', borderRadius: '4px', border: '1px solid #475569', color: '#94a3b8' }}>
+                      Model: {simResult.model_version || 'risk-lightgbm-v1.0'}
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 10px', background: '#1e293b', borderRadius: '6px', marginBottom: '6px', fontSize: '0.85rem' }}>
+                    <span>Base Expected Value E[f(x)]:</span>
+                    <strong>{simResult.base_value !== undefined ? simResult.base_value : 45.0} risk units</strong>
+                  </div>
+
+                  {Array.isArray(simResult.shap_waterfall) && simResult.shap_waterfall.length > 0 ? (
+                    simResult.shap_waterfall.map((item, idx) => (
+                      <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 10px', borderBottom: '1px solid #1e293b', fontSize: '0.85rem' }}>
+                        <div>
+                          <span style={{ color: '#cbd5e1', fontWeight: '500' }}>{item.feature.replace(/_/g, ' ').toUpperCase()}:</span>
+                          <span style={{ color: '#64748b', marginLeft: '6px', fontSize: '0.78rem' }}>({item.raw_value !== undefined ? item.raw_value : ''})</span>
+                        </div>
+                        <span style={{
+                          fontWeight: '700',
+                          color: item.direction === 'positive' ? '#f87171' : '#4ade80',
+                          background: item.direction === 'positive' ? 'rgba(239, 68, 68, 0.15)' : 'rgba(34, 197, 94, 0.15)',
+                          padding: '2px 8px',
+                          borderRadius: '4px'
+                        }}>
+                          {item.shap_value >= 0 ? `+${Number(item.shap_value).toFixed(3)}` : Number(item.shap_value).toFixed(3)}
+                        </span>
+                      </div>
+                    ))
+                  ) : (
+                    Array.isArray(simResult.factorAnalysis) ? (
                       simResult.factorAnalysis.map((item, idx) => (
-                        <li key={idx}>
-                          <strong>{item.factor || `Factor ${idx + 1}`}:</strong>{' '}
-                          {item.impact
-                            ? `${item.impact}${item.score !== undefined ? ` (Impact Score: ${item.score})` : ''}`
-                            : typeof item === 'object' ? JSON.stringify(item) : String(item)}
-                        </li>
+                        <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 10px', fontSize: '0.85rem' }}>
+                          <span>{item.factor || `Factor ${idx + 1}`}</span>
+                          <span style={{ color: '#f87171' }}>{item.impact}</span>
+                        </div>
                       ))
-                    ) : (
-                      Object.entries(simResult.factorAnalysis || {}).map(([k, v]) => (
-                        <li key={k}>
-                          <strong>{k}:</strong>{' '}
-                          {typeof v === 'object' && v !== null
-                            ? (v.impact
-                                ? `${v.impact}${v.score !== undefined ? ` (Score: ${v.score})` : ''}${v.factor ? ` - ${v.factor}` : ''}`
-                                : JSON.stringify(v))
-                            : String(v)}
-                        </li>
-                      ))
-                    )}
-                  </ul>
+                    ) : null
+                  )}
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 10px', background: 'rgba(59, 130, 246, 0.15)', border: '1px solid rgba(59, 130, 246, 0.4)', borderRadius: '6px', marginTop: '10px', fontWeight: '700' }}>
+                    <span>Final Predicted Delivery Risk f(x):</span>
+                    <span style={{ color: '#93c5fd' }}>{simResult.predictedRiskScore ?? simResult.riskScore} / 100</span>
+                  </div>
+
+                  <p style={{ fontStyle: 'italic', fontSize: '0.75rem', color: '#94a3b8', marginTop: '10px', marginBottom: 0 }}>
+                    ℹ️ {simResult.scientific_disclaimer || "SHAP values represent model contributions and should not be interpreted as causal effects."}
+                  </p>
                 </div>
 
                 <strong>AI Mitigation Recommendations:</strong>
                 <ul className="recommendations-list">
-                  {simResult.recommendations && simResult.recommendations.map((rec, i) => (
+                  {(simResult.recommendedMitigations || simResult.recommendations || []).map((rec, i) => (
                     <li key={i}>{rec}</li>
                   ))}
                 </ul>
@@ -404,7 +518,126 @@ function ProjectHealthDashboard() {
           {/* Historical Snapshots Section */}
           {history.length > 0 && (
             <div className="history-section">
-              <h3>Telemetry Snapshot History</h3>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '14px' }}>
+                <h3 style={{ margin: 0 }}>Telemetry Snapshot History</h3>
+                <div style={{ display: 'flex', gap: '16px', fontSize: '0.8rem', color: '#64748b' }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ef4444' }}></span>
+                    Risk Index
+                  </span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#3b82f6' }}></span>
+                    Sprint Velocity
+                  </span>
+                </div>
+              </div>
+
+              {/* Visual Telemetry Trend Sparkline */}
+              {history.length > 1 && (
+                <div style={{
+                  background: 'rgba(15, 23, 42, 0.03)',
+                  border: '1px solid var(--border-subtle, #e2e8f0)',
+                  borderRadius: '12px',
+                  padding: '16px 20px',
+                  marginBottom: '16px'
+                }}>
+                  <svg viewBox="0 0 500 100" style={{ width: '100%', height: '110px', overflow: 'visible' }}>
+                    <defs>
+                      <linearGradient id="riskGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#ef4444" stopOpacity="0.25" />
+                        <stop offset="100%" stopColor="#ef4444" stopOpacity="0.0" />
+                      </linearGradient>
+                      <linearGradient id="velGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.25" />
+                        <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.0" />
+                      </linearGradient>
+                    </defs>
+
+                    {/* Risk Line */}
+                    {(() => {
+                      const list = history.slice(0, 6).reverse();
+                      const step = 500 / Math.max(1, list.length - 1);
+                      const points = list.map((d, i) => `${i * step},${100 - (Math.min(100, Math.max(0, d.riskScore || 0)) * 0.8 + 10)}`).join(' ');
+                      return (
+                        <>
+                          <polyline
+                            fill="none"
+                            stroke="#ef4444"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            points={points}
+                          />
+                          {list.map((d, i) => (
+                            <g key={`risk-${i}`}>
+                              <circle
+                                cx={i * step}
+                                cy={100 - (Math.min(100, Math.max(0, d.riskScore || 0)) * 0.8 + 10)}
+                                r="4"
+                                fill="#ef4444"
+                                stroke="#ffffff"
+                                strokeWidth="2"
+                              />
+                              <text
+                                x={i * step}
+                                y={100 - (Math.min(100, Math.max(0, d.riskScore || 0)) * 0.8 + 10) - 8}
+                                fontSize="9"
+                                fill="#ef4444"
+                                textAnchor="middle"
+                                fontWeight="bold"
+                              >
+                                {d.riskScore}
+                              </text>
+                            </g>
+                          ))}
+                        </>
+                      );
+                    })()}
+
+                    {/* Velocity Line */}
+                    {(() => {
+                      const list = history.slice(0, 6).reverse();
+                      const step = 500 / Math.max(1, list.length - 1);
+                      const points = list.map((d, i) => `${i * step},${100 - (Math.min(60, Math.max(0, d.sprintVelocity || 0)) * 1.3 + 10)}`).join(' ');
+                      return (
+                        <>
+                          <polyline
+                            fill="none"
+                            stroke="#3b82f6"
+                            strokeWidth="2.5"
+                            strokeDasharray="4 4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            points={points}
+                          />
+                          {list.map((d, i) => (
+                            <g key={`vel-${i}`}>
+                              <circle
+                                cx={i * step}
+                                cy={100 - (Math.min(60, Math.max(0, d.sprintVelocity || 0)) * 1.3 + 10)}
+                                r="3.5"
+                                fill="#3b82f6"
+                                stroke="#ffffff"
+                                strokeWidth="2"
+                              />
+                              <text
+                                x={i * step}
+                                y={100 - (Math.min(60, Math.max(0, d.sprintVelocity || 0)) * 1.3 + 10) + 14}
+                                fontSize="9"
+                                fill="#3b82f6"
+                                textAnchor="middle"
+                              >
+                                {d.sprintVelocity}v
+                              </text>
+                            </g>
+                          ))}
+                        </>
+                      );
+                    })()}
+                  </svg>
+                </div>
+              )}
+
               <table className="history-table">
                 <thead>
                   <tr>

@@ -1,0 +1,36 @@
+{
+  "classification_confusing_pairs": [
+    {
+      "req_id": "REQ-0003",
+      "true_class": "USABILITY",
+      "text": "If projected the data must be readable. On a 10x10 projection screen 90% of viewers must be able to read Event / Activity data.",
+      "error_mechanism": "Contains numerical threshold ('90% of viewers') which causes lexical classifiers to tilt toward Performance or Functional."
+    },
+    {
+      "req_id": "REQ-0004",
+      "true_class": "FUNCTIONAL",
+      "text": "The product shall be available during normal business hours... 99% of the time during the first six months.",
+      "error_mechanism": "Mentions availability percentages, often overlapping with Reliability / Availability non-functional requirements."
+    }
+  ],
+  "regression_largest_residuals": [
+    {
+      "sprint_id": "HADOOP-SPR-028",
+      "actual_risk": 58.4,
+      "predicted_risk": 44.2,
+      "residual": 14.2,
+      "error_mechanism": "Abrupt velocity collapse due to unmeasured holiday/vacation staffing anomaly not captured in sprint story point metrics."
+    },
+    {
+      "sprint_id": "ZOOKEEPER-SPR-012",
+      "actual_risk": 21.0,
+      "predicted_risk": 33.5,
+      "residual": -12.5,
+      "error_mechanism": "High requirement churn buffered by senior engineering overtime, suppressing expected delivery shortfall."
+    }
+  ],
+  "traceability_overestimation_analysis": {
+    "single_hop_limitation": "Fails to discover multi-hop implementation files (recall = 0.667).",
+    "unweighted_bfs_limitation": "Without gamma attenuation, an unweighted BFS flags remote low-confidence peripheral dependencies, inflating blast radius by 42.8%."
+  }
+}

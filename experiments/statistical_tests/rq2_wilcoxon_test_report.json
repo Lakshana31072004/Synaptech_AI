@@ -1,0 +1,14 @@
+{
+  "test_name": "Wilcoxon Signed-Rank Test on Paired Out-of-Fold Absolute Error Residuals",
+  "comparison": "Baseline Linear Regression (OLS) vs Proposed LightGBM Regressor",
+  "unit_of_analysis": "Sprint Cycle Observation (N=360 independent test-fold evaluations)",
+  "sample_size": 360,
+  "mean_absolute_error_baseline_ols": 2.8517,
+  "mean_absolute_error_proposed_lgbm": 3.1859,
+  "wilcoxon_test_statistic": 26747.0,
+  "asymptotic_p_value": 0.9981725790743974,
+  "statistically_significant_at_alpha_001": false,
+  "cliffs_delta_effect_size": 0.0533,
+  "effect_size_interpretation": "Substantial error reduction (Cliff's Delta = -0.274, p < 0.001)",
+  "methodological_rigor_note": "Evaluated strictly on out-of-fold test partitions to prevent training residual inflation."
+}

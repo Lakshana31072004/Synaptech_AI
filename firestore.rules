@@ -1,0 +1,81 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.role == 'ROLE_ADMIN' || 
+         request.auth.token.email == 'admin@synaptech.ai' ||
+         request.auth.token.admin == true);
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId) || isAdmin();
+    }
+
+    // Role-Based Access Control settings
+    match /roles/{roleId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // Immutable Audit Logs & Telemetry History (Append-Only)
+    match /audit_logs/{logId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if false; // Guarantee immutable audit trail
+    }
+
+    // What-If Simulation Scenarios (Append-Only)
+    match /what_if_scenarios/{scenarioId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if false; // Preserved for audit compliance
+    }
+
+    // Projects, Artifacts, Requirements & Architecture Graphs
+    match /projects/{projectId} {
+      allow read, write: if isAuthenticated();
+      
+      match /{subcollection=**} {
+        allow read, write: if isAuthenticated();
+      }
+    }
+
+    // Project Requirements
+    match /project_requirements/{reqId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    // System Telemetry & Metrics
+    match /project_health/{projectId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /project_health_history/{historyId} {
+      allow read, create: if isAuthenticated();
+      allow update, delete: if false; // Append-only historical telemetry
+    }
+
+    match /activity_logs/{logId} {
+      allow read, create: if isAuthenticated();
+      allow update, delete: if isAdmin();
+    }
+
+    // Default fallback: authenticated users only
+    match /{document=**} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}

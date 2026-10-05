@@ -1,0 +1,22 @@
+[
+  {
+    "feature": "technical_debt_ratio",
+    "mean_abs_shap": 6.5344
+  },
+  {
+    "feature": "sprint_velocity_variance",
+    "mean_abs_shap": 5.7059
+  },
+  {
+    "feature": "requirement_churn",
+    "mean_abs_shap": 1.0543
+  },
+  {
+    "feature": "code_quality_index",
+    "mean_abs_shap": 0.6419
+  },
+  {
+    "feature": "defect_arrival_rate",
+    "mean_abs_shap": 0.2067
+  }
+]

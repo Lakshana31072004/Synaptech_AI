@@ -1,9 +1,0 @@
-scenario_id,project_type,scalability_target,latency_requirement,team_size,deployment_target,budget_constraint,recommended_architecture,confidence_score,primary_protocol,database_pattern
-ARC-001,Web Application,High (> 1M users),Standard (<500ms),14,Kubernetes / Microservices,Balanced,Domain-Driven Microservices Architecture,94,gRPC & REST,Database-per-Service (PostgreSQL)
-ARC-002,IoT / Streaming,High (> 1M users),Ultra-low Latency (<100ms),8,Cloud (AWS/GCP/Azure),Performance-First,Event-Driven Reactive Architecture,96,MQTT & Kafka,TimescaleDB / InfluxDB
-ARC-003,Web Application,Medium (10k-500k),Standard (<500ms),5,Cloud Managed,Balanced,Modular Monolith with Domain Decoupling,92,REST HTTPS,Single Shared PostgreSQL with Schema Separation
-ARC-004,Mobile App Backend,High (> 1M users),Standard (<500ms),10,Serverless,Cost-Constrained,Serverless Microservices (Lambda / API Gateway),90,GraphQL & HTTPS,DynamoDB / Cloud Firestore
-ARC-005,Enterprise System,Medium (10k-500k),Standard (<500ms),8,Traditional VM / On-Premise,Balanced,Clean Onion Architecture (Spring Boot),89,REST HTTPS,Relational PostgreSQL / Oracle
-ARC-006,FinTech Payment,High (> 1M users),Ultra-low Latency (<100ms),12,Kubernetes / Microservices,Performance-First,CQRS with Event Sourcing & Kafka,95,Kafka Event Bus,Event Store + Read Replica Projection
-ARC-007,Analytics Platform,High (> 1M users),Flexible / Batch,6,Cloud Managed,Balanced,Lambda / Kappa Stream-Batch Analytics Architecture,93,Kafka & REST,ClickHouse / BigQuery Data Lakehouse
-ARC-008,Internal Tool,Low (< 10k users),Standard (<500ms),3,Cloud Managed,Cost-Constrained,Monolithic MVC Architecture,88,REST HTTPS,SQLite / PostgreSQL

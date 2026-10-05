@@ -12,12 +12,11 @@ const LoginForm = ({ onSwitchToRegister }) => {
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
+    const executeLogin = async (userToLogin, passToLogin) => {
         setLoading(true);
         setError(null);
         try {
-            const data = await apiService.login({ username, password });
+            const data = await apiService.login({ username: userToLogin, password: passToLogin });
             const jwtToken = data?.token || data?.accessToken;
             if (!jwtToken) {
                 throw new Error('Authentication succeeded but no token was returned');
@@ -30,11 +29,16 @@ const LoginForm = ({ onSwitchToRegister }) => {
                 const parsed = JSON.parse(msg);
                 if (parsed.message) msg = parsed.message;
                 else if (parsed.error) msg = parsed.error;
-            } catch (e) {}
+            } catch (e) { }
             setError(msg);
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        await executeLogin(username, password);
     };
 
     const handleRegisterClick = (e) => {
@@ -45,53 +49,64 @@ const LoginForm = ({ onSwitchToRegister }) => {
     };
 
     return (
-        <div style={{ maxWidth: '400px', margin: 'auto', padding: '28px 24px', border: '1px solid #e2e8f0', borderRadius: '12px', backgroundColor: '#ffffff', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
-            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+        <div style={{ maxWidth: '440px', margin: 'auto', padding: '32px 28px', border: '1px solid #e2e8f0', borderRadius: '16px', backgroundColor: '#ffffff', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04)' }}>
+            <div style={{ textAlign: 'center', marginBottom: '24px' }}>
                 <div style={{
-                    width: '44px',
-                    height: '44px',
+                    width: '46px',
+                    height: '46px',
                     margin: '0 auto 10px auto',
-                    borderRadius: '10px',
+                    borderRadius: '12px',
                     background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: '0 4px 10px rgba(59, 130, 246, 0.3)'
+                    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.35)'
                 }}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="6" cy="6" r="2.5" fill="#ffffff" />
                         <circle cx="18" cy="6" r="2.5" fill="#ffffff" />
                         <circle cx="12" cy="18" r="2.5" fill="#ffffff" />
                         <path d="M6 6L12 18M18 6L12 18M6 6H18" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" strokeOpacity="0.85" />
                     </svg>
                 </div>
-                <h2 style={{ margin: 0, color: '#1e293b', fontSize: '1.4rem', fontWeight: 700 }}>
+                <h2 style={{ margin: 0, color: '#1e293b', fontSize: '1.45rem', fontWeight: 800, letterSpacing: '-0.02em' }}>
                     Login to Synaptech
                 </h2>
-                <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '4px' }}>
-                    AI-Driven Architecture &amp; Agile Intelligence
+                <div style={{ fontSize: '0.82rem', color: '#64748b', marginTop: '4px' }}>
+                    AI-Driven Architecture &amp; Agile Intelligence Platform
                 </div>
             </div>
+
             <form onSubmit={handleLogin}>
-                <div style={{ marginBottom: '15px' }}>
-                    <label style={{ display: 'block', fontSize: '0.9em', fontWeight: 600, color: '#475569', marginBottom: '6px' }}>Username</label>
-                    <input type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="e.g. developer or admin" required style={{ width: '100%', padding: '10px 12px', border: '1px solid #cbd5e1', borderRadius: '6px', boxSizing: 'border-box' }} />
+                <div style={{ marginBottom: '16px' }}>
+                    <label htmlFor="username" style={{ display: 'block', fontSize: '0.88em', fontWeight: 600, color: '#475569', marginBottom: '6px' }}>Username</label>
+                    <input
+                        id="username"
+                        type="text"
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                        placeholder="Enter your username"
+                        required
+                        style={{ width: '100%', padding: '11px 12px', border: '1px solid #cbd5e1', borderRadius: '8px', boxSizing: 'border-box', fontSize: '0.92rem' }}
+                    />
                 </div>
                 <div style={{ marginBottom: '20px' }}>
-                    <label style={{ display: 'block', fontSize: '0.9em', fontWeight: 600, color: '#475569', marginBottom: '6px' }}>Password</label>
+                    <label htmlFor="password" style={{ display: 'block', fontSize: '0.88em', fontWeight: 600, color: '#475569', marginBottom: '6px' }}>Password</label>
                     <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                         <input
+                            id="password"
                             type={showPassword ? 'text' : 'password'}
                             value={password}
                             onChange={e => setPassword(e.target.value)}
-                            placeholder="Enter password"
+                            placeholder="Enter your password"
                             required
                             style={{
                                 width: '100%',
-                                padding: '10px 42px 10px 12px',
+                                padding: '11px 42px 11px 12px',
                                 border: '1px solid #cbd5e1',
-                                borderRadius: '6px',
-                                boxSizing: 'border-box'
+                                borderRadius: '8px',
+                                boxSizing: 'border-box',
+                                fontSize: '0.92rem'
                             }}
                         />
                         <button
@@ -126,9 +141,27 @@ const LoginForm = ({ onSwitchToRegister }) => {
                         </button>
                     </div>
                 </div>
-                <button type="submit" disabled={loading} style={{ width: '100%', padding: '12px', fontSize: '1em', fontWeight: 600, color: '#fff', background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)', border: 'none', borderRadius: '8px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)', transition: 'all 0.2s ease' }}>{loading ? 'Logging in...' : 'Login'}</button>
+                <button
+                    type="submit"
+                    disabled={loading}
+                    style={{
+                        width: '100%',
+                        padding: '12px',
+                        fontSize: '0.98em',
+                        fontWeight: 700,
+                        color: '#fff',
+                        background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+                        transition: 'all 0.2s ease'
+                    }}
+                >
+                    {loading ? 'Authenticating...' : 'Log In'}
+                </button>
             </form>
-            <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '0.9em' }}>
+            <div style={{ textAlign: 'center', marginTop: '18px', fontSize: '0.88em' }}>
                 <Link to="/forgot-password" style={{ color: '#2563eb', textDecoration: 'none', display: 'block', marginBottom: '8px' }}>Forgot Password?</Link>
                 <p style={{ margin: 0, color: '#64748b' }}>
                     Don't have an account?{' '}
@@ -137,7 +170,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
                     </Link>
                 </p>
             </div>
-            {error && <p style={{ color: '#ef4444', marginTop: '15px', textAlign: 'center', fontSize: '0.9em' }}>{error}</p>}
+            {error && <p style={{ color: '#ef4444', marginTop: '14px', textAlign: 'center', fontSize: '0.88em', background: '#fef2f2', padding: '8px', borderRadius: '6px', border: '1px solid #fecaca' }}>{error}</p>}
         </div>
     );
 };

@@ -1,0 +1,6 @@
+config_id,architecture_state,r2_score,mae,req_f1,impact_f1
+Config A,Prototype Baseline (Static Formulas & Regex),0.0,11.4003,0.3299,0.8
+Config B,Code Telemetry ML Only (NASA MDP),0.8134,4.4671,N/A,N/A
+Config C,Multi-Telemetry Agile Risk ML (LightGBM),0.9616,1.9642,0.7176,N/A
+Config D,Multi-Telemetry + TreeSHAP XAI Layer,0.9616,1.9642,0.7176,N/A
+Config E,Full USEIM (NLP Reqs + Risk ML + XAI + Graph Trace),0.9666,1.8142,0.7176,1.0

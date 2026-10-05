@@ -1,0 +1,626 @@
+req_id,project_id,requirement_text,category,is_ambiguous,char_length,word_count
+REQ-0001,PRJ-01,The system shall refresh the display every 60 seconds.,PERFORMANCE,0,54,9
+REQ-0002,PRJ-01,The application shall match the color of the schema set forth by Department of Homeland Security,FUNCTIONAL,0,96,16
+REQ-0003,PRJ-01,If projected  the data must be readable.  On a 10x10 projection screen  90% of viewers must be able to read Event / Activity data from a viewing distance of 30,USABILITY,0,159,30
+REQ-0004,PRJ-01,The product shall be available during normal business hours. As long as the user has access to the client PC  the system will be available 99% of the time during the first six months of operation.,FUNCTIONAL,0,196,36
+REQ-0005,PRJ-01,If projected  the data must be understandable. On a 10x10 projection screen  90% of viewers must be able to determine that Events or Activities are occuring in current time from a viewing distance of 100,USABILITY,0,203,35
+REQ-0006,PRJ-01,The product shall ensure that it can only be accessed by authorized users.  The product will be able to distinguish between authorized and unauthorized users in all access attempts,SECURITY,0,180,29
+REQ-0007,PRJ-01,The product shall be intuitive and self-explanatory.  :  90% of new users shall be able to start the display of Events or Activities within 90 minutes of using the product.,USABILITY,0,172,30
+REQ-0008,PRJ-01,The product shall respond fast to keep up-to-date data in the display.,PERFORMANCE,1,70,12
+REQ-0009,PRJ-01,The system shall have a MDI form that allows for the viewing of the graph and the data table.,FUNCTIONAL,0,93,19
+REQ-0010,PRJ-01,The system shall display Events in a vertical table by time.,FUNCTIONAL,0,60,11
+REQ-0011,PRJ-01,The system shall display the Events in a graph by time.,FUNCTIONAL,0,55,11
+REQ-0012,PRJ-01,The system shall display Events or Activities.,FUNCTIONAL,0,46,7
+REQ-0013,PRJ-01,The display shall have two regions:  left 2/3 of the display is graphical  right 1/3 of the display is a data table,FUNCTIONAL,0,115,22
+REQ-0014,PRJ-01,The data displayed in both the nodes within the graph and the rows in the table are MSEL Summary data,FUNCTIONAL,0,101,20
+REQ-0015,PRJ-01,The table side of the display shall be split into 2 regions: sequential and temporal.,FUNCTIONAL,0,85,15
+REQ-0016,PRJ-01,The top 1/4 of the table will hold events that are to occur sequentially.,FUNCTIONAL,0,73,14
+REQ-0017,PRJ-01,The bottom 3/4 of the table will hold events that occur according to its relevance to current time.,FUNCTIONAL,0,99,18
+REQ-0018,PRJ-01,The system shall color code events according to their variance from current time.,FUNCTIONAL,0,81,13
+REQ-0019,PRJ-01,The system shall display data from the Sync Matrix 1.0 and Exercise Management Tool 1.0 applications,FUNCTIONAL,0,100,16
+REQ-0020,PRJ-01,The system shall link Events back to either the Sync Matrix 1.0 or the Exercise Managment Tool 1.0 applications for modifications.,FUNCTIONAL,0,130,21
+REQ-0021,PRJ-01,The system shall allow modification of the display.,FUNCTIONAL,0,51,8
+REQ-0022,PRJ-01,The system shall offer a display of all the Events in the exercise.,FUNCTIONAL,0,67,13
+REQ-0023,PRJ-01,The system shall filter data by: Venues and Key Events.,FUNCTIONAL,0,55,10
+REQ-0024,PRJ-01,The system shall allow a user to define the time segments,FUNCTIONAL,0,57,11
+REQ-0025,PRJ-01,The system shall display the local and exercise time in separate clocks,FUNCTIONAL,0,71,12
+REQ-0026,PRJ-01,The system shall offer the ability to pause and resume the refresh of data.,FUNCTIONAL,0,75,14
+REQ-0027,PRJ-01,The system shall provide charts for the Activity or Event actual versus assumed time.,FUNCTIONAL,0,85,14
+REQ-0028,PRJ-01,The system shall provide a history report of changes made to the Activity or Event data,FUNCTIONAL,0,87,16
+REQ-0029,PRJ-02,The look and feel of the system shall conform to the user interface standards of the smart device.,FUNCTIONAL,0,98,18
+REQ-0030,PRJ-02,The user interface shall have standard menus  buttons for navigation,FUNCTIONAL,0,68,10
+REQ-0031,PRJ-02,The system shall have a professional appearance,FUNCTIONAL,0,47,7
+REQ-0032,PRJ-02,The product shall have a consistent color scheme and fonts.,FUNCTIONAL,0,59,10
+REQ-0033,PRJ-02,The system shall be used by realtors with no training.,USABILITY,0,54,10
+REQ-0034,PRJ-02,The system shall be intuitive and self explanatory.,USABILITY,0,51,8
+REQ-0035,PRJ-02,The product shall be easy for a realtor to learn.,USABILITY,1,49,10
+REQ-0036,PRJ-02,The product shall use symbols and words that are naturally understandable by the realtor community.,USABILITY,0,99,15
+REQ-0037,PRJ-02,The product shall produce search results in an acceptable time,PERFORMANCE,0,62,10
+REQ-0038,PRJ-02,The search results shall be returned no later 30      seconds  after the user has entered the search criteria,PERFORMANCE,0,109,18
+REQ-0039,PRJ-02,The product shall generate a CMA report in an acceptable time.,PERFORMANCE,0,62,11
+REQ-0040,PRJ-02,The CMA report shall be returned no later 60 seconds after the user has entered the CMA report criteria.,PERFORMANCE,0,104,19
+REQ-0041,PRJ-02,The product shall synchronize contacts and appointments in an acceptable time.,PERFORMANCE,0,78,11
+REQ-0042,PRJ-02,The product shall synchronize with the office system every hour.,PERFORMANCE,0,64,10
+REQ-0043,PRJ-02,The product shall be available for use 24 hours per day  365 days  per year,FUNCTIONAL,0,75,15
+REQ-0044,PRJ-02,Out of 1000 accesses to the system  the system is available 999 times.,FUNCTIONAL,0,70,13
+REQ-0045,PRJ-02,The product shall operate in offline mode whenever internet connection is unavailable.,MAINTAINABILITY,0,86,12
+REQ-0046,PRJ-02,The product shall allow the user to view previously downloaded search results  CMA reports  and appointments.,MAINTAINABILITY,0,109,16
+REQ-0047,PRJ-02,The product shall retain user preferences in the event of a failure.,MAINTAINABILITY,0,68,12
+REQ-0048,PRJ-02,100% of saved user preferences shall be restored when system comes back online.,MAINTAINABILITY,0,79,13
+REQ-0049,PRJ-02,The product shall be able to support multiple remote users,PERFORMANCE,0,58,10
+REQ-0050,PRJ-02,The product shall be able support 1000 simultaneous users.,PERFORMANCE,0,58,9
+REQ-0051,PRJ-02,The product shall be capable of handling the existing 1000 users. This number is expected to grow 5 times within the next year.,PERFORMANCE,0,127,23
+REQ-0052,PRJ-02,The product shall be installed by an untrained realtor   without recourse to separately-printed instructions.,USABILITY,0,109,14
+REQ-0053,PRJ-02,90% of untrained realtors shall be able to install the product on their device without printed instructions,USABILITY,0,107,17
+REQ-0054,PRJ-02,The product is expected to run on Windows CE and Palm operating systems.,MAINTAINABILITY,0,72,13
+REQ-0055,PRJ-02,Only registered realtors shall be able to access the system.,SECURITY,0,60,10
+REQ-0056,PRJ-02,Every user of the system shall be authenticated and authorized.,SECURITY,0,63,10
+REQ-0057,PRJ-02,The product shall prevent its data from incorrect data being introduced.,SECURITY,0,72,11
+REQ-0058,PRJ-02,The system shall allow a real estate agent to query MLS information,FUNCTIONAL,0,67,12
+REQ-0059,PRJ-02,The user shall be able to get driving directions to a selected property,FUNCTIONAL,0,71,13
+REQ-0060,PRJ-02,The user shall be able to download appointments and contact information for clients,FUNCTIONAL,0,83,13
+REQ-0061,PRJ-02,The system shall display clear property images in the search results,FUNCTIONAL,0,68,11
+REQ-0062,PRJ-02,The system shall update or create new property listings in the MLS,FUNCTIONAL,0,66,12
+REQ-0063,PRJ-02,Realtor shall be able to generate a CMA report based on property criteria,FUNCTIONAL,0,73,13
+REQ-0064,PRJ-02,The system shall be able to call the seller or buyer to schedule an appointment,FUNCTIONAL,0,79,15
+REQ-0065,PRJ-02,The realtor shall be notified of new client appointments after automatic synchronization with office system,FUNCTIONAL,0,107,15
+REQ-0066,PRJ-02,The realtor shall be able to retrieve a map showing property locations for a specified area,FUNCTIONAL,0,91,16
+REQ-0067,PRJ-02,The system shall notify the realtor when a seller or buyer responds to an appointment request,FUNCTIONAL,0,93,16
+REQ-0068,PRJ-02,The product shall allow the user to save the property search results.,FUNCTIONAL,0,69,12
+REQ-0069,PRJ-03,The system shall be easy to use by the Program Administrators/Nursing Staff Members.,USABILITY,1,84,13
+REQ-0070,PRJ-03,All of the users shall be able to use the system after one day of training.,USABILITY,0,75,16
+REQ-0071,PRJ-03,The system shall help the user avoid making mistakes while scheduling classes and clinicals for the nursing students.,USABILITY,0,117,18
+REQ-0072,PRJ-03,The number of mistakes noted by the students shall be decreased by 50% in the first year.,USABILITY,0,89,17
+REQ-0073,PRJ-03,The system shall be intuitive to the Program Administrators/Nursing Staff Members.,USABILITY,0,82,11
+REQ-0074,PRJ-03,2 out of 3 Program Administrators/Nursing Staff Members shall successfully be able to use the system to manage the scheduling of classes and clinicals.,USABILITY,0,151,24
+REQ-0075,PRJ-03,The system shall use symbols and words that are naturally understandable by the user community.,USABILITY,0,95,15
+REQ-0076,PRJ-03,The verbiage used within the system shall be consistent with Standard English and the terminology of the national Nursing Community.,USABILITY,0,132,20
+REQ-0077,PRJ-03,Staff members shall be able to complete a set of tasks in a timely manner.,PERFORMANCE,0,74,15
+REQ-0078,PRJ-03,The response time of general student management tasks shall take no longer than 5 seconds and the response time of schedule generation shall take no longer than 30 seconds.,PERFORMANCE,0,172,29
+REQ-0079,PRJ-03,The system shall be available for use between the hours of 8am and 6pm.,FUNCTIONAL,0,71,14
+REQ-0080,PRJ-03,The system shall achieve 95% up time.,FUNCTIONAL,0,37,7
+REQ-0081,PRJ-03,system shall be able to handle all of the user requests/usage during business hours.,PERFORMANCE,0,84,14
+REQ-0082,PRJ-03,The system shall cater to 10 simultaneous users from 9am to 5pm.,PERFORMANCE,0,64,12
+REQ-0083,PRJ-03,The system shall be capable of processing 100% of nursing students and their classes for the next 10 years.,PERFORMANCE,0,107,19
+REQ-0084,PRJ-03,The system shall be expected to manage the nursing program curriculum and class/clinical scheduling for a minimum of 5 years.,PERFORMANCE,0,125,20
+REQ-0085,PRJ-03,The system shall able to operate within a business office environment typical of the Nursing Department at DePaul University.,FUNCTIONAL,0,125,19
+REQ-0086,PRJ-03,The system shall be used within the specifications defined by the computers used by the Program Administrators/Nursing Staff Members.,FUNCTIONAL,0,133,19
+REQ-0087,PRJ-03,The system shall operate within the Windows XP Professional operating system.,FUNCTIONAL,0,77,11
+REQ-0088,PRJ-03,The system shall interface with CampusConnects central server,FUNCTIONAL,0,61,8
+REQ-0089,PRJ-03,The system shall interface with the faculty central server.,FUNCTIONAL,0,59,9
+REQ-0090,PRJ-03,The system shall interface with the student master server.,FUNCTIONAL,0,58,9
+REQ-0091,PRJ-03,We must be able to interface with any HTML browser.,FUNCTIONAL,0,51,10
+REQ-0092,PRJ-03,Only authorized users shall have access to clinical site information.,SECURITY,0,69,10
+REQ-0093,PRJ-03,Program Administrators/Nursing Staff Members are the only people who shall have access to clinical site details.,SECURITY,0,112,16
+REQ-0094,PRJ-03,Only authorized users shall have access to students personal information.,SECURITY,0,73,10
+REQ-0095,PRJ-03,Dr Susan Poslusny and Dr Julie Donalek are the only people who shall have access to students personal information.,SECURITY,0,114,19
+REQ-0096,PRJ-03,Only authorized users shall have access to the portion of the system that interfaces with CampusConnect.,SECURITY,0,104,16
+REQ-0097,PRJ-03,Fit Criterion: Dr Susan Poslusny and Karen Sysol are the only people who shall have access to the final class section scheduling for the system that interfaces with CampusConnect.,SECURITY,0,179,29
+REQ-0098,PRJ-03,The system shall have basic data integrity checking to reduce the possibility of incorrect or invalid data being introduced.,SECURITY,0,124,19
+REQ-0099,PRJ-03,The system shall protect private information in accordance with the organizations information policy.,SECURITY,0,101,13
+REQ-0100,PRJ-03,The system shall be built such that it is as secure as possible from malicious interference.,SECURITY,0,92,16
+REQ-0101,PRJ-03,The system shall use the organizations standard virus protection software to help monitor threats to itself.,SECURITY,0,108,16
+REQ-0102,PRJ-03,A cohort shall be associated to one Program of Study offered by the department.,FUNCTIONAL,0,79,14
+REQ-0103,PRJ-03,Program Administrators and Nursing Staff Members shall be able to add a listing of students to a cohort.,FUNCTIONAL,0,104,18
+REQ-0104,PRJ-03,Program Administrators and Nursing Staff Members shall be able to add a single student to a cohort,FUNCTIONAL,0,98,17
+REQ-0105,PRJ-03,Students added to a cohort shall be eligible for the cohorts Program of Study.,FUNCTIONAL,0,78,14
+REQ-0106,PRJ-03,Program Administrators and Nursing Staff Members shall be able to specify the preferred sequence of classes for a given cohort.,FUNCTIONAL,0,127,20
+REQ-0107,PRJ-03,For each class within a sequence for a cohort  Program Administrators and Nursing Staff Members shall be able to specify which quarter that class will be offered.,FUNCTIONAL,0,162,27
+REQ-0108,PRJ-03,For each class within a sequence for a cohort  Program Administrators and Nursing Staff Members shall be able to specify which quarter that class will be offered.,FUNCTIONAL,0,162,27
+REQ-0109,PRJ-03,Program Administrators and Nursing Staff Members shall be able to add new classes to a sequence of classes,FUNCTIONAL,0,106,18
+REQ-0110,PRJ-03,Program Administrators and Nursing Staff Members shall be able to add clinical classes or sections to a sequence of classes,FUNCTIONAL,0,123,20
+REQ-0111,PRJ-03,Program Administrators and Nursing Staff Members shall be able to add a new cohort to the system  identified by start month and year.,FUNCTIONAL,0,133,23
+REQ-0112,PRJ-03,Program Administrators and Nursing Staff Members shall be able to add new classes for the nursing department into the system.,FUNCTIONAL,0,125,20
+REQ-0113,PRJ-03,A class shall be either a non-clinical class or a clinical class.,FUNCTIONAL,0,65,12
+REQ-0114,PRJ-03,A non-clinical class shall specify the course name  lecture room requirements  and instructor needs.,FUNCTIONAL,0,100,14
+REQ-0115,PRJ-03,A clinical class shall specify the course name  lecture room requirements  clinical site needs  lecture instructor needs  and clinical lab instructor needs.,FUNCTIONAL,0,156,22
+REQ-0116,PRJ-03,Program Administrators/Nursing Staff Members shall be able to create a new Program of Study.,FUNCTIONAL,0,92,14
+REQ-0117,PRJ-03,A Program of Study shall consist of a program name and listing of required classes (both clinical and non-clinical) that must be completed.,FUNCTIONAL,0,139,23
+REQ-0118,PRJ-03,Program Administrators and Nursing Staff Members shall have the ability to specify which classes are required for a Program of Study,FUNCTIONAL,0,132,21
+REQ-0119,PRJ-03,The system shall be able to display a report of needed classes for a given quarter for all cohorts of all programs for Program Administrators/Nursing Staff Members planning purposes.,FUNCTIONAL,0,182,29
+REQ-0120,PRJ-03,The report of needed classes shall include (but not be limited to) classes to be offered  number of sections needed  number of labs needed  and room types needed.,FUNCTIONAL,0,162,28
+REQ-0121,PRJ-03,Classes for a given cohort shall not conflict with regards to the time and day that they are offered.,FUNCTIONAL,0,101,19
+REQ-0122,PRJ-03,Program Administrators and Nursing Staff Members shall be able to add a new clinical site into the system.,FUNCTIONAL,0,106,18
+REQ-0123,PRJ-03,Clinical site information shall include (but not be limited to) the name of the site  contact person  and contact information.,FUNCTIONAL,0,126,20
+REQ-0124,PRJ-03,Program Administrators and Nursing Staff Members shall be able to add a new clinical lab section for an existing clinical class into the System.,FUNCTIONAL,0,144,24
+REQ-0125,PRJ-03,A clinical lab section shall include the clinical site name  the class  instructor  day and time of the lab.,FUNCTIONAL,0,108,19
+REQ-0126,PRJ-03,Program Administrators and Nursing Staff Members shall be able to add a student who has registered for a clinical class to a clinical lab section for that class.,FUNCTIONAL,0,161,28
+REQ-0127,PRJ-03,The system shall allow a Program Administrator or Nursing staff member to remove a student from a clinical lab section.,FUNCTIONAL,0,119,20
+REQ-0128,PRJ-03,The system shall allow a Program Administrator/Nursing Staff Member to move a student from one clinical lab section to another clinical lab section corresponding to the same clinical class.,FUNCTIONAL,0,189,29
+REQ-0129,PRJ-03,Program Administrators/Nursing Staff Members shall be able to cancel a clinical lab section only if there are no students registered for that clinical lab section.,FUNCTIONAL,0,163,25
+REQ-0130,PRJ-03,A Program Administrator/Nursing Staff Member shall be able to add a new nursing student to the system.,FUNCTIONAL,0,102,17
+REQ-0131,PRJ-03,A staff member shall have the ability to manage the progress of a part time student  which includes modifying their sequence of classes and timeline of classes.,FUNCTIONAL,0,160,27
+REQ-0132,PRJ-03,The system shall be able to display a printable summary for individual cohorts  which will include the students enlisted  the Program of study  sequence of classes  cohort progress through the program  and timeline of completion.,FUNCTIONAL,0,229,35
+REQ-0133,PRJ-03,The system shall be able to display a printable summary for individual clinical sites  which will include information on labs being held at that site for the given quarter (Clinical site  general information on labs held at that location  dates and times of all labs held there).,FUNCTIONAL,0,279,47
+REQ-0134,PRJ-03,The system shall be able to display a printable summary for individual clinical labs  which will include (but not be limited to) class name  class number  lab section  listing of students enrolled  instructor  day(s)  time  and location.,FUNCTIONAL,0,237,37
+REQ-0135,PRJ-03,The system shall be able to display a printable summary for individual nursing students  which will include (but not be limited to) student name  student ID  admission date  classes  credits  GPA  and the cohort that the student is enrolled in.,FUNCTIONAL,0,244,40
+REQ-0136,PRJ-03,The system shall be able to display a printable summary of the system log.,FUNCTIONAL,0,74,14
+REQ-0137,PRJ-03,The system shall contain contact information (e-mail and phone number) for all people relevant to the system  including (but not limited to) staff members  students  lecture instructors  clinical lab instructors  and clinical site administrators.,FUNCTIONAL,0,246,34
+REQ-0138,PRJ-03,The system will use the stored e-mail addresses as a primary means of communicating information to affected parties.,FUNCTIONAL,0,116,18
+REQ-0139,PRJ-03,The system will notify affected parties for routine communication purposes  including but not limited to informing students of upcoming offered classes (timeline) and what their schedule will be/shall be.,FUNCTIONAL,0,204,29
+REQ-0140,PRJ-03,The system will notify affected parties when changes occur affecting clinicals  including but not limited to clinical section capacity changes  and clinical section cancellations.,FUNCTIONAL,0,179,24
+REQ-0141,PRJ-03,The system will notify affected parties when changes occur affecting classes  including but not limited to class cancellations  class section detail changes  and changes to class offerings for a given quarter.,FUNCTIONAL,0,209,31
+REQ-0142,PRJ-03,The system will notify affected parties when changes occur affecting cohorts  including but not limited to changes to the sequence for a cohorts program of study and changes to a given weeks schedule (lab cancelled this week due to instructor illness).,FUNCTIONAL,0,252,41
+REQ-0143,PRJ-03,The system will notify affected parties when changes occur affecting specific students  including but not limited to changing a students status from full time to part time and moving a student to a different clinical section.,FUNCTIONAL,0,225,36
+REQ-0144,PRJ-03,Program Administrators/Nursing Staff Members shall have the ability to modify information relating to cohorts  including cohort identifier  program of study  preferred sequence of classes and quarters that a cohort will be taking specific classes.,FUNCTIONAL,0,247,34
+REQ-0145,PRJ-03,Program Administrators/Nursing Staff Members shall have the ability to modify information relating to a Program of Study within the Nursing Department  including the Program of study name  and required classes for that Program of Study.,FUNCTIONAL,0,236,35
+REQ-0146,PRJ-03,Program Administrators/Nursing Staff Members shall have the ability to modify information relating to a Clinical Site  including the clinical site name  site contact person  contact information  and address.,FUNCTIONAL,0,207,28
+REQ-0147,PRJ-03,Program Administrators/Nursing Staff Members shall have the ability to modify information relating to a Clinical Lab Section  including the clinical site name  the department/section for the lab  the class  instructor  day and time of lab  and contact information.,FUNCTIONAL,0,264,38
+REQ-0148,PRJ-03,Program Administrators/Nursing Staff Members shall have the ability to modify information relating to a Nursing Student  including student ID  student name  phone number  e-mail  status (full time or part time)  and program of study.,FUNCTIONAL,0,233,34
+REQ-0149,PRJ-04,The Disputes application shall comply with the corporate standards for user interface creation for internally and externally used applications.,FUNCTIONAL,0,143,19
+REQ-0150,PRJ-04,All screens created as part of the Disputes application must comply with corporate standards for interface creation.,FUNCTIONAL,0,116,17
+REQ-0151,PRJ-04,The list of dispute cases that are displayed after a search is performed must be color coded for easy identification of dispute cases based upon the dispute case status.,USABILITY,1,169,29
+REQ-0152,PRJ-04,100% of the cardmember and merchant services representatives shall use the Disputes application regularly after a 2-day training course.,USABILITY,0,136,19
+REQ-0153,PRJ-04,100% of cardmember services representatives shall be able to successfully create a dispute case on the first encounter after completing the training course.,USABILITY,0,156,23
+REQ-0154,PRJ-04,100% of merchant services representatives shall be able to successfully perform a follow up action on a dispute case on the first encounter after completing the training course.,USABILITY,0,177,28
+REQ-0155,PRJ-04,The maximum wait time for a user navigating from one screen to another within the Disputes application shall be no more than 5 seconds.,PERFORMANCE,0,135,24
+REQ-0156,PRJ-04,The Disputes application shall support 350 concurrent users without any degradation of performance in the application.,PERFORMANCE,0,118,16
+REQ-0157,PRJ-04,The Disputes application shall be available 24x7x365  with the exception of the following scheduled maintenance windows.  Monday  Saturday 3:00am to 4:00am EST Sunday 1:00amd to 5:00am EST,FUNCTIONAL,0,188,27
+REQ-0158,PRJ-04,The Disputes application shall interface with the Statement Database. The Statement Database provides the transaction details to the Disputes System. All transaction details must be obtained from the Statement Database,FUNCTIONAL,0,218,30
+REQ-0159,PRJ-04,The Disputes application shall interface with the Cardmember Information Database.  The Cardmember Information Database provides detailed information with regard to a cardmember.  All cardmember detail information must be obtained from the Cardmember Information Database.,FUNCTIONAL,0,272,34
+REQ-0160,PRJ-04,The Disputes applications shall interface with the Merchant Information Database.  The Merchant Information Database provides detailed information with regard to the merchant. All merchant detail information shall be obtained from the Merchant Information Database.,FUNCTIONAL,0,265,34
+REQ-0161,PRJ-04,The Disputes application shall interface with the Letters application.  This will allow the Disputes application to request letters as part of the dispute initiation and dispute follow up process. All letter requests must be sent to the Print Letter Utility application.,FUNCTIONAL,0,270,41
+REQ-0162,PRJ-04,The Disputes application shall interface with the Cardmember Posting and Billing System.  This will allow the Disputes application to request adjustments to cardmember and merchants accounts. All adjustment requests must be sent to the Cardmember Posting and Billing System.,FUNCTIONAL,0,274,39
+REQ-0163,PRJ-04,The Disputes application shall ensure that only users with the appropriate access level are allowed to initiate dispute requests.,SECURITY,0,129,19
+REQ-0164,PRJ-04,Only users with Update access must be able to initiate dispute requests.,SECURITY,0,72,12
+REQ-0165,PRJ-04,The Disputes application shall ensure that only authorized users are allowed to logon to the application.,SECURITY,0,105,16
+REQ-0166,PRJ-04,All authorized users  once authenticated must be able to logon to the Disputes System,SECURITY,0,85,14
+REQ-0167,PRJ-04,The Disputes System shall generate a User Report that details any new users that have been added and any changes to an existing users access level.  The report will be reviewed for auditing purposes.,SECURITY,0,199,34
+REQ-0168,PRJ-04,All additions of new users and modifications to users access shall be recorded on the User Report.,SECURITY,0,98,17
+REQ-0169,PRJ-04,If a user account is revoked  it can only be re-instantiated by the System Administrator.,SECURITY,0,89,15
+REQ-0170,PRJ-04,Only the System Administrator shall be able to reset a revoked user logon account,SECURITY,0,81,14
+REQ-0171,PRJ-04,The Disputes application shall manipulate and view business data. Users will not have direct access to data files or databases.,SECURITY,0,127,20
+REQ-0172,PRJ-04,All updates to data files or database must be initiated from the Disputes System.,SECURITY,0,81,14
+REQ-0173,PRJ-04,The Disputes application must conform to the legal requirements as specified by the Merchant Operating Regulations.,FUNCTIONAL,0,115,16
+REQ-0174,PRJ-04,All business rules specified in the Disputes System shall be in compliance with the Merchant Operating Regulations.,FUNCTIONAL,0,115,17
+REQ-0175,PRJ-04,The Disputes application must conform to the legal requirements as specified by Regulation E and Regulation Z that govern credit card disputes processing.,FUNCTIONAL,0,154,23
+REQ-0176,PRJ-04,All business rules specified in the Disputes System shall be in compliance to the guidelines of Regulation E and Regulation Z.,FUNCTIONAL,0,126,21
+REQ-0177,PRJ-04,The Disputes application must maintain a detailed history of every action that a user takes on a dispute case.  This ensures a complete audit trail if questions arise later on with regard to a particular dispute case.,FUNCTIONAL,0,217,37
+REQ-0178,PRJ-04,All actions that modify an existing dispute case must be recorded in the case history.,FUNCTIONAL,0,86,15
+REQ-0179,PRJ-04,The Disputes System must be accessible by both internal and external users.,FUNCTIONAL,0,75,12
+REQ-0180,PRJ-04,The Disputes System must prevent users from accessing any dispute cases that do not belong to their cardholder base.,FUNCTIONAL,0,116,19
+REQ-0181,PRJ-04,The Disputes System will facilitate direct data entry of a dispute case via a user interface that supports real time responses to the users.,FUNCTIONAL,0,140,24
+REQ-0182,PRJ-04,The Disputes System must provide different levels of access with regard to disputes case initiation and follow-up actions.,FUNCTIONAL,0,122,18
+REQ-0183,PRJ-04,The Disputes System shall provide view access capability for authorized users of the application.,FUNCTIONAL,0,97,14
+REQ-0184,PRJ-04,The Disputes System shall provide update access capability for authorized users of the application.,FUNCTIONAL,0,99,14
+REQ-0185,PRJ-04,The Disputes System must allow the users to select disputable transactions (based on the age of the transaction) from a user interface and initiate a dispute (ticket retrieval request or chargeback notification) on the selected transaction.,FUNCTIONAL,0,240,36
+REQ-0186,PRJ-04,The Disputes System must provide the user the ability to initiate a single dispute case on multiple transactions that belong to a single merchant.,FUNCTIONAL,0,146,24
+REQ-0187,PRJ-04,The Disputes System will provide the user the ability to create or initiate a ticket retrieval request.   As part of ticket retrieval creation process the system must prompt the user to enter all the required information to create the ticket retrieval request.  The ticket retrieval request is a document that is sent to merchant inquiring the validity of a transaction.,FUNCTIONAL,0,370,60
+REQ-0188,PRJ-04,The Disputes System must allow the user to create three unique types of ticket retrieval requests.  The three types of ticket retrieval requests are (1) Request for original receipt (2) Request for a copy of the receipt or (3) Request for a portfolio. A portfolio consists of documentation that would provide proof of a purchase such as the documentation that is received from a car rental agency that is more than a sales receipt.,FUNCTIONAL,0,431,74
+REQ-0189,PRJ-04,The Disputes System must prevent external users from requesting original receipts. Requests for original receipts are restricted to internal users.,FUNCTIONAL,0,147,20
+REQ-0190,PRJ-04,The Disputes System must provide a confirmation to the user upon the creation of ticket retrieval request that contains the following information; the dispute case number  the type of retrieval requested (copy  original or portfolio)  and the date that the merchant response is due.,FUNCTIONAL,0,282,44
+REQ-0191,PRJ-04,The Disputes System shall allow the user to create or initiate a chargeback request.  The system must prompt the user to enter the required information to initiate a chargeback request. The chargeback request results in a printed chargeback notification that is sent to merchant indicating that their account will be charged back if no proof is provided that the disputed transaction is valid.,FUNCTIONAL,0,393,63
+REQ-0192,PRJ-04,The Disputes System must provide a confirmation to the user upon the creation of a chargeback request. The confirmation must contain the following information; the dispute case number  the type of chargeback requested (pending or immediate)  and the date that the merchant response is due.,FUNCTIONAL,0,289,45
+REQ-0193,PRJ-04,The Disputes System shall prevent the creation of duplicate dispute requests 100% of the time.,FUNCTIONAL,0,94,15
+REQ-0194,PRJ-04,The Disputes System shall accurately provide a list of possible reason codes for a given transaction.  The list of possible reason codes must be derived based on the type of transaction and the industry that the merchant belongs to  according to the business rules defined for the Disputes System.,FUNCTIONAL,0,297,49
+REQ-0195,PRJ-04,The Disputes System must provide the ability to view existing dispute cases.,FUNCTIONAL,0,76,12
+REQ-0196,PRJ-04,The Disputes System must provide Search functionality.  The search method must include the ability to search by (1) the dispute case number  (2) the merchant account number  (3) the cardmember account number and (4) the issuer number.  In addition to the above criteria  the search functionality must further allow the user to limit the results of the search by a date range  the type of dispute (ticket retrieval request or chargeback notification)  the case status (open  closed or all) and the dispute reason code.,FUNCTIONAL,0,517,84
+REQ-0197,PRJ-04,A list of all disputes cases that meet the entered search criteria must be provided to the user.  The list of cases must differentiate the type and/or status of the case by color -coding the line item in the list.  For example all open cases will be yellow and all closed cases will be gray.,FUNCTIONAL,0,291,55
+REQ-0198,PRJ-04,The Disputes System shall provide the users the ability to view the history of all activities that have occurred on the dispute case.,FUNCTIONAL,0,133,23
+REQ-0199,PRJ-04,The Dispute System shall provide the users with the ability to follow up on a dispute case via follow-up actions.  The list of available follow up actions for a given dispute case must be filtered by the status of the case and the access level of the user.,FUNCTIONAL,0,256,48
+REQ-0200,PRJ-04,The Disputes System shall record the name of the user and the date for any activity that creates or modifies the disputes case in the system.  A detailed history of the actions taken on the case  including the date and the user that performed the action must be maintained for auditing purposes.,FUNCTIONAL,0,295,52
+REQ-0201,PRJ-04,For any systematic (non-user initiated) action that occurs on a case such as the disputes aging process  a case activity will be generated.  Upon the next logon the user that initiated the dispute case must be notified that a systematic action has occurred on the dispute case.,FUNCTIONAL,0,277,47
+REQ-0202,PRJ-04,All letter requests must be formatted according to guidelines specified by the Print Letter Utility system.,FUNCTIONAL,0,107,16
+REQ-0203,PRJ-04,Any disputes cases that have been closed for over 6 months must be purged from the online disputes database.,FUNCTIONAL,0,108,19
+REQ-0204,PRJ-05,The product must support Internet Explorer 5.5 and above.,FUNCTIONAL,0,57,9
+REQ-0205,PRJ-05,The product must support Mozilla Firefox 1.0 and above.,FUNCTIONAL,0,55,9
+REQ-0206,PRJ-05,The product shall interface with the Choice Parts System.  This provides the feed of recycled parts data.,FUNCTIONAL,0,105,17
+REQ-0207,PRJ-05,The product shall run on the existing hardware for all environments.,FUNCTIONAL,0,68,11
+REQ-0208,PRJ-05,The product shall adhere to the corporate Architecture guidelines,FUNCTIONAL,0,65,9
+REQ-0209,PRJ-05,The product shall comply with corporate User Interface Guidelines,FUNCTIONAL,0,65,9
+REQ-0210,PRJ-05,The product shall comply with corporate color scheme,FUNCTIONAL,0,52,8
+REQ-0211,PRJ-05,The appearance of the product shall appear professional,FUNCTIONAL,0,55,8
+REQ-0212,PRJ-05,The product shall be easy to use by Adjusters and Collision Estimators.  95% of Adjusters and Collision Estimators shall find the product easy to use.,USABILITY,1,150,25
+REQ-0213,PRJ-05,The product shall increase productivity of Collision Estimators. 80% of the Collision Estimators shall agree their productivity has increase within 1 month of using the product.,USABILITY,0,177,26
+REQ-0214,PRJ-05,Users shall feel satisfied using the product.  85% of all users will be satisfied with the product.,USABILITY,0,99,17
+REQ-0215,PRJ-05,The product shall be easy to learn by Adjusters and Collision Estimators.  The product shall be learned with two days onsite training,USABILITY,1,133,22
+REQ-0216,PRJ-05,The user shall easily locate instructions while using the product.  User help can be found within 90% of the system.,USABILITY,0,116,20
+REQ-0217,PRJ-05,The search for recycled parts shall take no longer than 15 seconds.  The search results shall be returned in under 15 seconds.,PERFORMANCE,0,126,22
+REQ-0218,PRJ-05,The search for the preferred repair facility shall take no longer than 8 seconds.  The preferred repair facility is returned within 8 seconds,PERFORMANCE,0,141,23
+REQ-0219,PRJ-05,The recycled parts audit report shall be returned to the user within 10 seconds.  The audit report shall be returned within 10 seconds.,PERFORMANCE,0,135,23
+REQ-0220,PRJ-05,The preferred repair facility ratings shall be saved within 5 seconds. The save shall occur within 5 seconds.,PERFORMANCE,0,109,18
+REQ-0221,PRJ-05,The product shall adhere to the corporate online availability schedule.  The application is brought down only within 98% of the scheduled outages per the availability schedule.,FUNCTIONAL,0,176,26
+REQ-0222,PRJ-05,The product shall achieve a 98% uptime. The product shall not fail more than 2% of the available online time.,FUNCTIONAL,0,109,20
+REQ-0223,PRJ-05,The product shall be able to handle up to 1500 simultaneous users. The system shall perform with 1500 users as a time.,PERFORMANCE,0,118,22
+REQ-0224,PRJ-05,The average number of recycled parts records per day shall be 50 000.,PERFORMANCE,0,69,13
+REQ-0225,PRJ-05,The product shall be able to handle 10 000 concurrent users within 2 years of the initial launch.,PERFORMANCE,0,97,18
+REQ-0226,PRJ-05,For estimators  the product shall be able to be operated in a repair facility during dirty and noisy conditions.,FUNCTIONAL,0,112,19
+REQ-0227,PRJ-05,The product shall interface with the ChoiceParts system once per day at approximately 1:00 AM.,FUNCTIONAL,0,94,15
+REQ-0228,PRJ-05,The maintenance of the product will fall within the established corporate maintenance windows.,FUNCTIONAL,0,94,13
+REQ-0229,PRJ-05,The product shall be supported using the corporate support center.,FUNCTIONAL,0,66,10
+REQ-0230,PRJ-05,Product installations and upgrades shall be handled by the middleware technology team within established launch time frames.,FUNCTIONAL,0,124,17
+REQ-0231,PRJ-05,Only adjusters can request recycled parts audit reports. No users without an adjuster role shall request recycled parts audits.,SECURITY,0,127,19
+REQ-0232,PRJ-05,Only adjusters with a supervisor role can update preferred repair facility ratings. Users without the supervisor role cannot access the repair facility ratings.,SECURITY,0,160,23
+REQ-0233,PRJ-05,Only collision estimators shall search for recycled parts.  Users without the collision estimator role shall not have access to the search for recycled parts.,SECURITY,0,158,24
+REQ-0234,PRJ-05,Only valid data shall be entered into the system.  No invalid data shall be entered into the system.,SECURITY,0,100,18
+REQ-0235,PRJ-05,One insurance company shall not be able to view another insurance companys claim data.,SECURITY,0,86,14
+REQ-0236,PRJ-05,The product shall free of computer viruses.,SECURITY,0,43,7
+REQ-0237,PRJ-05,The system shall prevent malicious attacks including denial of service.,SECURITY,0,71,10
+REQ-0238,PRJ-05,The product must comply with Sarbanes-Oxley.,FUNCTIONAL,0,44,6
+REQ-0239,PRJ-05,The product shall comply with the estimatics laws relating to recycled parts usage.,FUNCTIONAL,0,83,13
+REQ-0240,PRJ-05,The product shall comply with insurance regulations regarding claims processing.,FUNCTIONAL,0,80,10
+REQ-0241,PRJ-05,The user shall search for the preferred repair facility using vehicle  vehicle location  and radius in miles,FUNCTIONAL,0,108,17
+REQ-0242,PRJ-05,The vehicle data shall include vehicle year  make  and model,FUNCTIONAL,0,60,10
+REQ-0243,PRJ-05,The vehicle location shall include street address  city  state  and zipcode,FUNCTIONAL,0,75,11
+REQ-0244,PRJ-05,The system shall resolve the zipcode for the street address  city  and state if zipcode is unknown.,FUNCTIONAL,0,99,17
+REQ-0245,PRJ-05,The search radius shall be between 1 and 30 miles,FUNCTIONAL,0,49,10
+REQ-0246,PRJ-05,The system shall locate the preferred repair facility with the highest ratings for the input criteria,FUNCTIONAL,0,101,16
+REQ-0247,PRJ-05,The adjuster shall enter the preferred repair facility on the estimate assignment.,FUNCTIONAL,0,82,12
+REQ-0248,PRJ-05,The adjuster shall be able to override the preferred repair facitlity on the estimate assignment.,FUNCTIONAL,0,97,15
+REQ-0249,PRJ-05,The preferred repair facility shall be returned to the user.,FUNCTIONAL,0,60,10
+REQ-0250,PRJ-05,The system shall return a list of repair facilities within the radius if the preferred repair facility cannot be determined.,FUNCTIONAL,0,124,20
+REQ-0251,PRJ-05,The estimator shall search for available recycled parts using damaged vehicle parts information.,FUNCTIONAL,0,96,13
+REQ-0252,PRJ-05,The estimator shall search for available recycled parts using a list of preferred parts suppliers.,FUNCTIONAL,0,98,15
+REQ-0253,PRJ-05,The system shall search for available recycled parts for the supplied vehicle parts and suppliers.,FUNCTIONAL,0,98,15
+REQ-0254,PRJ-05,The estimator shall search by zipcode with a radius of 30 miles if no parts are found for the preferred parts suppliers,FUNCTIONAL,0,119,22
+REQ-0255,PRJ-05,The system shall retain the available recycled parts and suppliers returned from the search.,FUNCTIONAL,0,92,14
+REQ-0256,PRJ-05,The available recycled parts information and their suppliers shall be returned to the user.,FUNCTIONAL,0,91,14
+REQ-0257,PRJ-05,The estimator shall apply selected recycled parts to the collision estimate.,FUNCTIONAL,0,76,11
+REQ-0258,PRJ-05,The estimator shall not apply recycled parts to the collision estimate if no available parts are returned.,FUNCTIONAL,0,106,17
+REQ-0259,PRJ-05,The adjuster shall review the collision estimate.,FUNCTIONAL,0,49,7
+REQ-0260,PRJ-05,The adjuster shall request a recycled parts audit of the collision estimate.,FUNCTIONAL,0,76,12
+REQ-0261,PRJ-05,The recycled parts search results provided to the estimator shall be retrieved by the system.,FUNCTIONAL,0,93,15
+REQ-0262,PRJ-05,The system shall generate an audit report based on the available recycled parts and the collision estimate.,FUNCTIONAL,0,107,17
+REQ-0263,PRJ-05,The audit report shall include the total number of recycled parts used in the estimate.,FUNCTIONAL,0,87,15
+REQ-0264,PRJ-05,The audit report shall include the number of available recycled parts from the original search results.,FUNCTIONAL,0,103,16
+REQ-0265,PRJ-05,The audit report shall include the percentage of available recycled parts used in the estimate,FUNCTIONAL,0,94,15
+REQ-0266,PRJ-05,The audit report shall include the total score of the audit which sums the indivual line items.,FUNCTIONAL,0,95,17
+REQ-0267,PRJ-05,The audit report shall be displayed to the user.,FUNCTIONAL,0,48,9
+REQ-0268,PRJ-05,The audit report shall be available to other adjusters at later points in time.,FUNCTIONAL,0,79,14
+REQ-0269,PRJ-05,The user shall select to view the preferred repair facility ratings.,FUNCTIONAL,0,68,11
+REQ-0270,PRJ-05,The current repair facility ratings shall be displayed to the user.,FUNCTIONAL,0,67,11
+REQ-0271,PRJ-05,The system will display a blank set of ratings if there are not ratings yet defined.,FUNCTIONAL,0,84,16
+REQ-0272,PRJ-05,The user shall enter new ratings based on the audit report,FUNCTIONAL,0,58,11
+REQ-0273,PRJ-05,The ratings shall be from a scale of 1-10,FUNCTIONAL,0,41,9
+REQ-0274,PRJ-05,The ratings shall include categories for attempted use of recycled parts and actual use of recycled parts,FUNCTIONAL,0,105,17
+REQ-0275,PRJ-05,The user shall select to save the preferred repair facility ratings.,FUNCTIONAL,0,68,11
+REQ-0276,PRJ-05,The preferred repair facility ratings shall be saved by the system.,FUNCTIONAL,0,67,11
+REQ-0277,PRJ-06,The product must work with most database management systems (DBMS) on the market  whether the DBMS is colocated with the product on the same machine or is located on a different machine on the computer network.,FUNCTIONAL,0,210,36
+REQ-0278,PRJ-06,The product will function alongside server software on any operating system where the Java runtime can be installed.,FUNCTIONAL,0,116,18
+REQ-0279,PRJ-06,The product will require collaboration with a database management system (DBMS).  The DBMS may be located on the same machine as the product or on a separate machine residing on the same computer network.,FUNCTIONAL,0,204,34
+REQ-0280,PRJ-06,The product must make use of web/application server technology.  Open source examples include Apache web server  Tomcat  and the JBoss application server.,FUNCTIONAL,0,154,22
+REQ-0281,PRJ-06,A database management system such as Oracle  DB2  MySql or HSQL will need to be integrated with the product.,FUNCTIONAL,0,108,19
+REQ-0282,PRJ-06,The products Look and Feel shall be able to incorporate aspects of the customers organization such as logo  branding  and identity,FUNCTIONAL,0,130,21
+REQ-0283,PRJ-06,The product shall have a conservative and professional appearance.,FUNCTIONAL,0,66,9
+REQ-0284,PRJ-06,The product shall make the users want to use it. 80% of the users surveyed report they are regularly using the product after the first 2 weeks post-launch.,USABILITY,0,155,28
+REQ-0285,PRJ-06,The product shall be easy to use. 90% of users will be able to successfully reserve a conference room within 5 minutes of product use.,USABILITY,1,134,25
+REQ-0286,PRJ-06,The product shall give users feedback when necessary. 80% of the users surveyed report that the product accurately confirms their actions.,USABILITY,0,138,21
+REQ-0287,PRJ-06,The product shall allow the user to select a chosen language from one of the target market countries.,USABILITY,0,101,18
+REQ-0288,PRJ-06,The product shall allow for customization of start page and views preferences.,USABILITY,0,78,12
+REQ-0289,PRJ-06,An employee will be able to successfully use the product within a few minutes.  After informally navigating the product for less than 15 minutes  users shall be able to successfully setup meetings and reserve conference rooms.,USABILITY,0,226,36
+REQ-0290,PRJ-06,The product shall use a standard navigation menu familiar to most web users.,USABILITY,0,76,13
+REQ-0291,PRJ-06,The product shall allow for intuitive searching of available conference rooms.,USABILITY,0,78,11
+REQ-0292,PRJ-06,The product shall conform to the Americans with Disabilities Act.,USABILITY,0,65,10
+REQ-0293,PRJ-06,The response shall be fast enough to avoid interrupting the users flow of thought.  90% of tasks shall complete within 5 seconds.  98% of tasks shall complete within 8 seconds.,PERFORMANCE,1,176,30
+REQ-0294,PRJ-06,Aside from server failure  the software product shall achieve 99.99% up time.,FUNCTIONAL,0,77,12
+REQ-0295,PRJ-06,The product shall create an exception log of problems encountered within the product for transmission to our company for analysis and resolution.,MAINTAINABILITY,0,145,22
+REQ-0296,PRJ-06,The product shall be capable of handling up to 1 000 concurrent requests.  This number will increase to 2 000 by Release 2.  The concurrency capacity must be able to handle peak scheduling times such as early morning and late afternoon hours.,PERFORMANCE,0,242,42
+REQ-0297,PRJ-06,The product shall be able to process 10 000 transactions per hour within two years of its launch.  This number will increase to 20 000 by Release 2.,PERFORMANCE,0,148,28
+REQ-0298,PRJ-06,The product shall be expected to operate for at least 5 years for each customer installation.,PERFORMANCE,0,93,16
+REQ-0299,PRJ-06,The product shall be used in office environments.,FUNCTIONAL,0,49,8
+REQ-0300,PRJ-06,The product must be able to interface with any HTML browser.  The product shall transmit data between the user and the product without problems. The product shall display HTML properly in 80% of all HTML browsers tested (minimum is to test 8 browsers).,FUNCTIONAL,0,252,43
+REQ-0301,PRJ-06,The product must be able to interface with various database management systems. The product shall communicate successfully with the database management system on 100% of all transactions.,FUNCTIONAL,0,187,27
+REQ-0302,PRJ-06,The product must be able to interface with various email servers. The product shall be able to send email.,FUNCTIONAL,0,106,19
+REQ-0303,PRJ-06,The product shall be available for distribution via the Internet as a binary or ZIP file.,FUNCTIONAL,0,89,16
+REQ-0304,PRJ-06,The product shall be available for distribution as a packaged CD.,FUNCTIONAL,0,65,11
+REQ-0305,PRJ-06,The product will be available for licensing as a one-server  two-five servers  or five-or-more servers license.,FUNCTIONAL,0,111,16
+REQ-0306,PRJ-06,A new user must be able to be added to the system within 10 minutes.  90% of new users are able to log into the system within 10 minutes.,USABILITY,0,137,29
+REQ-0307,PRJ-06,The product must be designed using Design Patterns and coding best practices.  90% of maintenance software developers are able to integrate new functionality into the product with 2 working days.,MAINTAINABILITY,0,195,30
+REQ-0308,PRJ-06,The product must be highly configurable for use with various database management systems for the end users.  80% of end users are able to integrate new database management systems with the product without changing the products software code.,MAINTAINABILITY,0,241,38
+REQ-0309,PRJ-06,Maintenance releases will be offered to customers once a year.  The releases shall take no longer than 5 minutes for 80% of the customer base to install.,MAINTAINABILITY,0,153,27
+REQ-0310,PRJ-06,Every registered user will have access to the products support site via the Internet.  70% of registered users shall find a solution to their problem within 5 minutes of using the support site.,USABILITY,0,193,33
+REQ-0311,PRJ-06,The customer shall be able to easily integrate new building maps with the product throughout the products lifecycle.  Integration of new maps with the product shall be possible with little to no support from product support staff.,MAINTAINABILITY,0,230,37
+REQ-0312,PRJ-06,The product shall be translated into foreign languages other than the target market countries languages in future releases.  For each emerging target market  it shall take no more than 5 days to configure the product for that markets language.,USABILITY,0,243,39
+REQ-0313,PRJ-06,The product is expected to integrate with multiple database management systems.  The product will operate with Oracle  SQL Server  DB2  MySQL  HSQL  and MS Access.,FUNCTIONAL,0,163,25
+REQ-0314,PRJ-06,The product shall be able to be installed in any operating environment within 2 days.,FUNCTIONAL,0,85,15
+REQ-0315,PRJ-06,The product shall ensure that only company employees or external users with company-approved user IDs may have product access.  100% of all logons shall be by either company employees or external users with company-approved user IDs.,SECURITY,0,233,36
+REQ-0316,PRJ-06,Only managers are able to perform search queries for reservations by user.  100% of all search queries for reservations by user shall be from logons of only management logons.,SECURITY,0,175,29
+REQ-0317,PRJ-06,The product shall ensure that the databases data corresponds to the data entered by the user.  Each conference room reservation in the system will contain the same information as was entered by the user.,SECURITY,0,203,34
+REQ-0318,PRJ-06,The product shall prevent the input of malicious data.  The product and/or adjacent hardware/software systems data shall remain 100% uncorrupted each time malicious data is input into the product.,SECURITY,0,196,29
+REQ-0319,PRJ-06,The product and/or dependent databases/filesystems shall remain operational as a result of the input of malicious data.  The product and/or dependent databases/filesystems shall not crash 100% of the time that malicious data is input into the product.,MAINTAINABILITY,0,251,37
+REQ-0320,PRJ-06,The product shall have the ability to receive automatic software updates as new threats emerge.  100% of customers will be able to receive automatic software updates transmitted to the installed product.,SECURITY,0,203,31
+REQ-0321,PRJ-06,The language of the product shall accommodate all of the target market countries. 90% of survey respondents from each target market country will find that the language of the product is acceptable.,PERFORMANCE,0,197,32
+REQ-0322,PRJ-06,The product shall be able to display calendar dates and times according to the users locale.  90% of survey respondents from each target market country will find that the date and time formatting of the product is correct.,USABILITY,0,222,38
+REQ-0323,PRJ-06,The product must be developed with the J2SE/J2EE programming language libraries,FUNCTIONAL,0,79,11
+REQ-0324,PRJ-06,The product shall record meeting entries.,FUNCTIONAL,0,41,6
+REQ-0325,PRJ-06,The product will notify employees of meeting invitations.,FUNCTIONAL,0,57,8
+REQ-0326,PRJ-06,The product shall have the ability to send meeting reminders to employees.,FUNCTIONAL,0,74,12
+REQ-0327,PRJ-06,The product shall assign the organizers contact information to each meeting they create.,FUNCTIONAL,0,88,13
+REQ-0328,PRJ-06,The product will record meeting acknowledgements.,FUNCTIONAL,0,49,6
+REQ-0329,PRJ-06,The product shall store new conference rooms.,FUNCTIONAL,0,45,7
+REQ-0330,PRJ-06,The product shall update existing conference rooms.,FUNCTIONAL,0,51,7
+REQ-0331,PRJ-06,The product will be able to delete conference rooms.,FUNCTIONAL,0,52,9
+REQ-0332,PRJ-06,The product shall be able to store new room equipment.,FUNCTIONAL,0,54,10
+REQ-0333,PRJ-06,The product will update existing room equipment.,FUNCTIONAL,0,48,7
+REQ-0334,PRJ-06,The product shall be able to delete room equipment.,FUNCTIONAL,0,51,9
+REQ-0335,PRJ-06,The product shall allow an organizer to invite other employees to meetings.,FUNCTIONAL,0,75,12
+REQ-0336,PRJ-06,Each time a conference room is reserved  the conference room schedule shall be updated to reflect the time and date of the reservation.,FUNCTIONAL,0,135,23
+REQ-0337,PRJ-06,The product shall record the transportation status of equipment reserved.,FUNCTIONAL,0,73,10
+REQ-0338,PRJ-06,The product shall display a map of the company building showing conference room locations.,FUNCTIONAL,0,90,14
+REQ-0339,PRJ-06,The product shall record updated meeting agendas.,FUNCTIONAL,0,49,7
+REQ-0340,PRJ-06,The product shall send a meeting confirmation to the meeting organizer.,FUNCTIONAL,0,71,11
+REQ-0341,PRJ-06,The product shall display room equipment according to search parameters.,FUNCTIONAL,0,72,10
+REQ-0342,PRJ-06,The product shall display conference rooms according to search parameters.,FUNCTIONAL,0,74,10
+REQ-0343,PRJ-06,The product shall record different meeting types.,FUNCTIONAL,0,49,7
+REQ-0344,PRJ-06,The product shall record all the equipment that has been reserved.,FUNCTIONAL,0,66,11
+REQ-0345,PRJ-06,The product shall notify building personnel of equipment transport requests.,FUNCTIONAL,0,76,10
+REQ-0346,PRJ-06,The product will allow priviledged users to view meeting schedules in multiple reporting views.,FUNCTIONAL,0,95,14
+REQ-0347,PRJ-06,The product shall be able to send meeting notifications via different kinds of end-user specified methods.,FUNCTIONAL,0,106,16
+REQ-0348,PRJ-06,The product shall have a customizable Look and Feel.,FUNCTIONAL,0,52,9
+REQ-0349,PRJ-06,The product shall have an intuitive user interface.,FUNCTIONAL,0,51,8
+REQ-0350,PRJ-06,The product will display an available status for unreserved conference rooms.,FUNCTIONAL,0,77,11
+REQ-0351,PRJ-07,Recreation of Inventory Quantity Adjustment for the period of previous 30 days shall take no more than 30min.,PERFORMANCE,0,109,18
+REQ-0352,PRJ-07,The System shall allow for a minimum of  6 users to work at the same time.,PERFORMANCE,0,74,16
+REQ-0353,PRJ-07,The System shall utilize currently owned computer equipment.,FUNCTIONAL,0,60,8
+REQ-0354,PRJ-07,The System shall be able to automatically backup business data and restore them on demand.,FUNCTIONAL,0,90,15
+REQ-0355,PRJ-07,The System shall maintain consistent security.  Any changes in user passwords and/or permissions should take affect in all parts of the System.,SECURITY,0,143,22
+REQ-0356,PRJ-07,The System shall granularly control access rights to all major subsystems.  It should be possible to assign access rights to all subsystems independently.,SECURITY,0,154,23
+REQ-0357,PRJ-07,The System shall meet all applicable accounting standards.  The final version of the System must successfully pass independent audit performed by a certified auditor.,FUNCTIONAL,0,166,24
+REQ-0358,PRJ-07,The System shall not require additional third party licenses resulting in royalty fees.,FUNCTIONAL,0,87,13
+REQ-0359,PRJ-07,The System shall allow generation of Inventory Quantity Adjustment documents on demand.,FUNCTIONAL,0,87,12
+REQ-0360,PRJ-07,The System shall allow on demand generation of all Inventory Quantity Adjustment documents since certain point of time.,FUNCTIONAL,0,119,18
+REQ-0361,PRJ-07,The IQA subsystem shall take into account current inventory status and adjust inventory of substitutionary ingredients accordingly.,FUNCTIONAL,0,131,17
+REQ-0362,PRJ-07,The System shall allow entering  storing and modifying product formulas.,FUNCTIONAL,0,72,10
+REQ-0363,PRJ-07,Product formulas shall allow use of semi-products  which have own formulas.,FUNCTIONAL,0,75,11
+REQ-0364,PRJ-07,Product formula ingredients shall allow defining substitutionary ingredients.,FUNCTIONAL,0,77,8
+REQ-0365,PRJ-07,Product formula substitutionary ingredients shall be entered automatically by the PFE subsystem.,FUNCTIONAL,0,96,12
+REQ-0366,PRJ-07,Formula substitutionary ingredients shall be kept in persisted order,FUNCTIONAL,0,68,9
+REQ-0367,PRJ-07,Product shall allow entering  storing and modifying product menus used by POS terminals.,FUNCTIONAL,0,88,13
+REQ-0368,PRJ-07,PME Subsystem shall allow building product menus based on the list of products kept in the accounting system.,FUNCTIONAL,0,109,18
+REQ-0369,PRJ-07,PME Subsystem shall allow keeping submenus within menus and products within submenus in a managed and persisted order.,FUNCTIONAL,0,118,18
+REQ-0370,PRJ-07,PME Subsystem shall allow for a product to exist in more than one submenu,FUNCTIONAL,0,73,14
+REQ-0371,PRJ-07,The RMS System shall have Windows XP look and feel and use GUI futures making its use intuitive.,FUNCTIONAL,0,96,18
+REQ-0372,PRJ-07,The System shall generate Inventory Quantity Adjustment document based on product daily sales data and product formulas.,FUNCTIONAL,0,120,17
+REQ-0373,PRJ-07,The System shall generate Inventory Quantity Adjustment document automatically when daily Product Sales data is available.,FUNCTIONAL,0,122,16
+REQ-0374,PRJ-08,Administrator shall be able to activate a pre-paid card via the Administration section in under 5 seconds.,PERFORMANCE,0,106,17
+REQ-0375,PRJ-08,Customer shall be able to check the status of their prepaid card  by entering in the PIN number  in under 5 seconds.,PERFORMANCE,0,116,22
+REQ-0376,PRJ-08,System shall let customers register on the website as a pay as you go user in under 5 minutes.,PERFORMANCE,0,94,19
+REQ-0377,PRJ-08,System shall let customers register on the website as a unlimited movie subscriber user in under 10 minutes.,PERFORMANCE,0,108,18
+REQ-0378,PRJ-08,System shall let existing customers log into the website with their email address and password in under 5 seconds.,PERFORMANCE,0,114,19
+REQ-0379,PRJ-08,System shall let customers cancel their account  process shall take no longer than 2 minutes.  Database will mark the account as inactive  and user will not be able to log into the website.,PERFORMANCE,0,189,33
+REQ-0380,PRJ-08,System shall let administrator de-activate a customer account in under 1 minute. Customer will no longer be able to access the website.,PERFORMANCE,0,135,22
+REQ-0381,PRJ-08,System shall let administrator add/remove movies on the website in under 5 minutes.  Entered movie information will be stored in the database and will now be available on the website.,PERFORMANCE,0,183,30
+REQ-0382,PRJ-08,System shall let the administrator add/remove categories on the website in under 5 minutes.,PERFORMANCE,0,91,14
+REQ-0383,PRJ-08,System shall let Izogn Manager access sales and usage statistics in under 2 minutes.,PERFORMANCE,0,84,14
+REQ-0384,PRJ-08,System shall let administrators generate unique pre-paid pins in under 2 minutes and generate an Excel file with the generated PINs.,PERFORMANCE,0,132,21
+REQ-0385,PRJ-08,The website shall be attractive to all audiences.  The website shall appear to be fun and the colors should be bright and vibrant.,FUNCTIONAL,0,130,23
+REQ-0386,PRJ-08,The website should have an African feel  but should not alienate non-Africans.  The website should use animation on pages which are describing the services  to grab the users attention and encourage them to sign up.,FUNCTIONAL,0,215,35
+REQ-0387,PRJ-08,The website design should be modern  clean  and concise.,FUNCTIONAL,0,56,9
+REQ-0388,PRJ-08,The product should be able to be used by 90% of novice users on the Internet.,USABILITY,0,77,16
+REQ-0389,PRJ-08,Users should only have to navigate through a maximum of 4 pages  to create an account with the website.,USABILITY,0,103,19
+REQ-0390,PRJ-08,Users should be able to access their streaming movies in under 2 clicks after logging into the website.,USABILITY,0,103,18
+REQ-0391,PRJ-08,An anonymous survey will show that 70% of customers are comfortable purchasing streaming movies after 2 weeks using the website.,USABILITY,0,128,20
+REQ-0392,PRJ-08,An anonymous survey will show that 95% of customers are comfortable using and purchasing pre-paid cards after a month of using the system.,USABILITY,0,138,23
+REQ-0393,PRJ-08,The product shall retain the customers buying preferences and information.,USABILITY,0,74,10
+REQ-0394,PRJ-08,The product shall be easy for customers with novice skills on the  Internet to purchase and watch streaming movies.  Customers should be able to purchase and watch a pre-determined movie in under 3 minutes.,USABILITY,1,206,34
+REQ-0395,PRJ-08,The product shall use symbols and words that are naturally understandable by users familiar with websites,USABILITY,0,105,16
+REQ-0396,PRJ-08,The website will use standard Internet conventions when interacting with the user.,USABILITY,0,82,12
+REQ-0397,PRJ-08,Any interface between a user and the automated system shall have a maximum response time of 5 seconds  unless noted by an exception below.,PERFORMANCE,0,138,24
+REQ-0398,PRJ-08,When purchasing a streaming movie or pre-paid card via credit card  the processing time should have a maximum response time of 15 seconds.,PERFORMANCE,0,138,23
+REQ-0399,PRJ-08,When streaming a movie  the buffering time should take no longer than 10 seconds (plus any latency on the users connection.),PERFORMANCE,0,124,21
+REQ-0400,PRJ-08,While streaming a movie  buffering should only occur if there is latency in the users connection.,PERFORMANCE,0,97,16
+REQ-0401,PRJ-08,All credit card information will be secured on the server  and only accessible by authorized Izogn administrators.  Information will be encrypted in the database.,SECURITY,0,162,24
+REQ-0402,PRJ-08,The website shall be available for use 24 hours per day  365 days per year.,FUNCTIONAL,0,75,15
+REQ-0403,PRJ-08,The website shall achieve 99.5% up time.,FUNCTIONAL,0,40,7
+REQ-0404,PRJ-08,All movies shall be streamed on demand  at any time of the day.,FUNCTIONAL,0,63,13
+REQ-0405,PRJ-08,The website shall continue to operate if the streaming server goes down.,MAINTAINABILITY,0,72,12
+REQ-0406,PRJ-08,The website shall continue to operate if the payment gateway goes down.,MAINTAINABILITY,0,71,12
+REQ-0407,PRJ-08,The streaming server will support 50 simultaneous streaming connections.,PERFORMANCE,0,72,9
+REQ-0408,PRJ-08,The streaming server will support a maximum of 700 movies; new servers can be added to support more movies.,PERFORMANCE,0,107,19
+REQ-0409,PRJ-08,The server will support a maximum of 1 000 simultaneous users.,PERFORMANCE,0,62,11
+REQ-0410,PRJ-08,The website shall be capable of supporting 100 000 customers.,PERFORMANCE,0,61,10
+REQ-0411,PRJ-08,The product shall be expected to operate within the maximum maintenance budget for a minimum of 2 years.,MAINTAINABILITY,0,104,18
+REQ-0412,PRJ-08,All aspects of the website shall be accessed by a web browser over the Internet.,FUNCTIONAL,0,80,15
+REQ-0413,PRJ-08,The same hardware supporting the current website will be used to support the new system.,FUNCTIONAL,0,88,15
+REQ-0414,PRJ-08,We must be able to interface with the following browsers: IE 5.X  6.0  Netscape 6.x  7.x  8.x and Firefox 1.0.,FUNCTIONAL,0,110,20
+REQ-0415,PRJ-08,Website must interface with the CyberSource API to process credit card transactions.,FUNCTIONAL,0,84,12
+REQ-0416,PRJ-08,Website must be fully operational with MSN TV2.,FUNCTIONAL,0,47,8
+REQ-0417,PRJ-08,Movies shall be encoded and streamed via Windows Media Player 9.0.,FUNCTIONAL,0,66,11
+REQ-0418,PRJ-08,Movies shall be encoded for 56k and 256k streams.,FUNCTIONAL,0,49,9
+REQ-0419,PRJ-08,Promotional updates to the website should take a day to update.,MAINTAINABILITY,0,63,11
+REQ-0420,PRJ-08,Izogn Administrator must be able to update the category listings on the website within 2 minutes.,PERFORMANCE,0,97,16
+REQ-0421,PRJ-08,Izogn Administrator must be able to add new products to the website within 2 minutes.,PERFORMANCE,0,85,15
+REQ-0422,PRJ-08,The system will provide a 24 hour 800 toll free number for support to its customers.,FUNCTIONAL,0,84,16
+REQ-0423,PRJ-08,The website will provide a help section with answers and solutions to common problems.,USABILITY,0,86,14
+REQ-0424,PRJ-08,Velkat staff will be available for phone support between 7am-7pm  M-F to provide technical support to the Izogn administrators.,FUNCTIONAL,0,127,19
+REQ-0425,PRJ-08,The product shall be able to be installed in the specified environment within 1 working day.,FUNCTIONAL,0,92,16
+REQ-0426,PRJ-08,Only registered customers can purchase streaming movies.,SECURITY,0,56,7
+REQ-0427,PRJ-08,A customer can only stream a movie if they purchased it  and are within the 2 day viewing period.,SECURITY,0,97,19
+REQ-0428,PRJ-08,Only authorized personnel can access customer records in the database.,SECURITY,0,70,10
+REQ-0429,PRJ-08,Only administrators can activate a pre-paid card.,SECURITY,0,49,7
+REQ-0430,PRJ-08,Only authorized personnel can access sales information.,SECURITY,0,55,7
+REQ-0431,PRJ-08,The website shall prevent its data from being corrupted when incorrect data is entered in.,SECURITY,0,90,15
+REQ-0432,PRJ-08,The website shall protect itself from intentional abuse  and notify the administrator at all occurrences.,SECURITY,0,105,15
+REQ-0433,PRJ-08,Data integrity scripts will be run on a weekly basis to verify the integrity of the database.,SECURITY,0,93,17
+REQ-0434,PRJ-08,The website shall make its user aware of its information practices before collection data from them via a Privacy Policy  accessible on all pages of the website.,SECURITY,0,161,27
+REQ-0435,PRJ-08,The system shall notify customers of changes to its information policy.,SECURITY,0,71,11
+REQ-0436,PRJ-08,The system shall reveal private information only in compliance with the organizations information policy.,SECURITY,0,105,14
+REQ-0437,PRJ-08,All customer information will be stored on a secure database  accessible only to authorized personnel.,SECURITY,0,102,15
+REQ-0438,PRJ-08,All credit card information will be encrypted in the database.,SECURITY,0,62,10
+REQ-0439,PRJ-08,The streaming server will have anti-virus software to prevent infection of malicious viruses.,SECURITY,0,93,13
+REQ-0440,PRJ-08,The website should cater to all tribes in Nigeria.,FUNCTIONAL,0,50,9
+REQ-0441,PRJ-08,The website shall not be offensive to religious or ethnic groups.,FUNCTIONAL,0,65,11
+REQ-0442,PRJ-08,The website should appeal to all Africans  not only Nigerians.,FUNCTIONAL,0,62,10
+REQ-0443,PRJ-08,The website should use Flash to provide animation on the home page.,FUNCTIONAL,0,67,12
+REQ-0444,PRJ-08,IzognMovies shall meet the licensing requirements set forth by the appropriate organizations in order to stream African movies.,FUNCTIONAL,0,127,18
+REQ-0445,PRJ-08,The website will comply with W3C standards.,FUNCTIONAL,0,43,7
+REQ-0446,PRJ-08,The PHP code will comply with PEAR standards.,FUNCTIONAL,0,45,8
+REQ-0447,PRJ-08,The website will allow customers to search for movies by title  actor  or director.,FUNCTIONAL,0,83,14
+REQ-0448,PRJ-08,viewing a movie details  the website will display the movies description  actor  and director entered in by the administrator.,FUNCTIONAL,0,126,19
+REQ-0449,PRJ-08,Website shall request  and authorize credit card payment before allowing a user to stream a movie.,FUNCTIONAL,0,98,16
+REQ-0450,PRJ-08,shall be able to stream purchased movie via Windows Media Player  for up to 2 days aftere purchase date.,FUNCTIONAL,0,104,19
+REQ-0451,PRJ-08,Website shall allow customers to browse movies by categories entered in by izogn administrator.,FUNCTIONAL,0,95,14
+REQ-0452,PRJ-08,Website shall allow customers to view reviews of selected movies by other customers.,FUNCTIONAL,0,84,13
+REQ-0453,PRJ-08,Website shall allow customers to add their own movie review for a selected movie.,FUNCTIONAL,0,81,14
+REQ-0454,PRJ-08,Website shall allow the Izogn administrator to approve a review posted by a customer.,FUNCTIONAL,0,85,14
+REQ-0455,PRJ-08,System will allow customers to pay for a streaming movie with a pre-paid card.,FUNCTIONAL,0,78,14
+REQ-0456,PRJ-08,Website shall allow customers to purchase pre-paid cards of $5  $10  or $20 value either by credit card or mail-in payment option.,FUNCTIONAL,0,130,22
+REQ-0457,PRJ-08,System shall automatically update the main page of the website every Friday  and show the 4 latest movies that have been added to the website.,FUNCTIONAL,0,142,25
+REQ-0458,PRJ-08,System shall allow users to update their billing and contact information via the My Account section of the website.,FUNCTIONAL,0,115,19
+REQ-0459,PRJ-08,Pre-paid cards shall be distributed via email  or via a printed paper card.,FUNCTIONAL,0,75,13
+REQ-0460,PRJ-08,Only registered customers can purchase streaming movies.,FUNCTIONAL,0,56,7
+REQ-0461,PRJ-08,Movies can only be streamed if the customer has purchased a movie  and is within the 2-day time period to stream the movie.,FUNCTIONAL,0,123,23
+REQ-0462,PRJ-08,Website must be able to support free trial periods with various parameters set by the Izogn Manager.,FUNCTIONAL,0,100,17
+REQ-0463,PRJ-08,All streaming movie sales will be logged in the database  and accessible by the administrator.,FUNCTIONAL,0,94,15
+REQ-0464,PRJ-08,All registered customer information shall be stored and maintained in the database  even after the customer cancels their account.,FUNCTIONAL,0,130,19
+REQ-0465,PRJ-08,Daily usage statistics should be logged  and accessible by the administrator.,FUNCTIONAL,0,77,11
+REQ-0466,PRJ-08,The owner shall have free access to all of the streaming movies.,FUNCTIONAL,0,64,12
+REQ-0467,PRJ-09,Total lead cycle time must be completed in 5 minutes for 90% of lead volume between the business hours of 8AM CST to 8PM CST; then 3 minutes for 99% of lead volume during off business hours.,PERFORMANCE,0,190,37
+REQ-0468,PRJ-09,No lead evaluation will complete in a time period longer than 25 seconds for 97% of all leads processed.,PERFORMANCE,0,104,19
+REQ-0469,PRJ-09,For leads that process longer than 25 seconds the system will record the event and duration,PERFORMANCE,0,91,16
+REQ-0470,PRJ-09,The process must fit within the processing time conditions set forth by the Auto Rep Assignment process in which a lead is assigned within 3 minutes of the total life cycle.,PERFORMANCE,0,173,31
+REQ-0471,PRJ-09,The lead washing process will operate within the established physical web service structure.,FUNCTIONAL,0,92,13
+REQ-0472,PRJ-09,The washing process must use a non binding  neutral data format  such as xml  when receiving and processing lead data.,FUNCTIONAL,0,118,20
+REQ-0473,PRJ-09,Defect reports will be available to technical units on a 24x7 basis.,FUNCTIONAL,0,68,12
+REQ-0474,PRJ-09,Washing parameters will be updated during scheduled maintenance hours.,MAINTAINABILITY,0,70,9
+REQ-0475,PRJ-09,The vendor will verify the invalid lead.,FUNCTIONAL,0,40,7
+REQ-0476,PRJ-09,Vendor will submit a credit validation record to be applied to the enterprise billing system.,FUNCTIONAL,0,93,15
+REQ-0477,PRJ-09,If a lead is scored to the high range the system will supply the lead data and score to the enterprise system.,FUNCTIONAL,0,110,22
+REQ-0478,PRJ-09,The leads washing functionality will validate all leads received by the web service for valid data,FUNCTIONAL,0,98,16
+REQ-0479,PRJ-09,The leads washing functionality will insert all leads captured by the web service.,FUNCTIONAL,0,82,13
+REQ-0480,PRJ-09,If the leads score falls within the high average score then it will be process by the ARA functionality.,FUNCTIONAL,0,104,19
+REQ-0481,PRJ-09,If the leads score falls within the medium average then it will be set for manual verification by an Enrollment Coordinator through the eleads system.,FUNCTIONAL,0,150,25
+REQ-0482,PRJ-09,If the leads score falls within the low average then it will be returned to the supplying vendor,FUNCTIONAL,0,96,18
+REQ-0483,PRJ-09,The leads washing functionality will compile both contact and academic scoring information for a total score.,FUNCTIONAL,0,109,16
+REQ-0484,PRJ-09,The leads washing functionality will use the parameters supplied by corporate and schools to score part of the lead.,FUNCTIONAL,0,116,19
+REQ-0485,PRJ-09,The leads washing functionality will return the lead data supplied to the vendor along with the reason of rejection.,FUNCTIONAL,0,116,19
+REQ-0486,PRJ-09,The leads washing functionality will have an interface in which lead data parameters can be maintained.,FUNCTIONAL,0,103,16
+REQ-0487,PRJ-09,The leads washing functionality will verify the users authentication and rights to make parameter updates.,FUNCTIONAL,0,106,15
+REQ-0488,PRJ-09,The leads washing functionality will store any potential lead duplicates returned by the enterprise system.,FUNCTIONAL,0,107,15
+REQ-0489,PRJ-09,Prior to submitting the lead to the enterprise system the leads washing functionality will assign the lead to an admissions rep.,FUNCTIONAL,0,128,21
+REQ-0490,PRJ-09,The leads washing functionality shall receive a period list of available reps from the enterprise system.,FUNCTIONAL,0,105,16
+REQ-0491,PRJ-10,The product shall simulate the look of ships at sea.,FUNCTIONAL,0,52,10
+REQ-0492,PRJ-10,The product shall display the grids within a circle as a view from a periscope.,FUNCTIONAL,0,79,15
+REQ-0493,PRJ-10,The product shall display each type of ship in a grid using an image of the specific type of ship.,FUNCTIONAL,0,98,20
+REQ-0494,PRJ-10,When the offensive player takes a shot  the product shall simulate the sound of a ship at sea.,FUNCTIONAL,0,94,18
+REQ-0495,PRJ-10,When a shot is marked as a miss  the product shall simulate the sound of a shot missing its target.,FUNCTIONAL,0,99,20
+REQ-0496,PRJ-10,When a shot is marked as a hit  the product shall simulate the sound of a shot hitting its target.,FUNCTIONAL,0,98,20
+REQ-0497,PRJ-10,When a ship is sunk  the product shall simulate the sound of a sinking ship.,FUNCTIONAL,0,76,15
+REQ-0498,PRJ-10,The product shall be available 24 hours per day  seven days per week.,FUNCTIONAL,0,69,13
+REQ-0499,PRJ-10,The product shall able to handle a large number of games simultaneously.,PERFORMANCE,0,72,12
+REQ-0500,PRJ-10,The response time shall be fast enough to maintain the flow of the game.  The response time shall be no more than 2 seconds for 95% of responses and no more than 4% for the remaining responses.,PERFORMANCE,1,193,37
+REQ-0501,PRJ-10,The product shall protect the identity of the players. The product shall provide players no access to information that might reveal the identity of another player.,PERFORMANCE,0,163,26
+REQ-0502,PRJ-10,The product shall be intuitive and self-explanatory.  Nine out ten users shall be able to successfully complete a game with no training.,USABILITY,0,136,22
+REQ-0503,PRJ-10,The product shall be available to players who understand English  Spanish and French.  The product shall allow the user to select the language upon accessing the product.,USABILITY,0,170,27
+REQ-0504,PRJ-10,The product shall provide players no access to information that might reveal the identity of another player,SECURITY,0,107,17
+REQ-0505,PRJ-10,The response time shall be fast enough to maintain the flow of the game. The response time shall be no more than 2 seconds for 95% of responses and no more than 4% for the remaining responses.,PERFORMANCE,1,192,37
+REQ-0506,PRJ-10,The product shall maintain a list of players.,FUNCTIONAL,0,45,8
+REQ-0507,PRJ-10,The product shall allow a user to identify himself or herself as a player.,FUNCTIONAL,0,74,14
+REQ-0508,PRJ-10,Once a game has been initiated  the product shall make the players assigned to the game unavailable for selection from the list of players.,FUNCTIONAL,0,139,24
+REQ-0509,PRJ-10,The product shall allow a user to remove himself or herself from the list of players at any time.,FUNCTIONAL,0,97,19
+REQ-0510,PRJ-10,The product shall make inactive players unavailable for selection from the list of players.,FUNCTIONAL,0,91,14
+REQ-0511,PRJ-10,The product shall remove players who have been inactive for 24 hours from the list of players.,FUNCTIONAL,0,94,17
+REQ-0512,PRJ-10,The product shall allow a player to initiate a game by selecting another available player from the list of players.,FUNCTIONAL,0,115,20
+REQ-0513,PRJ-10,Once a game is initiated  the product shall display a defensive grid to each player,FUNCTIONAL,0,83,15
+REQ-0514,PRJ-10,Once a game is initiated  the product shall display an offensive grid to each player.,FUNCTIONAL,0,85,15
+REQ-0515,PRJ-10,The product shall prevent a player from viewing the offensive or defensive grids of the other player.,FUNCTIONAL,0,101,17
+REQ-0516,PRJ-10,Once a game is initiated  the product shall allow each player to position their 5 ships on their respective defensive grids.,FUNCTIONAL,0,124,21
+REQ-0517,PRJ-10,The product shall allow a player to position ships horizontally on their grid.,FUNCTIONAL,0,78,13
+REQ-0518,PRJ-10,The product shall allow the player to position ships vertically on their grid.,FUNCTIONAL,0,78,13
+REQ-0519,PRJ-10,The product shall allow the player to position ships diagonally on their grid,FUNCTIONAL,0,77,13
+REQ-0520,PRJ-10,The product shall prevent the player from overlapping ships on their grid.,FUNCTIONAL,0,74,12
+REQ-0521,PRJ-10,When both players have positioned their 5 ships on their defensive grids  the product shall define the status of each player for the first turn.,FUNCTIONAL,0,144,25
+REQ-0522,PRJ-10,For each turn  the product shall identify one player as offensive status and one player as defensive status.,FUNCTIONAL,0,108,18
+REQ-0523,PRJ-10,The product shall maintain the status of each player for a turn  either offensive or defensive.,FUNCTIONAL,0,95,16
+REQ-0524,PRJ-10,At the start of each turn  the product shall notify each player of his or her status.,FUNCTIONAL,0,85,17
+REQ-0525,PRJ-10,For each turn  the product shall allow the offensive player to define a shot.,FUNCTIONAL,0,77,14
+REQ-0526,PRJ-10,For each shot  the product shall examine the defensive grid of the defensive player to determine whether the shot was a hit or miss.,FUNCTIONAL,0,132,24
+REQ-0527,PRJ-10,For each shot  the product shall notify the players whether the shot was a hit or miss.,FUNCTIONAL,0,87,17
+REQ-0528,PRJ-10,For each shot  the product shall mark the shot as a hit or miss on the defensive grid of the defensive player.,FUNCTIONAL,0,110,22
+REQ-0529,PRJ-10,For each shot  the product shall mark the shot as a hit or miss on the offensive grid of the offensive player.,FUNCTIONAL,0,110,22
+REQ-0530,PRJ-10,When the hit results in sinking a ship  the product shall notify the players that the ship was sunk.,FUNCTIONAL,0,100,19
+REQ-0531,PRJ-10,When the hit results in sinking a ship  the product shall mark the ship as sunk on the defensive grid of the defensive player.,FUNCTIONAL,0,126,24
+REQ-0532,PRJ-10,When the hit results in sinking a ship  the product shall indicate the type of ship sunk on the defensive grid of the defensive player.,FUNCTIONAL,0,135,25
+REQ-0533,PRJ-10,When the hit results in sinking a ship  the product shall mark the ship as sunk on the offensive grid of the offensive player.,FUNCTIONAL,0,126,24
+REQ-0534,PRJ-10,If the shot was marked as a hit  the product shall allow the offensive player to define a shot.,FUNCTIONAL,0,95,19
+REQ-0535,PRJ-10,If the shot was marked as a miss  the product shall change the status of the offensive player to defensive,FUNCTIONAL,0,106,20
+REQ-0536,PRJ-10,If the shot was marked as a miss  the product shall change the status of the defensive player to offensive,FUNCTIONAL,0,106,20
+REQ-0537,PRJ-10,The product shall continue to assign turns until the game is ended.,FUNCTIONAL,0,67,12
+REQ-0538,PRJ-10,The product shall end a game when a hit by the offensive player results in sinking the last of the defensive players ships  which had not been previously marked as sunk.,FUNCTIONAL,0,169,31
+REQ-0539,PRJ-10,The product shall allow a player to end a game at any time during the game.,FUNCTIONAL,0,75,16
+REQ-0540,PRJ-10,When a game is ended  the product shall notify the players that the game is ended.,FUNCTIONAL,0,82,16
+REQ-0541,PRJ-10,The notification of the game ending will include the reason the game is ended (i.e.  a player has won the game or a player has ended the game).,FUNCTIONAL,0,143,28
+REQ-0542,PRJ-10,When a game is ended  the product shall allow each player to identify himself or herself as an available player in the list of players.,FUNCTIONAL,0,135,25
+REQ-0543,PRJ-10,When a game is ended  the product shall allow each player to remove himself or herself from the list of players.,FUNCTIONAL,0,112,21
+REQ-0544,PRJ-11,The system shall be easy to use by callers and supervisors. Callers and supervisors must be able to accomplish any system task within 2 minutes.,USABILITY,1,144,25
+REQ-0545,PRJ-11,The system shall be easy to learn by callers and supervisors. Callers and supervisors shall learn how to use the system within 10 minutes.,USABILITY,1,138,24
+REQ-0546,PRJ-11,The system shall be responsive. At the DePaul TeleServices Center  when a supervisor uses the system to view a callers schedule  the system response time must be no more than 2 seconds 90% of the time and no more than 5 seconds the rest of the time.,PERFORMANCE,0,249,47
+REQ-0547,PRJ-11,On a 56k connection  the system response time for all operations must be no more than 6 seconds 90% of the time.,PERFORMANCE,0,112,22
+REQ-0548,PRJ-11,On a 112k connection or faster  the system response time for all operations must be no more than 3 seconds 90% of the time.,PERFORMANCE,0,123,24
+REQ-0549,PRJ-11,The system shall have high availability every day of the year.The system must be available for use between 12:00AM and 6:00PM all days of the year.,FUNCTIONAL,0,147,26
+REQ-0550,PRJ-11,The system must be available for use between 7:00AM and 11:59PM all days of the year.,FUNCTIONAL,0,85,16
+REQ-0551,PRJ-11,The product shall be internet browser independent.The product must run using Internet Explorer and Netscape Navigator.,MAINTAINABILITY,0,118,16
+REQ-0552,PRJ-11,The product shall ensure that only supervisors can advertise empty time slots.The product must ensure that supervisors are allowed to access advertise empty time slots.,SECURITY,0,168,25
+REQ-0553,PRJ-11,The product shall ensure that only supervisors can enter a callers schedule.The product must ensure that supervisors are allowed to access advertise empty time slots.,SECURITY,0,166,25
+REQ-0554,PRJ-11,The product shall ensure that only supervisors can view schedule of all callers.The product must ensure that supervisors are allowed to access advertise empty time slots.,SECURITY,0,170,26
+REQ-0555,PRJ-11,The interface shall have a simple look. In the interface and usability survey  90% of beta testers must report that the interface is adequately simple.,FUNCTIONAL,1,151,25
+REQ-0556,PRJ-11,The interface shall be appealing to callers and supervisors. In the interface and usability survey  80% of beta testers must report that the interface is appealing.,FUNCTIONAL,0,164,26
+REQ-0557,PRJ-12,The product shall provide GUI based Monitoring Services.System Administrators shall monitor message exchanges will predict and determine problems and will also provide internal and external support.,FUNCTIONAL,0,198,26
+REQ-0558,PRJ-12,The product shall comply with City of Chicago Application Development Guide Framework.Application Development Framework will provide structured Graphical User Interface.,FUNCTIONAL,0,169,20
+REQ-0559,PRJ-12,The product shall provide Monitoring Services.The product shall be easy for System Administrators and DBAs to use after two weeks of usage.,USABILITY,1,139,22
+REQ-0560,PRJ-12,The product shall provide Error Tracking Services.The product shall help the System Administrators and DBAs to resolve transaction errors 99% of the time.,USABILITY,0,154,23
+REQ-0561,PRJ-12,The product shall provide Portals.The product shall help System Administrators to analyze the transactions with ad-hoc reporting and KPIs (Key Performance Indicators),USABILITY,0,166,22
+REQ-0562,PRJ-12,The product shall provide Asynchronous Messaging.The product shall provide asynchronous messaging to enable parallel processing and reduce the overhead in communications,PERFORMANCE,0,169,21
+REQ-0563,PRJ-12,The product shall provide Multi-threading and Load Balancing.The product shall provide multi-threading technology as well as load balancing to overcome data load spikes and traffic.,PERFORMANCE,0,181,25
+REQ-0564,PRJ-12,The product shall process messages within 2 seconds.The product shall have a maximum message processing time of 2 seconds,PERFORMANCE,0,121,19
+REQ-0565,PRJ-12,The product shall poll the system for messages every second.The product shall poll the system for new messages at a maximum of every 1 second.,PERFORMANCE,0,142,25
+REQ-0566,PRJ-12,The product shall provide Dynamic Change Support and Transparent resource addition.The product shall support Transparent Resource addition and Dynamic Change support to provide scalability and avoid service interruptions of more than 1 day.,PERFORMANCE,0,240,33
+REQ-0567,PRJ-12,The product shall be available 99% of the time. Rationale: To avoid service interruption during busiest customer service response periods. The product shall be available 99.99% of the time for regular business days.,FUNCTIONAL,0,215,33
+REQ-0568,PRJ-12,The product shall be robust.The product shall have fault avoidance based on standards adoption.,MAINTAINABILITY,1,95,14
+REQ-0569,PRJ-12,The product shall be robust with fault tolerance.The product shall have fault tolerance by using recovery technique compensatory transaction and routing around failures.,MAINTAINABILITY,1,169,23
+REQ-0570,PRJ-12,The product shall be able to process all transactions.The product shall process minimum of 1 million transactions per year.,PERFORMANCE,0,123,19
+REQ-0571,PRJ-12,The product shall be platform independent.The product shall enable access to any type of development environment and platform.,FUNCTIONAL,0,126,18
+REQ-0572,PRJ-12,The product shall interface CSR and Datastream.The product shall exchange messages between CSR and EAM on a real time basis without any direct interfaces between two systems.,FUNCTIONAL,0,174,27
+REQ-0573,PRJ-12,: The product shall continue to operate during upgrade  change or new resource addition.The product shall be able to continue to operate with no interruption in service due to new resource additions.,MAINTAINABILITY,0,199,32
+REQ-0574,PRJ-12,The product shall be updated on a regular basis.The product will have a new major feature introduced every six months and quarterly maintenance releases every six months.,MAINTAINABILITY,0,170,27
+REQ-0575,PRJ-12,The product shall operate with every platform.The product shall accommodate any new technology without any change in its architecture.,MAINTAINABILITY,0,134,19
+REQ-0576,PRJ-12,The product shall have security.The product shall provide authentication  and authorization.,SECURITY,0,92,11
+REQ-0577,PRJ-12,The product shall information Security. The product shall enable privacy by encryption WS-Security and Integrity Checking.,SECURITY,0,122,16
+REQ-0578,PRJ-12,The product shall have audit capabilities.The product shall store messages for a minimum of one year for audit and transaction tracking purposes.,SECURITY,0,145,22
+REQ-0579,PRJ-13,The system shall use IBM and CCR branding standards. The interface must have one IBM logo and one CCR logo.,FUNCTIONAL,0,107,20
+REQ-0580,PRJ-13,The system shall be displayable on any work computer a CCR user may have. The system interface shall be formatted to display at 800 by 600 pixel resolution.,FUNCTIONAL,0,156,28
+REQ-0581,PRJ-13,The system interface will use CCR nomenclature. The system must use the same nomenclature used in the existing WCS system and reports,FUNCTIONAL,0,133,22
+REQ-0582,PRJ-13,The interface must summarize the data in a fashion thats appealing to CCR management. Every report type must have at least one high level summary shown in the results dashboard/interface,FUNCTIONAL,0,186,30
+REQ-0583,PRJ-13,The system must use a point and click interface. 100% of all selection and navigation functionality must be able to be activated/selected by either a mouse or a keyboard,USABILITY,0,169,29
+REQ-0584,PRJ-13,The interface shall be easy to use. 90% of users should be able to successfully use the system to generate a report on their first use. The interface should adhere to IBM usability standards.,USABILITY,1,191,34
+REQ-0585,PRJ-13,Rreports must be easy to generate. eports must be generated within one button click and exported within one button click (after selecting the report),USABILITY,1,149,24
+REQ-0586,PRJ-13,A user shall be able to use the system without instruction after a short amount of time. After one use a user should understand and remember 90% of the system usage and navigation.,USABILITY,0,180,33
+REQ-0587,PRJ-13,All CCR users shall receive training before the WCS system is deployed. One training session will be held for 100% of CCR users before system deployment (based on a CCR user being available),USABILITY,0,190,33
+REQ-0588,PRJ-13,The WCS system shall use appropriate nomenclature and terminology as defined by the Corporate Community Grants organization. All interfaces and reports will undergo usability tests by CCR users.,USABILITY,0,194,28
+REQ-0589,PRJ-13,The WCS system shall be available at all times as long as IBMs internal intranet W3 is accessible. The WCS system will be available 95% of the time IBMs internal intranet W3 is available.,FUNCTIONAL,0,187,34
+REQ-0590,PRJ-13,The WCS system shall have the ability to connect other designated WCS databases currently not included in the system.,PERFORMANCE,0,117,19
+REQ-0591,PRJ-13,The WCS system shall have the ability to include data for regions outside the United States and be accessed by users outside of the United States if approved by CCR management.,PERFORMANCE,0,176,31
+REQ-0592,PRJ-13,The WCS system shall be run in a Windows environment. The WCS shall be accessed by users through the Internet on an IBM computer running a Windows 2000 or above operating system.,FUNCTIONAL,0,178,32
+REQ-0593,PRJ-13,The Brio portion of the WCS system must be able to export files in spreadsheet form (Microsoft Excel and Lotus 1-2-3 formats).  Brio will provide buttons in the user interface that produce/export reports in .xls or .123 file formats.,FUNCTIONAL,0,233,39
+REQ-0594,PRJ-13,The WCS system must run queries to the WCS databases once again (on a specified day) to update the available data available to CCR users. Queries must be made to external databases for data refresh once a week.,MAINTAINABILITY,0,210,38
+REQ-0595,PRJ-13,All changes  updates  and additions to the WCS system shall be updated in the WCS Developer and WCS User Guides. Every change must be reflected in WCS system documentation,MAINTAINABILITY,0,171,29
+REQ-0596,PRJ-13,The system shall only be accessed by authorized Corporate Community Grants (CCR) employees. Users must be authenticated using their IBM intranet user name and password.,SECURITY,0,168,25
+REQ-0597,PRJ-13,The WCS system shall not allow automatic logins by any user. Cookies containing WCS login information about a user will not be stored on a users computer.,SECURITY,0,154,27
+REQ-0598,PRJ-14,Each team owner will need to use a username and password in order to be authenticated to reach the team owners page,SECURITY,0,115,22
+REQ-0599,PRJ-14,The Commissioner will be the only authorized user per league to adjust league settings.,SECURITY,0,87,14
+REQ-0600,PRJ-14,Each page shall contain a navigation menu which shows the index into which the current page is contained.,FUNCTIONAL,0,105,18
+REQ-0601,PRJ-14,Each page shall contain a similar format with action items in one location and navigation buttons in a different location.,FUNCTIONAL,0,122,20
+REQ-0602,PRJ-14,The message board shall contain the 5 most recently posted messages on the league page. The messages will contain up to the first 150 characters of the message.,FUNCTIONAL,0,160,28
+REQ-0603,PRJ-14,A new user shall be able to navigate through the league and team pages within 30 seconds of reaching the start-up page.,USABILITY,0,119,22
+REQ-0604,PRJ-14,Users shall be able to reach the add  drop  and trade player pages with one click from the team owners page.,USABILITY,0,108,21
+REQ-0605,PRJ-14,Users shall be able to view at least 25 NFL player statistics and points on each page.,USABILITY,0,86,17
+REQ-0606,PRJ-14,The application shall ask the user to confirm dropping a player or trading a player before performing the action.,USABILITY,0,113,19
+REQ-0607,PRJ-14,The application shall be able to complete every user transaction within one fourth of a second of receiving the request over the network.,PERFORMANCE,0,137,23
+REQ-0608,PRJ-14,The application shall have a downtime of at most 10 minutes per year.,FUNCTIONAL,0,69,13
+REQ-0609,PRJ-14,The application shall run on a web application server.,FUNCTIONAL,0,54,9
+REQ-0610,PRJ-14,A primary database will be used to store cached data for active users.,FUNCTIONAL,0,70,13
+REQ-0611,PRJ-14,A secondary database will be used to store historical statistics and data.,FUNCTIONAL,0,74,12
+REQ-0612,PRJ-14,Application updates shall occur between 3AM and 6 AM CST on Wednesday morning during the middle of the NFL season.,MAINTAINABILITY,0,114,20
+REQ-0613,PRJ-14,New System version releases shall be released at the beginning of each NFL season.,MAINTAINABILITY,0,82,14
+REQ-0614,PRJ-15,The RFS system should be available 24/7  especially during the budgeting period. The RFS system shall be available 90% of the time all year  and 98% during the budgeting period. 2% of the time  the system will become available within 1 hour of the time that the situation is reported.,FUNCTIONAL,0,284,50
+REQ-0615,PRJ-15,98% of the user workstations shall meet the minimum hardware requirements prior to implementation. Minimum Hard Disk Space:  400MB.,FUNCTIONAL,0,131,19
+REQ-0616,PRJ-15,98% of the user workstations shall meet the minimum software requirements prior to implementation: Microsoft Internet Explorer 5.0. Microsoft .NET Framework 1.1. Microsoft Internet Explorer Web Controls,FUNCTIONAL,0,202,27
+REQ-0617,PRJ-15,The RFS system should be able to easily interface with the BDW environment  in order to load the data. 	7 data files shall be received from the BDW and loaded into the RFS system within 3 hours one day prior to the start of budgeting process  every year. The data will be as of October month-end. 	Test files (7) shall be loaded up to 5 times throughout the year  from the BDW.,FUNCTIONAL,0,377,72
+REQ-0618,PRJ-15,Changes to revenue and expense formulae must be applied to the RFS system  every year  prior to the budgeting process start. Revenue and expense formulae will be updated within one week of their receipt  after which 2 weeks will be allotted to testing of the budget calculations  to be conducted jointly by the project development team and PCG Finance.,MAINTAINABILITY,0,352,59
+REQ-0619,PRJ-15,New branches/complexes/districts/regions and revenue/expense accounts added to the BDW  must be reflected in the RFS system. 100% of the entities (mentioned above) available as of October month-end  will be loaded into the RFS system  prior to the budget start process.,MAINTAINABILITY,0,269,40
+REQ-0620,PRJ-15,Only authorized user shall access the RFS system. ONLY users that exist in the UAS system  with the RFS system assigned to their role(s)  shall access the RFS system and use it.,SECURITY,0,177,32
+REQ-0621,PRJ-15,User access should be limited to the permissions granted to their role(s) Each level in the PCG hierarchy will be assigned a role and users will be assigned to these roles. Access to functionality within RFS system is dependent on the privileges/permission assigned to the role..,SECURITY,0,279,46
+REQ-0622,PRJ-15,The product must comply with the intranet page standards and requirements of ENET Securities. 95% of the product look & feel will be approved by the Architecture group  prior to implementation. The remaining 5% will be corrected and approved within one month of product release.,FUNCTIONAL,0,278,45
+REQ-0623,PRJ-15,The intranet pages should display appropriately in all resolutions  from 800x600 and higher. The display of all the pages will be correct in 95% of the resolutions  prior to implementation. The remaining 5% will be corrected within a week of notification of the incorrect display.,FUNCTIONAL,0,280,45
+REQ-0624,PRJ-15,The users should be able to easily use the system to successfully complete their budgets  within the stipulated time for completion. With a week of training prior to product implementation  98% of the users shall complete their budgets within the stipulated time.,USABILITY,0,263,42
+REQ-0625,PRJ-15,The product interface should be fast. The response time of the product interface should not exceed 2 seconds 90% of the time. For 10% of the time  the response time should not be more than 10 seconds.not be more than 10 seconds.,PERFORMANCE,1,228,42

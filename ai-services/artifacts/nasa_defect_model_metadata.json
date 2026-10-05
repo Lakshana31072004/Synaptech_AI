@@ -1,0 +1,32 @@
+{
+  "model_name": "nasa_defect_model_v1",
+  "version": "1.0.0",
+  "dataset": "NASA MDP Cleaned Benchmark (1,200 instances)",
+  "features": [
+    "LOC_BLANK",
+    "BRANCH_COUNT",
+    "LOC_CODE_AND_COMMENT",
+    "LOC_COMMENTS",
+    "CYCLOMATIC_COMPLEXITY",
+    "DESIGN_COMPLEXITY",
+    "ESSENTIAL_COMPLEXITY",
+    "LOC_EXECUTABLE",
+    "HALSTEAD_CONTENT",
+    "HALSTEAD_DIFFICULTY",
+    "HALSTEAD_EFFORT",
+    "HALSTEAD_ERROR_EST",
+    "HALSTEAD_LENGTH",
+    "HALSTEAD_LEVEL",
+    "HALSTEAD_PROG_TIME",
+    "HALSTEAD_VOLUME",
+    "NUM_OPERANDS",
+    "NUM_OPERATORS",
+    "NUM_UNIQUE_OPERANDS",
+    "NUM_UNIQUE_OPERATORS",
+    "LOC_TOTAL"
+  ],
+  "target": "defect_density (defects per KLOC)",
+  "r2_score": -0.0112,
+  "mae": 13.8766,
+  "random_seed": 42
+}

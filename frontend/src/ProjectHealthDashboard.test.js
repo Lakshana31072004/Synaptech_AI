@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import ProjectHealthDashboard from './ProjectHealthDashboard';
 import { NotificationProvider } from './NotificationContext';
 import { apiService } from './apiService';
@@ -34,9 +35,11 @@ describe('ProjectHealthDashboard', () => {
 
   test('renders Project Health Dashboard title and metrics', async () => {
     render(
-      <NotificationProvider>
-        <ProjectHealthDashboard />
-      </NotificationProvider>
+      <MemoryRouter>
+        <NotificationProvider>
+          <ProjectHealthDashboard />
+        </NotificationProvider>
+      </MemoryRouter>
     );
 
     expect(screen.getByText(/Module 5: Project Health/i)).toBeInTheDocument();
@@ -50,9 +53,11 @@ describe('ProjectHealthDashboard', () => {
 
   test('runs AI risk simulator and displays prediction result', async () => {
     render(
-      <NotificationProvider>
-        <ProjectHealthDashboard />
-      </NotificationProvider>
+      <MemoryRouter>
+        <NotificationProvider>
+          <ProjectHealthDashboard />
+        </NotificationProvider>
+      </MemoryRouter>
     );
 
     await waitFor(() => {
