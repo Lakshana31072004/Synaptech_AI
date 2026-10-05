@@ -17,7 +17,7 @@
 ---
 
 ## 2. System Architecture
-The system follows a decoupled 3-tier microservice architecture:
+The system follows a streamlined, modern cloud-native architecture:
 ```
 ┌────────────────────────────────────────────────────────┐
 │            React 18.2.0 Frontend (SPA)                 │
@@ -25,37 +25,38 @@ The system follows a decoupled 3-tier microservice architecture:
 │  - Project Risk Dashboard & TreeSHAP Waterfall Chart   │
 │  - Interactive Traceability Graph (Mermaid.js 11.4.1)   │
 │  - Counterfactual What-If Sandbox                      │
+│  - Firebase AI Logic (Google Gemini Flash Integration) │
 └───────────────────────────┬────────────────────────────┘
-                            │ REST / JSON (JWT Auth)
+                            │ Cloud Firestore SDK / REST
 ┌───────────────────────────▼────────────────────────────┐
-│         Spring Boot 3.3.4 Orchestrator Backend         │
-│  - Domain Lifecycle Entities (JPA / Hibernate)         │
-│  - Spring Security 6 & JWT Token Authentication        │
-│  - WebClient Reactive Microservice Communication       │
-│  - Flyway-Compatible Adjacency Tables & Traceability   │
-└─────────────┬───────────────────────────┬──────────────┘
-              │ JDBC                      │ WebClient REST
-┌─────────────▼─────────────┐ ┌───────────▼──────────────┐
-│  PostgreSQL 15 / H2 Engine│ │ Python 3.10+ FastAPI AI  │
-│  - Relational Schema      │ │ - Calibrated N-Gram LR   │
-│  - Adjacency Traceability │ │ - Tuned LightGBM + RF    │
-│  - Simulation Run Logs    │ │ - TreeSHAP Explainer     │
-└───────────────────────────┘ └──────────────────────────┘
+│      Google Cloud Firestore & Firebase Auth (Serverless)│
+│  - Real-time NoSQL Collections & Reactive Snapshots   │
+│  - Distributed Token Authentication & RBAC Governance │
+│  - Immutable Activity Audit Logs & Traceability Links  │
+│  - Counterfactual Simulation Run Records               │
+└───────────────────────────┬────────────────────────────┘
+                            │ HTTP / JSON
+┌───────────────────────────▼────────────────────────────┐
+│            Python 3.10+ FastAPI AI Microservice        │
+│  - Calibrated N-Gram Logistic Regression (ISO-25010)   │
+│  - Tuned LightGBM + Random Forest Risk Engine          │
+│  - TreeSHAP Local Explainability & Prescriptions       │
+│  - Multi-Hop Attenuated Traceability Graph Engine      │
+└────────────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## 3. Technology Stack
 * **Frontend**: React 18.2.0, React Router v6, Context API, Mermaid.js 11.4.1, CSS3 Design System.
-* **Backend**: Java 21 / 17, Spring Boot 3.3.4, Spring Security 6, Spring Data JPA, Spring WebFlux/WebClient, JJWT 0.11.5.
+* **Cloud & Serverless Database**: Google Cloud Firestore, Firebase Authentication, Firebase AI Logic (`@firebase/ai` with Gemini).
 * **AI & ML Microservice**: Python 3.10+, FastAPI, Uvicorn, scikit-learn, LightGBM, SHAP (TreeExplainer), NumPy, pandas.
-* **Database**: PostgreSQL 15 (Production) / H2 in-memory (Isolated Unit Testing).
 
 ---
 
 ## 4. Repository Structure
 ```text
-ASEOS_Project/
+Synaptech_AI/
 ├── ai-services/
 │   ├── app.py                     # FastAPI AI microservice endpoints
 │   ├── artifacts/                 # Serialized model weights & vectorizers
@@ -76,17 +77,14 @@ ASEOS_Project/
 ├── experiments/
 │   ├── results/                   # Authentic measured benchmark CSVs & JSONs
 │   └── benchmark_latency.py       # Inference latency profiling script
-├── src/main/java/com/snaptech/backend/
-│   ├── ai/                        # WebClient AI service bridge
-│   ├── config/                    # Security & WebConfig
-│   ├── controller/                # Canonical REST controllers
-│   ├── model/                     # JPA Lifecycle domain entities
-│   ├── repository/                # Spring Data JPA repositories
-│   └── service/                   # Traceability, Simulation, Requirement services
 ├── frontend/
 │   ├── src/                       # React components, pages & dashboards
+│   │   ├── components/            # UI components and analytical modules
+│   │   ├── firebase/              # Cloud Firestore, Auth & AI Logic services
+│   │   └── index.css              # Custom responsive dark-mode theme
 │   └── package.json
 ├── docker-compose.yml             # Containerized multi-tier orchestration
+├── start-services.bat             # One-click platform startup script
 └── README.md
 ```
 
@@ -171,27 +169,22 @@ python experiments/benchmark_latency.py
 ## 8. How to Run Locally
 
 ### Prerequisites
-* Java 17 or 21 SDK
 * Node.js 18+ and npm
 * Python 3.10+ (pip)
-* Maven 3.8+
 
-### Step 1: Start Python AI Microservice
+### Quick Start (Windows)
+Double-click `start-services.bat` in the root directory to automatically launch both the Python AI engine and React frontend.
+
+### Manual Launch
+#### Step 1: Start Python AI Microservice
 ```bash
 cd ai-services
 pip install -r requirements.txt
 python -m uvicorn app:app --host 0.0.0.0 --port 5000
+# AI Engine runs on http://localhost:5000
 ```
 
-### Step 2: Start Spring Boot Backend
-```bash
-# In root project directory
-mvn clean package -DskipTests
-java -jar target/snaptech-backend-0.0.1-SNAPSHOT.jar
-# Backend runs on http://localhost:8081
-```
-
-### Step 3: Start React Frontend
+#### Step 2: Start React Frontend
 ```bash
 cd frontend
 npm install
@@ -207,10 +200,10 @@ npm start
   pytest ai-services/tests/test_ai_engine.py
   # Result: 7 passed in 1.48s
   ```
-* **Java Backend Tests**:
+* **Frontend React Tests**:
   ```bash
-  mvn test
-  # Result: 12 passed, 0 failures, 0 errors in 18.52s
+  cd frontend
+  npm test -- --watchAll=false
   ```
 
 ---

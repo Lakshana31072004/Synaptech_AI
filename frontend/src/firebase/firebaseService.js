@@ -1,5 +1,5 @@
 /**
- * Synaptech AI (ASEOS) - Firebase Unified Service Aggregator
+ * Synaptech AI - Firebase Unified Service Aggregator
  * 
  * Modular domain services:
  * - authService: User authentication, JWT issuance, profile updates

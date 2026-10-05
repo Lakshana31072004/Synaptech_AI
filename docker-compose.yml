@@ -6,7 +6,7 @@ services:
     build:
       context: ./ai-services
       dockerfile: Dockerfile
-    container_name: snaptech-ai-engine
+    container_name: synaptech-ai-engine
     restart: unless-stopped
     ports:
       - "5000:5000"
@@ -23,7 +23,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: snaptech-frontend
+    container_name: synaptech-frontend
     restart: unless-stopped
     ports:
       - "3000:80"
